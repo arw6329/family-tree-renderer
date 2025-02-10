@@ -11,7 +11,7 @@ const FamilyTreeStateContext = createContext<{
     rootNode: ProfileNode,
     setRootNode: (node: ProfileNode) => void,
     focusedProfileNode: ProfileNode | null,
-    setFocusedProfileNode: (node: ProfileNode) => void
+    setFocusedProfileNode: (node: ProfileNode | null) => void
 }>({
     get rootNode(): ProfileNode {
         throw throwNoProvider()

@@ -2,6 +2,7 @@ import HeaderButton from "@/components/header-button/HeaderButton"
 import "./ProfileHeader.scoped.css"
 import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import { FaMars, FaVenus } from "react-icons/fa"
+import { FaXmark } from "react-icons/fa6"
 import { useContext } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import { ProfileNode } from "@/lib/family-tree/ProfileNode"
@@ -32,6 +33,12 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                     </div>
                     {relationToRoot && <span className="relationship">{state.rootNode.data.profile.name}'s {relationToRoot.text}</span>}
                 </div>
+                <div style={{ flexGrow: 1 }}/>
+                <button className="close-button" title="Close profile details" onClick={() => state.setFocusedProfileNode(null)}>
+                    <IconContext.Provider value={{ style: { height: 22, width: 22 } }}>
+                        <FaXmark fill="white" />
+                    </IconContext.Provider>
+                </button>
             </div>
             <div className="row">
                 <HeaderButton onClick={() => state.setRootNode(node)}>

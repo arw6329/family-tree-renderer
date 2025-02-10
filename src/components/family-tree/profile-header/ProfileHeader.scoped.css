@@ -27,3 +27,14 @@ header {
 .relationship {
     color: #a0a0a0;
 }
+
+.close-button {
+    background: none;
+    border: none;
+    align-self: baseline;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
