@@ -1,9 +1,11 @@
 import React, { JSX } from "react"
 import "./FamilyTreeRenderer.css"
+import "./FamilyTreeRenderer.scoped.css"
 import { FamilyTreeDatabase } from "@/lib/family-tree/FamilyTreeDatabase"
 import { TreeBuilder } from "@/lib/family-tree/TreeBuilder"
 import { ProfileNode } from "@/lib/family-tree/ProfileNode"
 import PannableSvg from "../pannable-svg/PannableSvg"
+import ControlHeader from "./control-header/ControlHeader"
 
 const FamilyTreeRenderer: React.FC<{ database: FamilyTreeDatabase }> = (props) => {
     const rootNode = ProfileNode.create_unconnected_node({
@@ -14,12 +16,12 @@ const FamilyTreeRenderer: React.FC<{ database: FamilyTreeDatabase }> = (props) =
     const elems = [...rootNode.full_render()]
 
     return (
-        <PannableSvg>
-            <g>{...elems}</g>
-        </PannableSvg>
-        // <svg>
-            
-        // </svg>
+        <div className="root">
+            <ControlHeader />
+            <PannableSvg>
+                <g>{...elems}</g>
+            </PannableSvg>
+        </div>
     )
 }
 

@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from "react"
-import "./RelationshipInfoButton.css"
+import "./RelationshipInfoButton.scoped.css"
 
 const NODE_FOREIGNOBJECT_WIDTH = 25
 const NODE_FOREIGNOBJECT_HEIGHT = 25

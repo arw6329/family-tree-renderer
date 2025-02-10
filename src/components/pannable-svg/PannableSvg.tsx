@@ -1,6 +1,6 @@
 import { LinearAnimator } from "@/lib/LinearAnimator"
 import React, { ReactNode, RefObject, useEffect, useRef } from "react"
-import "./PannableSvg.css"
+import "./PannableSvg.scoped.css"
 
 const ZOOM_SCALE_WHEEL = 0.0005
 const ZOOM_SCALE_PINCH = 1
