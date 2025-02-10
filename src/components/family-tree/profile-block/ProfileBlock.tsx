@@ -7,13 +7,6 @@ import { ProfileNode } from "@/lib/family-tree/ProfileNode"
 const NODE_FOREIGNOBJECT_WIDTH = 175
 const NODE_FOREIGNOBJECT_HEIGHT = 75
 
-const genderColors = {
-    FEMALE: '#ffb3c0',
-    MALE: '#9ec0ff',
-    NEUTRAL: '#ffffff',
-    NONBINARY: 'yellow'
-}
-
 const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x, y, node}) => {
     const state = useContext(FamilyTreeStateContext)
     const profile: Profile = node.data.profile
@@ -26,10 +19,12 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
             height={NODE_FOREIGNOBJECT_HEIGHT}
         >
             <button onClick={() => state.setFocusedProfileNode(node)}>
-                <div className="root" style={{
-                    color: genderColors[profile.family_tree_gender],
-                    borderColor: genderColors[profile.family_tree_gender]
-                }}>
+                <div
+                    className="root"
+                    data-gender={profile.family_tree_gender}
+                    data-anchor={state.rootNode.data.profile.profile_id === profile.profile_id}
+                    data-focus={state.focusedProfileNode === node}
+                >
                     <div className="img-wrapper">
                         <img src="https://reunionpage.net/sprites/reunionpage-logo.png" alt={`${profile.name}`} />
                     </div>
