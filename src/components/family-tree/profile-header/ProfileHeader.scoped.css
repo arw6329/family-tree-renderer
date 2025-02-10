@@ -1,0 +1,29 @@
+header {
+    background-color: #1c1e1f;
+    border-bottom: 1px solid #495054;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 100%;
+}
+
+.name {
+    font-size: 1.6rem;
+    color: white;
+}
+
+.relationship {
+    color: #a0a0a0;
+}

@@ -1,1 +1,1 @@
-export { default as FamilyTreeRenderer } from './FamilyTreeRenderer'
+export { default as FamilyTree } from './family-tree/FamilyTree'

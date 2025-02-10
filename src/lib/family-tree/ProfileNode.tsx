@@ -75,7 +75,7 @@ export class ProfileNode extends AbstractFamilyTreeNode {
         yield <ProfileBlock
             x={this.x}
             y={this.y}
-            profile={this.data.profile}
+            node={this}
         />
     }
 
