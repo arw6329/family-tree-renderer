@@ -2,13 +2,13 @@ import HeaderButton from "@/components/header-button/HeaderButton"
 import "./ControlHeader.scoped.css"
 
 interface ControlHeaderProps {
-
+    onRecenter: () => void
 }
 
 const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
     return (
         <header>
-            <HeaderButton>
+            <HeaderButton onClick={() => props.onRecenter()}>
                 <span>Recenter</span>
             </HeaderButton>
             <HeaderButton>

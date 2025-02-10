@@ -1,5 +1,5 @@
 import { LinearAnimator } from "@/lib/LinearAnimator"
-import React, { ReactNode, RefObject, useEffect, useRef } from "react"
+import { forwardRef, ReactNode, RefObject, useEffect, useImperativeHandle, useRef, useState } from "react"
 import "./PannableSvg.scoped.css"
 
 const ZOOM_SCALE_WHEEL = 0.0005
@@ -383,7 +383,7 @@ function attachControls(svg: SVGSVGElement) {
 //     )
 // }
 
-const PannableSvg: React.FC<{ children: ReactNode }> = (props) => {
+const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) => void }, { children: ReactNode }>(({ children }, ref) => {
     const svg: RefObject<SVGSVGElement | null> = useRef(null)
 
     useEffect(() => {
@@ -394,12 +394,21 @@ const PannableSvg: React.FC<{ children: ReactNode }> = (props) => {
         attachControls(svg.current)
     }, [svg])
 
+    useImperativeHandle(ref, () => {
+        return {
+            setCenter(centerX: number, centerY: number) {
+                svg.current.viewBox.baseVal.x = centerX - svg.current.viewBox.baseVal.width / 2
+                svg.current.viewBox.baseVal.y = centerY - svg.current.viewBox.baseVal.height / 2
+            }
+        }
+    })
+
     return (
         // TODO: interactive semantics / aria role
         <svg viewBox="0 0 0 0" ref={svg} tabIndex={0}>
-            {props.children}
+            {children}
         </svg>
     )
-}
+})
 
 export default PannableSvg

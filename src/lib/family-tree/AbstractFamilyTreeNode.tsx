@@ -509,7 +509,7 @@ export abstract class AbstractFamilyTreeNode {
         })
     }
 
-    *full_render(): Generator<JSX.Element, undefined, never> {
+    *full_render(): Generator<JSX.Element, undefined, undefined> {
         AbstractFamilyTreeNode.unrender_all()
         
         anchor_node = this
