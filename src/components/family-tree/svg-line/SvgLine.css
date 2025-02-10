@@ -1,0 +1,6 @@
+line {
+    stroke: #dfdfdf;
+    stroke-width: 2px;
+    stroke-linecap: square;
+    pointer-events: none;
+}
