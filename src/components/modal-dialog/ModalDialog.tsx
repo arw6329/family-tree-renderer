@@ -6,6 +6,8 @@ const ModalDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     useEffect(() => {
         dialog.current!.showModal()
+        ;['wheel', 'touchend', 'touchmove', 'touchstart', 'pointermove', 'pointerout', 'pointerup', 'pointerdown']
+            .forEach(eventType => dialog.current.addEventListener(eventType, evt => evt.stopPropagation()))
     }, [dialog.current])
 
     return (
