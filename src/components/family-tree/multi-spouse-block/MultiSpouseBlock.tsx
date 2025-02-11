@@ -1,4 +1,5 @@
 import React from "react"
+import "./MultiSpouseBlock.scoped.css"
 
 const NODE_FOREIGNOBJECT_WIDTH = 150
 const NODE_FOREIGNOBJECT_HEIGHT = 50
@@ -11,7 +12,9 @@ const MultiSpouseBlock: React.FC<{ x: number, y: number, spouseCount: number }> 
             width={NODE_FOREIGNOBJECT_WIDTH}
             height={NODE_FOREIGNOBJECT_HEIGHT}
         >
-            <span>{spouseCount} other spouses</span>
+            <div className="root">
+                <span>{spouseCount} other spouses</span>
+            </div>
         </foreignObject>
     )
 }
