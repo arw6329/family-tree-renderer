@@ -392,6 +392,17 @@ const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) =
         svg.current.viewBox.baseVal.width = svg.current.scrollWidth
         svg.current.viewBox.baseVal.height = svg.current.scrollHeight
         attachControls(svg.current)
+
+        let previousWidth = svg.current.scrollWidth
+        let previousHeight = svg.current.scrollHeight
+        new ResizeObserver((entries) => {
+            for(const entry of entries) {
+                svg.current.viewBox.baseVal.width *= entry.contentBoxSize[0].inlineSize / previousWidth
+                svg.current.viewBox.baseVal.height *= entry.contentBoxSize[0].blockSize / previousHeight
+                previousWidth = entry.contentBoxSize[0].inlineSize
+                previousHeight = entry.contentBoxSize[0].blockSize
+            }
+        }).observe(svg.current)
     }, [svg])
 
     useImperativeHandle(ref, () => {
