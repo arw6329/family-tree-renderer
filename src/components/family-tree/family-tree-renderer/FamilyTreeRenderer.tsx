@@ -16,13 +16,13 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
 
     useEffect(() => {
         pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)
-    }, [state.rootNode, pannableSvg])
+    }, [state.rootNode.data.profile, pannableSvg])
 
     const renderedElements = useMemo(() => {
         // Full render is expensive
         // Cache rendered elements so we don't have to do it every rerender of this component
         return [...state.rootNode.full_render()]
-    }, [state.rootNode])
+    }, [state.rootNode, state.editing])
 
     return (
         <div className="root">
@@ -30,6 +30,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                 onRecenter={() => pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)}
                 onZoomIn={() => pannableSvg.current.zoom(-500)}
                 onZoomOut={() => pannableSvg.current.zoom(500)}
+                onStartEdit={() => state.setEditing(true)}
             />
             {state.focusedProfileNode && <ProfileHeader node={state.focusedProfileNode}/>}
             <PannableSvg ref={pannableSvg}>

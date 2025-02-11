@@ -1,0 +1,15 @@
+dialog {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}

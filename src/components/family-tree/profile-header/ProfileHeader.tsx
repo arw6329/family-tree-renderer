@@ -41,7 +41,7 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                 </button>
             </div>
             <div className="row">
-                <HeaderButton onClick={() => state.setRootNode(node)}>
+                <HeaderButton onClick={() => state.setRootProfile(profile)}>
                     <span>Recenter tree here</span>
                 </HeaderButton>
             </div>

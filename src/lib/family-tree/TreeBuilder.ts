@@ -1,5 +1,6 @@
 import { remove_elem_if_present } from '../array-utils/array-utils';
 import { AbstractFamilyTreeNode } from './AbstractFamilyTreeNode';
+import { AddSpouseButtonNode } from './AddSpouseButtonNode';
 import { FamilyTreeDatabase } from './FamilyTreeDatabase';
 import { MultiSpouseNode } from './MultiSpouseNode';
 import { ProfileNode } from './ProfileNode'
@@ -185,5 +186,21 @@ export class TreeBuilder {
         }
 
         this.construct_tree(this.node_queue.shift(), _visited_ids, ++_test_index)
+    }
+
+    enter_edit_mode() {
+        if(!this.root_node) {
+            throw new Error('Cannot enter edit mode before tree is constructed')
+        }
+
+        if(!this.root_node.right_spouse) {
+            this.root_node._attach_right_spouse(AddSpouseButtonNode)
+        } else if(!this.root_node.left_spouse) {
+            this.root_node._attach_left_spouse(AddSpouseButtonNode)
+        } else {
+            MultiSpouseNode.merge_spouses_left(this.root_node)
+            this.root_node._attach_right_spouse(AddSpouseButtonNode)
+            // TODO: full render?
+        }
     }
 }

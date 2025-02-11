@@ -1,0 +1,17 @@
+button {
+    background-color: #2e2f30;
+    border: 1px solid #616263;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    padding: 10px 15px;
+    font-family: sans-serif;
+    letter-spacing: 0.1ch;
+}
+
+button:disabled {
+    background-color: #1a1b1c;
+    border-color: #313131;
+    color: #a8a8a8;
+    cursor: not-allowed;
+}

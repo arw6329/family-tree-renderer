@@ -5,6 +5,7 @@ interface ControlHeaderProps {
     onRecenter: () => void
     onZoomIn: () => void
     onZoomOut: () => void
+    onStartEdit: () => void
 }
 
 const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
@@ -19,7 +20,7 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
             <HeaderButton onClick={() => props.onZoomOut()}>
                 <span>Zoom out</span>
             </HeaderButton>
-            <HeaderButton>
+            <HeaderButton onClick={() => props.onStartEdit()}>
                 <span>Edit</span>
             </HeaderButton>
         </header>
