@@ -410,6 +410,27 @@ const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) =
             setCenter(centerX: number, centerY: number) {
                 svg.current.viewBox.baseVal.x = centerX - svg.current.viewBox.baseVal.width / 2
                 svg.current.viewBox.baseVal.y = centerY - svg.current.viewBox.baseVal.height / 2
+            },
+
+            zoom(pixels: number) {
+                const aspectRatio = svg.current.scrollWidth / svg.current.scrollHeight
+                const pxDeltaWidth = pixels / (aspectRatio + 1) * aspectRatio
+                const pxDeltaHeight = pixels - pxDeltaWidth
+
+                console.log(aspectRatio, pxDeltaWidth, pxDeltaHeight)
+
+                const newWidth = svg.current.viewBox.baseVal.width + pxDeltaWidth
+                const clampedNewWidth = Math.min(svg.current.scrollWidth / ZOOM_MIN, Math.max(svg.current.scrollWidth / ZOOM_MAX, newWidth))
+                const newHeight = svg.current.viewBox.baseVal.height + pxDeltaHeight
+                const clampedNewHeight = Math.min(svg.current.scrollHeight / ZOOM_MIN, Math.max(svg.current.scrollHeight / ZOOM_MAX, newHeight))
+
+                const clampedPxDeltaWidth = clampedNewWidth - svg.current.viewBox.baseVal.width
+                const clampedPxDeltaHeight = clampedNewHeight - svg.current.viewBox.baseVal.height
+
+                svg.current.viewBox.baseVal.x -= clampedPxDeltaWidth / 2
+                svg.current.viewBox.baseVal.y -= clampedPxDeltaHeight / 2
+                svg.current.viewBox.baseVal.width = clampedNewWidth
+                svg.current.viewBox.baseVal.height = clampedNewHeight
             }
         }
     })

@@ -3,6 +3,8 @@ import "./ControlHeader.scoped.css"
 
 interface ControlHeaderProps {
     onRecenter: () => void
+    onZoomIn: () => void
+    onZoomOut: () => void
 }
 
 const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
@@ -11,10 +13,10 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
             <HeaderButton onClick={() => props.onRecenter()}>
                 <span>Recenter</span>
             </HeaderButton>
-            <HeaderButton>
+            <HeaderButton onClick={() => props.onZoomIn()}>
                 <span>Zoom in</span>
             </HeaderButton>
-            <HeaderButton>
+            <HeaderButton onClick={() => props.onZoomOut()}>
                 <span>Zoom out</span>
             </HeaderButton>
             <HeaderButton>
