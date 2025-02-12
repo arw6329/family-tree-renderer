@@ -10,16 +10,20 @@ import { IconContext } from "react-icons"
 import { relation_to } from "@/lib/family-tree/relation"
 import AddSpouseOverlay from "@/components/overlays/AddSpouseOverlay"
 import AddChildOverlay from "@/components/overlays/AddChildOverlay"
+import AddParentsOverlay from "@/components/overlays/AddParentsOverlay"
 
 const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     const state = useContext(FamilyTreeStateContext)
     const [addSpousePopupActive, setAddSpousePopupActive] = useState(false)
+    const [addParentsPopupActive, setAddParentsPopupActive] = useState(false)
     const [addingChildWithRelationship, setAddingChildWithRelationship] = useState<SpousalRelationship | null>(null)
     const profile: Profile = node.data.profile
 
     const relationToRoot = useMemo(() => {
         return relation_to(node, state.rootNode)
     }, [node, state.rootNode])
+
+    const spouses = state.getSpousesOf(profile)
 
     return (
         <header>
@@ -54,18 +58,37 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                     <HeaderButton onClick={() => setAddSpousePopupActive(true)}>
                         <span>Add spouse</span>
                     </HeaderButton>
+                    {state.hasParents(profile)
+                        ? <HeaderButton onClick={() => state.disconnectChild(profile)}>
+                            <span>Disconnect from parents</span>
+                        </HeaderButton>
+                        : <HeaderButton onClick={() => setAddParentsPopupActive(true)}>
+                            <span>Add parents</span>
+                        </HeaderButton>
+                    }
+                    {spouses.map(spouse => (
+                        <HeaderButton onClick={() => setAddingChildWithRelationship(spouse.relationship)}>
+                            <span>Add child with {spouse.spouse.name}</span>
+                        </HeaderButton>
+                    ))}
+                    {spouses.map(spouse => (
+                        <HeaderButton onClick={() => state.disconnectSpouses(spouse.relationship)}>
+                            <span>Disconnect from {spouse.spouse.name}</span>
+                        </HeaderButton>
+                    ))}
                 </>}
-                {state.editing && state.getSpousesOf(profile).map(spouse => (
-                    <HeaderButton onClick={() => setAddingChildWithRelationship(spouse.relationship)}>
-                        <span>Add child with {spouse.spouse.name}</span>
-                    </HeaderButton>
-                ))}
             </div>
             
             {addSpousePopupActive && <>
                 <AddSpouseOverlay
                     withProfile={profile}
                     onFinished={() => setAddSpousePopupActive(false)}
+                />
+            </>}
+            {addParentsPopupActive && <>
+                <AddParentsOverlay
+                    profile={profile}
+                    onFinished={() => setAddParentsPopupActive(false)}
                 />
             </>}
             {addingChildWithRelationship && <>

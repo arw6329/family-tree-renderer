@@ -17,7 +17,7 @@ export class DatabaseBuilder {
         this.database.profiles[profile.profile_id] = profile
     }
 
-    makeSpouses(profile1: Profile, profile2: Profile) {
+    makeSpouses(profile1: Profile, profile2: Profile): SpousalRelationship {
         if(profile1.profile_id === profile2.profile_id) {
             throw new DatabaseBuildError('Cannot make profile spouse of itself')
         }
@@ -47,6 +47,8 @@ export class DatabaseBuilder {
             metadata: []
         }
         this.database.spousal_relationships[relationship.relationship_id] = relationship
+
+        return relationship
     }
 
     makeChild(parentRelationship: SpousalRelationship, profile: Profile) {
@@ -58,8 +60,13 @@ export class DatabaseBuilder {
             throw new DatabaseBuildError(`Profile ${profile.profile_id} does not exist`)
         }
 
-        const database = this.database // this is shadowed by generator
         const childRelationships = Object.values(this.database.child_relationships)
+
+        if(childRelationships.some(relationship => relationship.child_profile_id === profile.profile_id)) {
+            throw new DatabaseBuildError(`Profile ${profile.profile_id} already has parents`)
+        }
+
+        const database = this.database // this is shadowed by generator
         function *allAncestors(profile: Profile): Generator<Profile, undefined, undefined> {
             const childRelationship = childRelationships.find(relationship => relationship.child_profile_id === profile.profile_id)
             if(childRelationship) {
