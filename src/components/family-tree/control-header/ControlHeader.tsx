@@ -1,5 +1,7 @@
 import HeaderButton from "@/components/header-button/HeaderButton"
 import "./ControlHeader.scoped.css"
+import { useState } from "react"
+import JumpToProfileOverlay from "@/components/overlays/JumpToProfileOverlay"
 
 interface ControlHeaderProps {
     onRecenter: () => void
@@ -9,10 +11,15 @@ interface ControlHeaderProps {
 }
 
 const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
+    const [selectingUser, setSelectingUser] = useState(false)
+
     return (
         <header>
             <HeaderButton onClick={() => props.onRecenter()}>
                 <span>Recenter</span>
+            </HeaderButton>
+            <HeaderButton onClick={() => setSelectingUser(true)}>
+                <span>Jump to person</span>
             </HeaderButton>
             <HeaderButton onClick={() => props.onZoomIn()}>
                 <span>Zoom in</span>
@@ -23,6 +30,7 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
             <HeaderButton onClick={() => props.onStartEdit()}>
                 <span>Edit</span>
             </HeaderButton>
+            {selectingUser && <JumpToProfileOverlay onFinished={() => setSelectingUser(false)} />}
         </header>
     )
 }

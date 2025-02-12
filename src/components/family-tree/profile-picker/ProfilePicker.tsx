@@ -6,15 +6,16 @@ import ActionButton from "@/components/action-button/ActionButton"
 interface ProfilePickerProps {
     action: string
     profiles: Profile[]
+    validModes?: 'create' | 'select'
     onSelectExisting?: (profile: Profile) => void
     onCreateNew?: (profile: Profile) => void
     onCancel?: () => void
 }
 
-const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, onSelectExisting, onCreateNew, onCancel }) => {
+const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, validModes, onSelectExisting, onCreateNew, onCancel }) => {
     const [selected, setSelected] = useState<Profile | null>(null)
     const [input, setInput] = useState('')
-    const [mode, setMode] = useState<'create' | 'select'>('select')
+    const [mode, setMode] = useState<'create' | 'select'>(validModes !== 'create' ? 'select' : 'create')
 
     function switchToMode(mode: 'create' | 'select') {
         setMode(mode)
@@ -26,10 +27,12 @@ const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, onSelec
     return (
         <div className="root">
             <span>Select a person to {action}</span>
-            <select onChange={(event) => switchToMode(event.target.value)} value={mode}>
-                <option value="select">Use an existing person</option>
-                <option value="create">Create a new person</option>
-            </select>
+            {validModes === undefined && <>
+                <select onChange={(event) => switchToMode(event.target.value)} value={mode}>
+                    <option value="select">Use an existing person</option>
+                    <option value="create">Create a new person</option>
+                </select>
+            </>}
             {
                 mode === 'select'
                 ? <>
@@ -52,7 +55,14 @@ const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, onSelec
                             </div>
                         </> : <>
                             <div>
-                                <span>No profiles found. <a href="javascript:void(0)" onClick={() => switchToMode('create')}>Create new profile for "{input}" instead</a></span>
+                                <span>No profiles found. {validModes !== 'select' &&
+                                    <a
+                                        href="javascript:void(0)"
+                                        onClick={() => switchToMode('create')}
+                                    >
+                                        Create new profile for "{input}" instead
+                                    </a>
+                                }</span>
                             </div>
                         </>
                     }
@@ -65,7 +75,7 @@ const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, onSelec
                 {
                     mode === 'select'
                     ? <ActionButton disabled={selected === null} onClick={() => onSelectExisting?.(selected!)}>
-                        <span>{selected ? `Use ${selected.name}` : 'Select or create a profile first'}</span>
+                        <span>{selected ? `Use ${selected.name}` : validModes === 'select' ? 'Select a profile first' : 'Select or create a profile first'}</span>
                     </ActionButton>
                     : <ActionButton disabled={input === ''} onClick={() => {
                         onCreateNew?.({
