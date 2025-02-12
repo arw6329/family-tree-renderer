@@ -538,6 +538,19 @@ export abstract class AbstractFamilyTreeNode {
                 node.x += delta_x
             })
         }
+
+        if(!grandparents_rendered) {
+            if(this.left_parent) {
+                this.left_parent.render_right_tree()
+
+                const delta_x = -this.x
+                this.left_parent.all_decendents_across_spouse_chain().forEach(node => {
+                    node.x += delta_x
+                })
+            } else {
+                this.render_right_tree()
+            }
+        }
     
         if(this.right_parent && this.left_parent) {
             this.left_parent.saved_x = this.left_parent._x ?? 0
@@ -615,14 +628,6 @@ export abstract class AbstractFamilyTreeNode {
                     node.x += dx
                 })
             }
-        }
-    
-        if(!grandparents_rendered) {
-            console.log('grandparents not rendered!')
-            if(this.left_parent)
-                this.left_parent.render_right_tree()
-            else
-                this.render_right_tree()
         }
     
         for(const node of new Set([
