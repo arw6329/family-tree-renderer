@@ -38,7 +38,7 @@ export class TreeBuilder {
         }
     }
 
-    construct_tree(root_node: AbstractFamilyTreeNode, _visited_ids = [], _test_index = 0) {
+    construct_tree(root_node: AbstractFamilyTreeNode, _visited_ids = []) {
         if(!this.root_node) {
             this.root_node = root_node
         }
@@ -46,16 +46,6 @@ export class TreeBuilder {
         if(!root_node) {
             return
         }
-
-        // if(_test_index > 100) {
-        //     return
-        // }
-
-        // if(_visited_ids.some(profile_id => root_node.is_representative_of(profile_id))) {
-        //     return
-        // }
-        
-        // console.log(`popped node with profile ${root_node.data.profile.profile_id}, visited = ${root_node._tmp_visited}`)
 
         // attach parents
         if(
@@ -186,7 +176,7 @@ export class TreeBuilder {
             _visited_ids.push(root_node.data.profile.profile_id)
         }
 
-        this.construct_tree(this.node_queue.shift(), _visited_ids, ++_test_index)
+        this.construct_tree(this.node_queue.shift(), _visited_ids)
     }
 
     enter_edit_mode() {

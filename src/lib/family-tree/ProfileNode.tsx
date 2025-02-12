@@ -1,5 +1,4 @@
 import { AbstractFamilyTreeNode } from './AbstractFamilyTreeNode'
-import { relation_to } from './relation'
 import { JSX } from 'react'
 import RelationshipInfoButton from '@/components/family-tree/relationship-info-button/RelationshipInfoButton'
 import ProfileBlock from '@/components/family-tree/profile-block/ProfileBlock'
