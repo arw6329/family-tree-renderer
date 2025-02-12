@@ -10,7 +10,7 @@ const AddSpouseOverlay: React.FC<{ withProfile: Profile, onFinished: () => void 
     return (
         <ModalDialog>
             <ProfilePicker
-                action="make spouse with April Williams"
+                action={`make spouse with ${withProfile.name}`}
                 profiles={state.profiles}
                 onSelectExisting={(profile) => {
                     state.makeSpouses(withProfile, profile)
