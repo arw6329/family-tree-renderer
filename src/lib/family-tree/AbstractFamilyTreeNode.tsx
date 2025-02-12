@@ -10,17 +10,6 @@ type FamilyTreeNodeSubclassConstructor = {
 }
 
 export abstract class AbstractFamilyTreeNode {
-	static #all_drawn_nodes: AbstractFamilyTreeNode[] = [] 
-
-	// TODO: make private
-	static unrender_all() {
-		AbstractFamilyTreeNode.#all_drawn_nodes.forEach(node => {
-			node.x = undefined
-			node.temporary_render_data = {}
-		})
-		this.#all_drawn_nodes = []
-	}
-
 	static create_unconnected_node(data = {}) {
 		return new this(0, null, null, null, null, [], [], {}, data)
 	}
@@ -351,13 +340,7 @@ export abstract class AbstractFamilyTreeNode {
 		new_node.x = this._x
 	}
 
-	draw() {
-		AbstractFamilyTreeNode.#all_drawn_nodes.push(this)
-	}
-
-	static get_all_drawn_nodes() {
-		return [...AbstractFamilyTreeNode.#all_drawn_nodes]
-	}
+    abstract draw(): Generator<JSX.Element, undefined, undefined>;
 
     /* -------------------
     * RENDERING FUNCTIONS
@@ -518,10 +501,7 @@ export abstract class AbstractFamilyTreeNode {
 
     *full_render(): Generator<JSX.Element, undefined, undefined> {
         this.log('** Full render on node')
-        AbstractFamilyTreeNode.unrender_all()
-        
-        anchor_node = this
-    
+            
         this.left_parent?.move_to_right_of_siblings()
         this.right_parent?.move_to_left_of_siblings()
     
@@ -651,6 +631,7 @@ export abstract class AbstractFamilyTreeNode {
             ...this.all_parent_nodes() // TODO: necessary?
         ])) {
             yield* node.draw()
+            node.temporary_render_data = {}
         }
     }
 
@@ -744,10 +725,4 @@ export abstract class AbstractFamilyTreeNode {
             }` : ''
         }] ${string}`, this)
     }
-}
-
-let anchor_node
-
-AbstractFamilyTreeNode.get_anchor_node = function() {
-	return anchor_node
 }

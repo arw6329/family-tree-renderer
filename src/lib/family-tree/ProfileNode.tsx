@@ -6,8 +6,6 @@ import ProfileBlock from '@/components/family-tree/profile-block/ProfileBlock'
 
 export class ProfileNode extends AbstractFamilyTreeNode {
 	*draw(): Generator<JSX.Element, undefined, never> {
-        super.draw()
-
         if(!this.is_rendered()) {
             throw 'attempted to draw node before it was rendered'
         }

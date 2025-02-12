@@ -4,8 +4,6 @@ import AddSpouseButton from '@/components/family-tree/add-spouse-button/AddSpous
 
 export class AddSpouseButtonNode extends AbstractFamilyTreeNode {
 	*draw(): Generator<JSX.Element, undefined, undefined> {
-        super.draw()
-
         if(!this.is_rendered()) {
             throw 'attempted to draw node before it was rendered'
         }

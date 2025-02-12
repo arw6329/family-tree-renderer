@@ -118,8 +118,6 @@ export class MultiSpouseNode extends AbstractFamilyTreeNode {
     }
 
 	*draw(): Generator<JSX.Element, undefined, never> {
-        super.draw()
-
         yield* this.draw_lines()
         
         yield <MultiSpouseBlock
