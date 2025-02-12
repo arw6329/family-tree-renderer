@@ -1,16 +1,17 @@
 import HeaderButton from "@/components/header-button/HeaderButton"
 import "./ControlHeader.scoped.css"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import JumpToProfileOverlay from "@/components/overlays/JumpToProfileOverlay"
+import { FamilyTreeStateContext } from "../FamilyTreeState"
 
 interface ControlHeaderProps {
     onRecenter: () => void
     onZoomIn: () => void
     onZoomOut: () => void
-    onStartEdit: () => void
 }
 
 const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
+    const state = useContext(FamilyTreeStateContext)
     const [selectingUser, setSelectingUser] = useState(false)
 
     return (
@@ -27,9 +28,15 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
             <HeaderButton onClick={() => props.onZoomOut()}>
                 <span>Zoom out</span>
             </HeaderButton>
-            <HeaderButton onClick={() => props.onStartEdit()}>
-                <span>Edit</span>
-            </HeaderButton>
+            {
+                state.editing
+                ? <HeaderButton onClick={() => state.setEditing(false)}>
+                    <span>Exit edit mode</span>
+                </HeaderButton>
+                : <HeaderButton onClick={() => state.setEditing(true)}>
+                    <span>Edit</span>
+                </HeaderButton>
+            }
             {selectingUser && <JumpToProfileOverlay onFinished={() => setSelectingUser(false)} />}
         </header>
     )

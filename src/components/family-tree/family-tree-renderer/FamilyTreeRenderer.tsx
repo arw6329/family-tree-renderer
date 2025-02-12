@@ -30,7 +30,6 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                 onRecenter={() => pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)}
                 onZoomIn={() => pannableSvg.current.zoom(-500)}
                 onZoomOut={() => pannableSvg.current.zoom(500)}
-                onStartEdit={() => state.setEditing(true)} // TODO: move to ControlHeader since it also accesses state?
             />
             {state.focusedProfileNode && <ProfileHeader node={state.focusedProfileNode}/>}
             <PannableSvg ref={pannableSvg}>

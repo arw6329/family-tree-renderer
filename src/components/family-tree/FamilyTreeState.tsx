@@ -38,9 +38,12 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
         return ProfileNode.create_unconnected_node({
             profile: rootProfile
         })
-    }, [rootProfile, databaseVersion])
+    }, [rootProfile, databaseVersion, editing])
 
     useMemo(() => {
+        // TODO: builder is reran when entering/exiting edit mode, but it should be easy to not do this
+        // by just removing all the button nodes instead.
+        // Improve efficiency, or does it not matter enough?
         const builder = new TreeBuilder(database)
         builder.construct_tree(rootNode)
         if(editing) {
