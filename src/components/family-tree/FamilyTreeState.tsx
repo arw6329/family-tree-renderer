@@ -1,14 +1,10 @@
 import { DatabaseBuilder } from "@/lib/family-tree/DatabaseBuilder";
-import { FamilyTreeDatabase, Profile } from "@/lib/family-tree/FamilyTreeDatabase";
+import { FamilyTreeDatabase, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
 import { ProfileNode } from "@/lib/family-tree/ProfileNode";
 import { TreeBuilder } from "@/lib/family-tree/TreeBuilder";
 import React, { createContext, JSX, ReactNode, useEffect, useMemo, useState } from "react";
 
-function throwNoProvider() {
-    throw new Error('FamilyTreeStateContext had no provider')
-}
-
-const FamilyTreeStateContext = createContext<{
+interface ContextType {
     rootNode: ProfileNode,
     setRootProfile: (profile: Profile) => void,
     focusedProfileNode: ProfileNode | null,
@@ -16,21 +12,20 @@ const FamilyTreeStateContext = createContext<{
     editing: boolean,
     setEditing: (editing: boolean) => void,
     profiles: Profile[],
+    getProfile: (profileId: string) => Profile | null,
+    getSpousesOf: (profile: Profile) => { spouse: Profile, relationship: SpousalRelationship }[],
     addNewProfile: (profile: Profile) => void,
-    makeSpouses: (profile1: Profile, profile2: Profile) => void
-}>({
-    get rootNode(): ProfileNode {
-        throw throwNoProvider()
-    },
-    setRootProfile: throwNoProvider,
-    focusedProfileNode: null,
-    setFocusedProfileNode: throwNoProvider,
-    editing: false,
-    setEditing: throwNoProvider,
-    profiles: [],
-    addNewProfile: throwNoProvider,
-    makeSpouses: throwNoProvider
-})
+    makeSpouses: (profile1: Profile, profile2: Profile) => void,
+    makeChild: (parentRelationship: SpousalRelationship, profile: Profile) => void
+}
+
+const FamilyTreeStateContext = createContext<ContextType>(
+    new Proxy({} as ContextType, {
+        get(target, name) {
+            throw new Error('FamilyTreeStateContext had no provider')
+        }
+    })
+)
 
 const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children: ReactNode }> = ({ database, children }) => {
     const [rootProfile, setRootProfile] = useState(Object.values(database.profiles)[0])
@@ -62,12 +57,37 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
             editing,
             setEditing,
             profiles: Object.values(database.profiles),
+            getProfile(profileId: string) {
+                return database.profiles[profileId]
+            },
+            getSpousesOf(profile: Profile) {
+                const spouses = []
+                for(const relationshipId in database.spousal_relationships) {
+                    const relationship = database.spousal_relationships[relationshipId]
+                    if(relationship.spouse_1_profile_id === profile.profile_id) {
+                        spouses.push({
+                            spouse: database.profiles[relationship.spouse_2_profile_id],
+                            relationship: relationship
+                        })
+                    } else if(relationship.spouse_2_profile_id === profile.profile_id) {
+                        spouses.push({
+                            spouse: database.profiles[relationship.spouse_1_profile_id],
+                            relationship: relationship
+                        })
+                    }
+                }
+                return spouses
+            },
             addNewProfile(profile: Profile) {
                 DatabaseBuilder.fromExisting(database).addNewProfile(profile)
                 setDatabaseVersion(Math.random())
             },
             makeSpouses(profile1: Profile, profile2: Profile) {
                 DatabaseBuilder.fromExisting(database).makeSpouses(profile1, profile2)
+                setDatabaseVersion(Math.random())
+            },
+            makeChild(parentRelationship: SpousalRelationship, profile: Profile) {
+                DatabaseBuilder.fromExisting(database).makeChild(parentRelationship, profile)
                 setDatabaseVersion(Math.random())
             }
         }}>

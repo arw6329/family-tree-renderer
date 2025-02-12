@@ -1,6 +1,6 @@
 import HeaderButton from "@/components/header-button/HeaderButton"
 import "./ProfileHeader.scoped.css"
-import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
+import { Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase"
 import { FaMars, FaVenus } from "react-icons/fa"
 import { FaXmark } from "react-icons/fa6"
 import { useContext, useMemo, useState } from "react"
@@ -9,10 +9,12 @@ import { ProfileNode } from "@/lib/family-tree/ProfileNode"
 import { IconContext } from "react-icons"
 import { relation_to } from "@/lib/family-tree/relation"
 import AddSpouseOverlay from "@/components/overlays/AddSpouseOverlay"
+import AddChildOverlay from "@/components/overlays/AddChildOverlay"
 
 const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     const state = useContext(FamilyTreeStateContext)
     const [addSpousePopupActive, setAddSpousePopupActive] = useState(false)
+    const [addingChildWithRelationship, setAddingChildWithRelationship] = useState<SpousalRelationship | null>(null)
     const profile: Profile = node.data.profile
 
     const relationToRoot = useMemo(() => {
@@ -48,13 +50,30 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                 <HeaderButton onClick={() => state.setRootProfile(profile)}>
                     <span>Recenter tree here</span>
                 </HeaderButton>
-                {state.editing &&
+                {state.editing && <>
                     <HeaderButton onClick={() => setAddSpousePopupActive(true)}>
                         <span>Add spouse</span>
-                    </HeaderButton>}
+                    </HeaderButton>
+                </>}
+                {state.editing && state.getSpousesOf(profile).map(spouse => (
+                    <HeaderButton onClick={() => setAddingChildWithRelationship(spouse.relationship)}>
+                        <span>Add child with {spouse.spouse.name}</span>
+                    </HeaderButton>
+                ))}
             </div>
             
-            {addSpousePopupActive && <AddSpouseOverlay withProfile={profile} onFinished={() => setAddSpousePopupActive(false)} />}
+            {addSpousePopupActive && <>
+                <AddSpouseOverlay
+                    withProfile={profile}
+                    onFinished={() => setAddSpousePopupActive(false)}
+                />
+            </>}
+            {addingChildWithRelationship && <>
+                <AddChildOverlay
+                    parentRelationship={addingChildWithRelationship}
+                    onFinished={() => setAddingChildWithRelationship(null)}
+                />
+            </>}
         </header>
     )
 }

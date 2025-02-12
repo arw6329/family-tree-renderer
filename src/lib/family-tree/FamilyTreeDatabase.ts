@@ -9,6 +9,13 @@ export interface Profile {
     metadata: NodeMetadata[]
 }
 
+export interface SpousalRelationship {
+    relationship_id: string,
+    spouse_1_profile_id: string,
+    spouse_2_profile_id: string,
+    metadata: NodeMetadata[]
+}
+
 export interface FamilyTreeDatabase {
     root_metadata: {
         [metadataId: string]: NodeMetadata
@@ -17,12 +24,7 @@ export interface FamilyTreeDatabase {
         [profileId: string]: Profile
     },
     spousal_relationships: {
-        [spousalRelationshipId: string]: {
-            relationship_id: string,
-            spouse_1_profile_id: string,
-            spouse_2_profile_id: string,
-            metadata: NodeMetadata[]
-        }
+        [spousalRelationshipId: string]: SpousalRelationship
     },
     child_relationships: {
         [childRelationshipId: string]: {
