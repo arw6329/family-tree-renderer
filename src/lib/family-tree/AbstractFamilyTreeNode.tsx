@@ -36,6 +36,7 @@ export abstract class AbstractFamilyTreeNode {
 
 	get x(): number {
         if(this._x === undefined) {
+            this.log('Bad x value access (access before render)')
             throw new Error('Attempted to access x position of unrendered node')
         }
 
@@ -363,6 +364,7 @@ export abstract class AbstractFamilyTreeNode {
     * ------------------- */
 
     render_right_tree() {
+        this.log('Node has entered render_right_tree')
         this.x = 0
         
         let spouse_chain = this.full_spouse_chain_left_to_right()
@@ -395,7 +397,9 @@ export abstract class AbstractFamilyTreeNode {
         // TODO: replace with full_siblings_groups.flat() ?
         let all_children_across_spouses = spouse_chain.map(spouse => spouse.left_children).flat().concat(spouse_chain.at(-1).right_children)
 
+        this.log('Rendering all children across spouses')
         all_children_across_spouses.forEach(child => child.render_right_tree())
+        this.log('Done rendering all children across spouses')
 
         all_children_across_spouses.slice(1).forEach((child, child_i) => {
             let previous_siblings = all_children_across_spouses.slice(0, child_i + 1)
@@ -481,13 +485,16 @@ export abstract class AbstractFamilyTreeNode {
                 })
             }
         }
+        this.log('Done rendering, got x value (local) ' + this.x)
     }
 
     build_and_render_parent_tree() {
+        this.log('Entering build_and_render_parent_tree')
         let parent_tree_root = AbstractFamilyTreeNode.create_unconnected_node()
         this.convert_parent_tree_to_child_tree(parent_tree_root)
         parent_tree_root.render_right_tree()
         parent_tree_root.convert_child_tree_to_parent_tree()
+        this.log('Done with build_and_render_parent_tree')
     }
 
     convert_parent_tree_to_child_tree(new_root_node: AbstractFamilyTreeNode) {
@@ -510,6 +517,7 @@ export abstract class AbstractFamilyTreeNode {
     }
 
     *full_render(): Generator<JSX.Element, undefined, undefined> {
+        this.log('** Full render on node')
         AbstractFamilyTreeNode.unrender_all()
         
         anchor_node = this
@@ -521,6 +529,7 @@ export abstract class AbstractFamilyTreeNode {
         if(this.right_parent && this.right_parent.left_parent) {
             grandparents_rendered = true
     
+            this.log('Rendering right parent left parent right tree (--> then <-- grandparent)')
             this.right_parent.left_parent.render_right_tree()
     
             let delta_x = -this.x // should be 0 since we are rendering based on this node, but probably won't be after grandparent render
@@ -531,6 +540,7 @@ export abstract class AbstractFamilyTreeNode {
         if(this.left_parent && this.left_parent.left_parent) {
             grandparents_rendered = true
     
+            this.log('Rendering left parent left parent right tree (<-- then <-- grandparent)')
             this.left_parent.left_parent.render_right_tree()
     
             let delta_x = -this.x // should be 0 since we are rendering based on this node, but probably won't be after grandparent render
@@ -540,6 +550,7 @@ export abstract class AbstractFamilyTreeNode {
         }
 
         if(!grandparents_rendered) {
+            this.log('Grandparents not rendered!')
             if(this.left_parent) {
                 this.left_parent.render_right_tree()
 
@@ -553,6 +564,7 @@ export abstract class AbstractFamilyTreeNode {
         }
     
         if(this.right_parent && this.left_parent) {
+            this.log('Node has two parents, ensuring parents are rendered')
             this.left_parent.saved_x = this.left_parent._x ?? 0
             this.right_parent.saved_x = this.right_parent._x ?? 0
     
@@ -717,6 +729,20 @@ export abstract class AbstractFamilyTreeNode {
                 y2={this.y - GENERATION_DY / 2}
             />
         }
+    }
+
+    log(string) {
+        console.log(`[${
+            this.constructor.name
+        }${
+            this.data.profile?.name ? `(${this.data.profile.name})` : ''
+        }${
+            this.based_on ? `:based_on:${
+                this.based_on.constructor.name
+            }${
+                this.based_on.data.profile?.name ? `(${this.based_on.data.profile.name})` : ''
+            }` : ''
+        }] ${string}`, this)
     }
 }
 
