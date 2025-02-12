@@ -23,7 +23,7 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
                     className="root"
                     data-gender={profile.family_tree_gender}
                     data-anchor={state.rootNode.data.profile.profile_id === profile.profile_id}
-                    data-focus={state.focusedProfileNode === node}
+                    data-focus={state.focusedProfileNode?.data.profile.profile_id === profile.profile_id}
                 >
                     <div className="img-wrapper">
                         <img src="https://reunionpage.net/sprites/reunionpage-logo.png" alt={`${profile.name}`} />

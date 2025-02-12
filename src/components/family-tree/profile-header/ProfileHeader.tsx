@@ -3,17 +3,21 @@ import "./ProfileHeader.scoped.css"
 import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import { FaMars, FaVenus } from "react-icons/fa"
 import { FaXmark } from "react-icons/fa6"
-import { useContext } from "react"
+import { useContext, useMemo, useState } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import { ProfileNode } from "@/lib/family-tree/ProfileNode"
 import { IconContext } from "react-icons"
 import { relation_to } from "@/lib/family-tree/relation"
+import AddSpouseOverlay from "@/components/overlays/AddSpouseOverlay"
 
 const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     const state = useContext(FamilyTreeStateContext)
+    const [addSpousePopupActive, setAddSpousePopupActive] = useState(false)
     const profile: Profile = node.data.profile
 
-    const relationToRoot = relation_to(node, state.rootNode)
+    const relationToRoot = useMemo(() => {
+        return relation_to(node, state.rootNode)
+    }, [node, state.rootNode])
 
     return (
         <header>
@@ -44,7 +48,13 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                 <HeaderButton onClick={() => state.setRootProfile(profile)}>
                     <span>Recenter tree here</span>
                 </HeaderButton>
+                {state.editing &&
+                    <HeaderButton onClick={() => setAddSpousePopupActive(true)}>
+                        <span>Add spouse</span>
+                    </HeaderButton>}
             </div>
+            
+            {addSpousePopupActive && <AddSpouseOverlay withProfile={profile} onFinished={() => setAddSpousePopupActive(false)} />}
         </header>
     )
 }
