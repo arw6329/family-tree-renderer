@@ -539,11 +539,9 @@ export abstract class AbstractFamilyTreeNode {
             })
         }
     
-        // TODO: isn't it possible for parents to exist but not be rendered at this point?
-        // does this matter?
         if(this.right_parent && this.left_parent) {
-            this.left_parent.saved_x = this.left_parent.x ?? 0
-            this.right_parent.saved_x = this.right_parent.x ?? 0
+            this.left_parent.saved_x = this.left_parent._x ?? 0
+            this.right_parent.saved_x = this.right_parent._x ?? 0
     
             this.build_and_render_parent_tree()
     
