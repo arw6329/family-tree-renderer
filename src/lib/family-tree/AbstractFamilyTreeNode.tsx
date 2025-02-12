@@ -40,6 +40,17 @@ export abstract class AbstractFamilyTreeNode {
         has_non_minimum_inter_spouse_distance?: boolean
     }
 
+    private treebuilder_skipped_parents: boolean
+    private treebuilder_skipped_spouses: boolean
+
+    set_skipped_parents() {
+        this.treebuilder_skipped_parents = true
+    }
+
+    set_skipped_spouses() {
+        this.treebuilder_skipped_spouses = true
+    }
+
 	// TODO: private constructor, move user out of constructor (rename to profile), make utility function to construct node with given profile
 	// child classes shouldn't need to provide a user
 	constructor(
@@ -54,6 +65,8 @@ export abstract class AbstractFamilyTreeNode {
         public data: { [k: string]: any }
     ) {
 		this.temporary_render_data = {}
+        this.treebuilder_skipped_parents = false
+        this.treebuilder_skipped_spouses = false
 	}
 
 	_attach_left_spouse(type: FamilyTreeNodeSubclassConstructor, relationship_data = null, data = {}) {
@@ -680,6 +693,42 @@ export abstract class AbstractFamilyTreeNode {
                     y2={this.y - divorce_line_width / 2}
                 />
             }
+        }
+
+        if(this.treebuilder_skipped_spouses) {
+            const line_length = MIN_NODE_DX * 0.75
+
+            if(!this.right_spouse) {
+                yield <SvgLine
+                    x1={this.x + line_length}
+                    y1={this.y}
+                    x2={this.x}
+                    y2={this.y}
+                    incomplete={true}
+                />
+            } else if(!this.left_spouse) {
+                yield <SvgLine
+                    x1={this.x - line_length}
+                    y1={this.y}
+                    x2={this.x}
+                    y2={this.y}
+                    incomplete={true}
+                />
+            } else {
+                throw new Error('Treebuilder skipped spouses for node that had spouses on both sides - cannot draw lines')
+            }
+        }
+
+        if(this.treebuilder_skipped_parents || (this.left_parent && !this.left_parent.is_rendered()) || (this.right_parent && !this.right_parent.is_rendered())) {
+            const line_length = GENERATION_DY * 0.4
+
+            yield <SvgLine
+                x1={this.x}
+                y1={this.y - line_length}
+                x2={this.x}
+                y2={this.y}
+                incomplete={true}
+            />
         }
         
         let rendered_left_children = this.left_children.filter(child => child.is_rendered())

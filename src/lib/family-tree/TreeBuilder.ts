@@ -111,6 +111,7 @@ export class TreeBuilder {
             if(!root_node.right_spouse?.is_representative_of(spouse_profile_id) && !root_node.left_spouse?.is_representative_of(spouse_profile_id)) {
                 // console.log(`profile ${root_node.data.profile.profile_id} needs spouse with id ${spouse_profile_id}\ncurrent node: `, root_node)
                 if(skip_additional_missing_spouses) {
+                    root_node.set_skipped_spouses()
                     // return from forEach, go to next spouse
                     return
                 }

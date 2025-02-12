@@ -4,3 +4,9 @@ line {
     stroke-linecap: square;
     pointer-events: none;
 }
+
+line.incomplete {
+    stroke-dasharray: 1 8 2 7 5 5 15 4 100%;
+    stroke: #8b8f93;
+    stroke-width: 1px;
+}
