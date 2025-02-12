@@ -403,7 +403,7 @@ const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) =
                 previousHeight = entry.contentBoxSize[0].blockSize
             }
         }).observe(svg.current)
-    }, [svg])
+    }, [])
 
     useImperativeHandle(ref, () => {
         return {
