@@ -11,11 +11,15 @@ import { relation_to } from "@/lib/family-tree/relation"
 import AddSpouseOverlay from "@/components/overlays/AddSpouseOverlay"
 import AddChildOverlay from "@/components/overlays/AddChildOverlay"
 import AddParentsOverlay from "@/components/overlays/AddParentsOverlay"
+import ProfileDetailOverlay from "@/components/overlays/profile-detail-overlay/ProfileDetailOverlay"
+import { getBirthDate, getDeathDate } from "@/lib/family-tree/metadata-helpers"
+import { prettyDate } from "@/lib/family-tree/date-utils"
 
 const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     const state = useContext(FamilyTreeStateContext)
     const [addSpousePopupActive, setAddSpousePopupActive] = useState(false)
     const [addParentsPopupActive, setAddParentsPopupActive] = useState(false)
+    const [moreDetailsPopupActive, setMoreDetailsPopupActive] = useState(false)
     const [addingChildWithRelationship, setAddingChildWithRelationship] = useState<SpousalRelationship | null>(null)
     const profile: Profile = node.data.profile
 
@@ -24,6 +28,9 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     }, [node, state.rootNode])
 
     const spouses = state.getSpousesOf(profile)
+
+    const dateOfBirth = getBirthDate(profile.metadata)
+    const dateOfDeath = getDeathDate(profile.metadata)
 
     return (
         <header>
@@ -43,8 +50,17 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                     </div>
                     {relationToRoot && <span className="relationship">{state.rootNode.data.profile.name}'s {relationToRoot.text}</span>}
                 </div>
-                <div style={{ flexGrow: 1 }}/>
-                <button className="close-button" title="Close profile details" onClick={() => state.setFocusedProfileNode(null)}>
+                <div className="metadata-row">
+                    {dateOfBirth && <div className="metadata">
+                        <label>Date of birth</label>
+                        <span>{prettyDate(dateOfBirth)}</span>
+                    </div>}
+                    {dateOfDeath && <div className="metadata">
+                        <label>Date of death</label>
+                        <span>{prettyDate(dateOfDeath)}</span>
+                    </div>}
+                </div>
+                <button className="close-button" title="Close profile details" onClick={() => state.setFocusedProfileId(null)}>
                     <IconContext.Provider value={{ style: { height: 22, width: 22 } }}>
                         <FaXmark fill="white" />
                     </IconContext.Provider>
@@ -53,6 +69,9 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
             <div className="row">
                 <HeaderButton onClick={() => state.setRootProfile(profile)}>
                     <span>Recenter tree here</span>
+                </HeaderButton>
+                <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
+                    <span>{state.editing ? 'Edit details' : 'More details'}</span>
                 </HeaderButton>
                 {state.editing && <>
                     <HeaderButton onClick={() => setAddSpousePopupActive(true)}>
@@ -95,6 +114,13 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                 <AddChildOverlay
                     parentRelationship={addingChildWithRelationship}
                     onFinished={() => setAddingChildWithRelationship(null)}
+                />
+            </>}
+
+            {moreDetailsPopupActive && <>
+                <ProfileDetailOverlay
+                    profile={profile}
+                    onFinished={() => setMoreDetailsPopupActive(false)}
                 />
             </>}
         </header>

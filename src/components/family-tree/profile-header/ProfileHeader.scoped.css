@@ -39,3 +39,21 @@ header {
     align-items: center;
     cursor: pointer;
 }
+
+.metadata-row {
+    flex-grow: 1;
+    display: flex;
+    gap: 20px;
+}
+
+.metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 2px 16px;
+}
+
+.metadata span {
+    color: #ccc;
+    font-weight: bold;
+}

@@ -1,0 +1,18 @@
+.single-date-input {
+    display: flex;
+    gap: 6px;
+    height: 35px;
+    max-width: 100%;
+}
+
+.month-input {
+    flex: 1.5 1.5 40px;
+}
+
+.day-input {
+    flex: 1 1 20px;
+}
+
+.year-input {
+    flex: 2 2 40px;
+}

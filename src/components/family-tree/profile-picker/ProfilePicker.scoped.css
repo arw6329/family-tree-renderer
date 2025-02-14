@@ -51,20 +51,6 @@
     border-radius: 100%;
 }
 
-label {
-    font-size: 0.9rem;
-    color: #8f979b;
-    font-family: monospace;
-}
-
-input {
-    padding: 8px 12px;
-    background-color: #242728;
-    border: 1px solid #495054;
-    border-radius: 4px;
-    color: #d3d9da;
-}
-
 select {
     padding: 10px 15px;
     color-scheme: dark;

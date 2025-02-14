@@ -24,6 +24,16 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
         return [...state.rootNode.full_render()]
     }, [state.rootNode, state.editing])
 
+    const focusedNode = useMemo(() => {
+        if(state.focusedProfileId === null) {
+            return null
+        }
+
+        return state.getNodesBy((node) => {
+            return node.is_representative_of(state.focusedProfileId as string)
+        })[0]
+    }, [state, state.rootNode, state.focusedProfileId])
+
     return (
         <div className="root">
             <ControlHeader
@@ -31,7 +41,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                 onZoomIn={() => pannableSvg.current.zoom(-500)}
                 onZoomOut={() => pannableSvg.current.zoom(500)}
             />
-            {state.focusedProfileNode && <ProfileHeader node={state.focusedProfileNode}/>}
+            {focusedNode && <ProfileHeader node={focusedNode}/>}
             <PannableSvg ref={pannableSvg}>
                 <g>{renderedElements}</g>
             </PannableSvg>

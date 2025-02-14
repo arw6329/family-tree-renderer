@@ -1,3 +1,4 @@
+import { AbstractFamilyTreeNode } from "@/lib/family-tree/AbstractFamilyTreeNode";
 import { DatabaseBuilder } from "@/lib/family-tree/DatabaseBuilder";
 import { FamilyTreeDatabase, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
 import { ProfileNode } from "@/lib/family-tree/ProfileNode";
@@ -12,16 +13,18 @@ import React, { createContext, JSX, ReactNode, useEffect, useMemo, useState } fr
 interface ContextType {
     rootNode: ProfileNode,
     setRootProfile: (profile: Profile) => void,
-    focusedProfileNode: ProfileNode | null,
-    setFocusedProfileNode: (node: ProfileNode | null) => void,
+    focusedProfileId: string | null,
+    setFocusedProfileId: (id: string | null) => void,
     editing: boolean,
     setEditing: (editing: boolean) => void,
     profiles: Profile[],
+    getNodesBy: (predicate: (node: AbstractFamilyTreeNode) => boolean) => AbstractFamilyTreeNode[],
     getProfile: (profileId: string) => Profile | null,
     getSpousesOf: (profile: Profile) => { spouse: Profile, relationship: SpousalRelationship }[],
     getRelationshipBetween: (profile1: Profile, profile2: Profile) => SpousalRelationship | null,
     hasParents: (profile: Profile) => boolean,
     addNewProfile: (profile: Profile) => void,
+    replaceProfile: (profile: Profile) => void,
     makeSpouses: (profile1: Profile, profile2: Profile) => SpousalRelationship,
     makeChild: (parentRelationship: SpousalRelationship, profile: Profile) => void,
     disconnectChild: (child: Profile) => void,
@@ -38,7 +41,7 @@ const FamilyTreeStateContext = createContext<ContextType>(
 
 const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children: ReactNode }> = ({ database, children }) => {
     const [rootProfile, setRootProfile] = useState(Object.values(database.profiles)[0])
-    const [focusedProfileNode, setFocusedProfileNode] = useState<ProfileNode | null>(null)
+    const [focusedProfileId, setFocusedProfileId] = useState<string | null>(null)
     const [editing, setEditing] = useState<boolean>(false)
     // used to force rerender when database changes
     const [databaseVersion, setDatabaseVersion] = useState(Math.random())
@@ -49,7 +52,7 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
         })
     }, [rootProfile, databaseVersion, editing])
 
-    useMemo(() => {
+    const builder = useMemo(() => {
         // TODO: builder is reran when entering/exiting edit mode, but it should be easy to not do this
         // by just removing all the button nodes instead.
         // Improve efficiency, or does it not matter enough?
@@ -58,17 +61,25 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
         if(editing) {
             builder.enter_edit_mode()
         }
+
+        // TODO: debug only
+        window.treeBuilder = builder
+
+        return builder
     }, [database, rootNode, editing])
 
     return (
         <FamilyTreeStateContext.Provider value={{
             rootNode,
             setRootProfile,
-            focusedProfileNode,
-            setFocusedProfileNode,
+            focusedProfileId,
+            setFocusedProfileId,
             editing,
             setEditing,
             profiles: Object.values(database.profiles),
+            getNodesBy(predicate: (node: AbstractFamilyTreeNode) => boolean) {
+                return builder.find_nodes_by(predicate)
+            },
             getProfile(profileId: string) {
                 return database.profiles[profileId]
             },
@@ -109,6 +120,10 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
             },
             addNewProfile(profile: Profile) {
                 DatabaseBuilder.fromExisting(database).addNewProfile(profile)
+                setDatabaseVersion(Math.random())
+            },
+            replaceProfile(profile: Profile) {
+                DatabaseBuilder.fromExisting(database).replaceProfile(profile)
                 setDatabaseVersion(Math.random())
             },
             makeSpouses(profile1: Profile, profile2: Profile) {

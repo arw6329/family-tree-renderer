@@ -9,11 +9,13 @@ export class TreeBuilder {
     private db: FamilyTreeDatabase
     private node_queue: AbstractFamilyTreeNode[]
     private root_node: AbstractFamilyTreeNode | null
+    private all_nodes: AbstractFamilyTreeNode[]
 
     constructor(database: FamilyTreeDatabase) {
         this.db = database
         this.node_queue = []
         this.root_node = null
+        this.all_nodes = []
     }
 
     fetch_profile(profile_id: string) {
@@ -25,6 +27,7 @@ export class TreeBuilder {
     }
 
     // TODO: is this alternate representation really necessary?
+    // TODO: remove unused func
     fetch_api_data_for_node(profile_id: string) {
         return {
             spouses: Object.values(this.db.spousal_relationships)
@@ -46,6 +49,8 @@ export class TreeBuilder {
         if(!root_node) {
             return
         }
+
+        this.all_nodes.push(root_node)
 
         // attach parents
         if(
@@ -193,5 +198,9 @@ export class TreeBuilder {
             this.root_node._attach_right_spouse(AddSpouseButtonNode)
             // TODO: full render?
         }
+    }
+
+    find_nodes_by(predicate: (node: AbstractFamilyTreeNode) => boolean): AbstractFamilyTreeNode[] {
+        return this.all_nodes.filter(node => predicate(node))
     }
 }

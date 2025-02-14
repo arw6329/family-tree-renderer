@@ -10,8 +10,17 @@ export class DatabaseBuilder {
     }
 
     addNewProfile(profile: Profile) {
+        // TODO: can be in operator instead of Object.keys()
         if(Object.keys(this.database.profiles).includes(profile.profile_id)) {
             throw new DatabaseBuildError(`Profile ${profile.profile_id} already exists`)
+        }
+
+        this.database.profiles[profile.profile_id] = profile
+    }
+
+    replaceProfile(profile: Profile) {
+        if(!(profile.profile_id in this.database.profiles)) {
+            throw new DatabaseBuildError(`Profile ${profile.profile_id} does not exists`)
         }
 
         this.database.profiles[profile.profile_id] = profile

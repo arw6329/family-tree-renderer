@@ -1,5 +1,24 @@
-interface NodeMetadata {
-    [key: string]: string
+type JSONValue =
+    | string
+    | number
+    | boolean
+    | null
+    | JSONObject
+    | Array<JSONValue>
+
+type JSONObject = { [key: string]: JSONValue }
+
+type JSONArray = Array<JSONValue>
+
+export type NodeMetadata = {
+    type: 'simple',
+    key: string,
+    value: JSONValue,
+    children: NodeMetadata[]
+} | {
+    type: 'pointer',
+    pointer: string,
+    children: NodeMetadata[]
 }
 
 export interface Profile {

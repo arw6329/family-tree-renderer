@@ -1,0 +1,175 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 2px;
+    min-width: 750px;
+    color: white;
+}
+
+/* top-level blocks and rows only */
+.root > :is(.kv-block, .kv-table-row) {
+    border: 1px solid #495054;
+}
+
+.root > .kv-block {
+    background-color: #495054;
+}
+
+.kv-block summary {
+    cursor: pointer;
+    display: flex;
+}
+
+.kv-block[open] > summary > .kv-table-row {
+    margin-bottom: 1px;
+}
+
+.label-value-wrapper {
+    display: flex;
+    row-gap: 5px;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    width: 0;
+    align-items: center;
+}
+
+label {
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: inherit;
+    min-width: 80px;
+    margin-right: -4px;
+    flex-shrink: 0;
+    pointer-events: none;
+    min-width: 99px;
+    color: #8f979b;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+label::before {
+    content: '  ';
+    margin-right: 5px;
+    font-family: sans-serif;
+    width: 19px;
+    display: inline-block;
+    line-height: 1rem;
+}
+
+.kv-block > summary label::before {
+    content: '▼ ';
+}
+
+.kv-block:not([open]) > summary label::before {
+    content: '▶ ';
+}
+
+.label-value-wrapper label + * {
+    margin-left: 24px;
+}
+
+.kv-block .content {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.kv-table-row {
+    padding: 15px 10px;
+    display: flex;
+    flex-grow: 1;
+    background-color: #1c1e1f;
+}
+
+.kv-table-row .depth-marker {
+    width: 17px;
+    border-right: 2px solid #495054;
+    margin: -15px 10px -15px -10px;
+    flex: 0 0 auto;
+}
+
+.kv-table-row input {
+    flex-grow: 1;
+    font-family: inherit;
+    font-size: 1rem;
+    color: inherit;
+    padding: 5px 10px;
+    border: 1px solid #bfbfc6;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-left: 0px;
+}
+
+.kv-table-row partial-date-picker {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.kv-table-row button {
+    display: flex;
+    margin-left: 6px;
+    cursor: pointer;
+    align-self: baseline;
+    padding: 0 4px;
+    background: none;
+    border: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    min-width: max-content;
+}
+
+.kv-table-row button img {
+    width: 14px;
+}
+
+.kv-table-row button span {
+    font-size: 0.7rem;
+}
+
+select {
+    padding: 10px;
+}
+
+.linked-metadata-sprite {
+    height: 20px;
+    margin-left: auto; /* justifies to end of container */
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .label-value-wrapper {
+        display: grid;
+        grid-template-areas:
+            'label delete-button'
+            'value value';
+    }
+
+    .kv-table-row button {
+        flex-direction: row;
+        gap: 4px;
+        justify-self: end;
+        align-self: center;
+    }
+
+    .kv-table-row button img {
+        width: 12px;
+    }
+
+    .kv-table-row button span {
+        font-size: 0.8rem;
+    }
+
+    .edit-value-input {
+        grid-area: value;
+    }
+
+    .label-value-wrapper label + * {
+        grid-area: value;
+    }
+}
