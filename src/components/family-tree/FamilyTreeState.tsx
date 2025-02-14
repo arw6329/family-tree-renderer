@@ -129,7 +129,7 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
                 const childRelationship = Object.values(database.child_relationships)
                     .find(relationship => relationship.child_profile_id === profile.profile_id)
                 
-                return childRelationship !== null
+                return !!childRelationship
             },
             addNewProfile(profile: Profile) {
                 DatabaseBuilder.fromExisting(database).addNewProfile(profile)
