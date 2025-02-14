@@ -7,7 +7,7 @@ const JumpToProfileOverlay: React.FC<{ onFinished: () => void }> = ({ onFinished
     const state = useContext(FamilyTreeStateContext)
 
     return (
-        <ModalDialog>
+        <ModalDialog onClose={onFinished}>
             <ProfilePicker
                 action="center tree on"
                 profiles={state.profiles}

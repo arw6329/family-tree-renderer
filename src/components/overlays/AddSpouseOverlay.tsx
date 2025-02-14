@@ -8,7 +8,7 @@ const AddSpouseOverlay: React.FC<{ withProfile: Profile, onFinished: () => void 
     const state = useContext(FamilyTreeStateContext)
 
     return (
-        <ModalDialog>
+        <ModalDialog onClose={onFinished}>
             <ProfilePicker
                 action={`make spouse with ${withProfile.name}`}
                 profiles={state.profiles}

@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useRef } from "react"
 import "./ModalDialog.scoped.css"
 
-const ModalDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
+const ModalDialog: React.FC<{ onClose: () => void, children: ReactNode }> = ({ onClose, children }) => {
     const dialog = useRef<HTMLDialogElement>(null)
 
     useEffect(() => {
@@ -11,7 +11,7 @@ const ModalDialog: React.FC<{ children: ReactNode }> = ({ children }) => {
     }, [dialog.current])
 
     return (
-        <dialog ref={dialog}>
+        <dialog ref={dialog} onKeyDown={(event) => { if(event.key === 'Escape') onClose() }}>
             <div className="root">
                 {children}
             </div>

@@ -8,7 +8,7 @@ const AddChildOverlay: React.FC<{ parentRelationship: SpousalRelationship, onFin
     const state = useContext(FamilyTreeStateContext)
 
     return (
-        <ModalDialog>
+        <ModalDialog onClose={onFinished}>
             <ProfilePicker
                 action={`make child of ${state.getProfile(parentRelationship.spouse_1_profile_id).name} and ${state.getProfile(parentRelationship.spouse_2_profile_id).name}`}
                 profiles={state.profiles}

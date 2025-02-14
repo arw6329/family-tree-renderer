@@ -19,7 +19,7 @@ const ProfileDetailOverlay: React.FC<{ profile: Profile, onFinished: () => void 
     const [dateOfDeath, setDateOfDeath] = useState(getDeathDate(profile.metadata))
 
     return (
-        <ModalDialog>
+        <ModalDialog onClose={onFinished}>
             {state.editing && <>
                 <div style={styles.root}>
                     <div style={styles.nameRow}>

@@ -32,7 +32,7 @@ const AddParentsOverlay: React.FC<{ profile: Profile, onFinished: () => void }> 
     }
 
     return (
-        <ModalDialog>
+        <ModalDialog onClose={onFinished}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, minHeight: 0 }}>
                 <StageTracker stageCount={2} stage={firstParent ? 2 : 1} />
                 {
