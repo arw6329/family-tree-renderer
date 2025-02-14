@@ -26,7 +26,7 @@ const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, validMo
 
     return (
         <div className="root">
-            <span>Select a person to {action}</span>
+            <span>{mode === 'create' ? 'Create' : 'Select'} a person to {action}</span>
             {validModes === undefined && <>
                 <select onChange={(event) => switchToMode(event.target.value)} value={mode}>
                     <option value="select">Use an existing person</option>

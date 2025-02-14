@@ -40,19 +40,27 @@ const FamilyTreeStateContext = createContext<ContextType>(
 )
 
 const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children: ReactNode }> = ({ database, children }) => {
-    const [rootProfile, setRootProfile] = useState(Object.values(database.profiles)[0])
+    const [rootProfile, setRootProfile] = useState<Profile | null>(Object.values(database.profiles)[0])
     const [focusedProfileId, setFocusedProfileId] = useState<string | null>(null)
     const [editing, setEditing] = useState<boolean>(false)
     // used to force rerender when database changes
     const [databaseVersion, setDatabaseVersion] = useState(Math.random())
 
-    const rootNode = useMemo(() => {
-        return ProfileNode.create_unconnected_node({
-            profile: rootProfile
-        })
+    const rootNode: ProfileNode | null = useMemo(() => {
+        if(rootProfile) {
+            return ProfileNode.create_unconnected_node({
+                profile: rootProfile
+            })
+        } else {
+            return null
+        }
     }, [rootProfile, databaseVersion, editing])
 
     const builder = useMemo(() => {
+        if(!rootNode) {
+            return null
+        }
+
         // TODO: builder is reran when entering/exiting edit mode, but it should be easy to not do this
         // by just removing all the button nodes instead.
         // Improve efficiency, or does it not matter enough?
@@ -70,7 +78,12 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
 
     return (
         <FamilyTreeStateContext.Provider value={{
-            rootNode,
+            get rootNode() {
+                if(!rootNode) {
+                    throw new Error('Attempted to access root node of empty tree')
+                }
+                return rootNode
+            },
             setRootProfile,
             focusedProfileId,
             setFocusedProfileId,
@@ -78,7 +91,7 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
             setEditing,
             profiles: Object.values(database.profiles),
             getNodesBy(predicate: (node: AbstractFamilyTreeNode) => boolean) {
-                return builder.find_nodes_by(predicate)
+                return builder?.find_nodes_by(predicate) ?? []
             },
             getProfile(profileId: string) {
                 return database.profiles[profileId]

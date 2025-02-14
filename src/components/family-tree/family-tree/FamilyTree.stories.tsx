@@ -14,7 +14,10 @@ const Template: StoryFn<typeof FamilyTree> = (args) => <div style={{ height: '10
     <FamilyTree {...args} />
 </div>;
 
-export const RatingTest = Template.bind({});
-RatingTest.args = {
+export const Prepopulated = Template.bind({});
+Prepopulated.args = {
     database: database
 };
+
+export const Blank = Template.bind({});
+Blank.args = {};
