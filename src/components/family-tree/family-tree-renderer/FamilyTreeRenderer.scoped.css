@@ -5,3 +5,12 @@
     font-family: sans-serif;
     color-scheme: dark;
 }
+
+.under-construction-bar {
+    background: repeating-linear-gradient(-50deg, var(--black) 0px, var(--black) 20px, var(--yellow) 20px, var(--yellow) 40px);
+    --black: #222;
+    --yellow: #ffff53;
+    border-bottom: 1px solid #495054;
+    flex: 0 0 16px;
+    height: 16px;
+}

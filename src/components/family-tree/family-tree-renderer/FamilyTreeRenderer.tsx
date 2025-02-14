@@ -41,6 +41,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                 onZoomIn={() => pannableSvg.current.zoom(-500)}
                 onZoomOut={() => pannableSvg.current.zoom(500)}
             />
+            {state.editing && <div className="under-construction-bar" />}
             {focusedNode && <ProfileHeader node={focusedNode}/>}
             <PannableSvg ref={pannableSvg}>
                 <g>{renderedElements}</g>
