@@ -4,11 +4,6 @@ import { ProfileNode } from './ProfileNode'
 import { JSX } from 'react'
 
 export class MultiSpouseNode extends AbstractFamilyTreeNode {
-    // TODO: unused?
-    static profile_injectable(node: AbstractFamilyTreeNode) {
-        return node instanceof ProfileNode || node instanceof MultiSpouseNode
-    }
-
     static merge_spouses_left(node: AbstractFamilyTreeNode) {
         if(!node.left_spouse || !node.right_spouse) {
             throw new Error('cannot use this function unless node has 2 spouses')

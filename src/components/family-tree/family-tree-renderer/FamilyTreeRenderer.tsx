@@ -1,13 +1,10 @@
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import "./FamilyTreeRenderer.css"
 import "./FamilyTreeRenderer.scoped.css"
-import { FamilyTreeDatabase } from "@/lib/family-tree/FamilyTreeDatabase"
-import { TreeBuilder } from "@/lib/family-tree/TreeBuilder"
-import { ProfileNode } from "@/lib/family-tree/ProfileNode"
 import PannableSvg from "../../pannable-svg/PannableSvg"
 import ControlHeader from "../control-header/ControlHeader"
 import ProfileHeader from "../profile-header/ProfileHeader"
-import { FamilyTreeStateContext, FamilyTreeStateProvider } from "../FamilyTreeState"
+import { FamilyTreeStateContext } from "../FamilyTreeState"
 
 const FamilyTreeRenderer: React.FC<{}> = (props) => {
     const pannableSvg = useRef(null)
@@ -16,7 +13,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
 
     useEffect(() => {
         pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)
-    }, [state.rootNode.data.profile, pannableSvg])
+    }, [state.rootNode.data.profile])
 
     const renderedElements = useMemo(() => {
         // Full render is expensive

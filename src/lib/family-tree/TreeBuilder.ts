@@ -18,29 +18,6 @@ export class TreeBuilder {
         this.all_nodes = []
     }
 
-    fetch_profile(profile_id: string) {
-        return this.db.profiles[profile_id]
-    }
-
-    fetch_root_metadata(metadata_id: string) {
-        return this.db.root_metadata[metadata_id]
-    }
-
-    // TODO: is this alternate representation really necessary?
-    // TODO: remove unused func
-    fetch_api_data_for_node(profile_id: string) {
-        return {
-            spouses: Object.values(this.db.spousal_relationships)
-                .filter(s_relation => s_relation.spouse_1_profile_id === profile_id || s_relation.spouse_2_profile_id === profile_id)
-                .map(s_relation => ({
-                    relationship: s_relation,
-                    spouse_profile: s_relation.spouse_1_profile_id === profile_id
-                        ? this.fetch_profile(s_relation.spouse_2_profile_id)
-                        : this.fetch_profile(s_relation.spouse_1_profile_id)
-                }))
-        }
-    }
-
     construct_tree(root_node: AbstractFamilyTreeNode, _visited_ids = []) {
         if(!this.root_node) {
             this.root_node = root_node
