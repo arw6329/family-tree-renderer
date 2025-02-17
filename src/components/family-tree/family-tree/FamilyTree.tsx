@@ -5,7 +5,6 @@ import "./FamilyTree.scoped.css"
 import ActionButton from "@/components/action-button/ActionButton"
 import { useState } from "react"
 import CreateProfileOverlay from "@/components/overlays/CreateProfileOverlay"
-import ShadowRoot from "@/components/ShadowRoot"
 
 const blankDatabase: FamilyTreeDatabase = {
     root_metadata: {},
@@ -19,22 +18,20 @@ const FamilyTree: React.FC<{ database?: FamilyTreeDatabase }> = ({ database = bl
     const [createFirstProfilePopupActive, setCreateFirstProfilePopupActive] = useState(false)
 
     return (
-        <ShadowRoot>
-            <FamilyTreeStateProvider database={database}>
-                {nonEmpty ? <FamilyTreeRenderer /> : <>
-                    <div className="empty-root">
-                        <div className="empty">
-                            <span className="title">This family tree is empty</span>
-                            <span className="details">Add at least one person to get started</span>
-                            <ActionButton onClick={() => setCreateFirstProfilePopupActive(true)}>
-                                <span>Add new person</span>
-                            </ActionButton>
-                        </div>
+        <FamilyTreeStateProvider database={database}>
+            {nonEmpty ? <FamilyTreeRenderer /> : <>
+                <div className="empty-root">
+                    <div className="empty">
+                        <span className="title">This family tree is empty</span>
+                        <span className="details">Add at least one person to get started</span>
+                        <ActionButton onClick={() => setCreateFirstProfilePopupActive(true)}>
+                            <span>Add new person</span>
+                        </ActionButton>
                     </div>
-                </>}
-                {createFirstProfilePopupActive && <CreateProfileOverlay onFinished={() => setCreateFirstProfilePopupActive(false)}/>}
-            </FamilyTreeStateProvider>
-        </ShadowRoot>
+                </div>
+            </>}
+            {createFirstProfilePopupActive && <CreateProfileOverlay onFinished={() => setCreateFirstProfilePopupActive(false)}/>}
+        </FamilyTreeStateProvider>
     )
 }
 

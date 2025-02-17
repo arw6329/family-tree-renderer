@@ -1,5 +1,5 @@
 import { StoryFn, Meta } from "@storybook/react";
-import database from "../exampleDatabase.json"
+import database from "./exampleDatabase.json"
 import FamilyTree from "./FamilyTree";
 
 export default {
