@@ -1,14 +1,11 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 import { mergeConfig } from "vite"
-import tsconfigPaths from "vite-tsconfig-paths"
-import { reactScopedCssPlugin } from 'rollup-plugin-react-scoped-css';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js' 
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
-    "@storybook/addon-onboarding",
     "@storybook/addon-essentials",
-    "@chromatic-com/storybook",
     "@storybook/addon-interactions",
   ],
   framework: {
@@ -17,7 +14,17 @@ const config: StorybookConfig = {
   },
   async viteFinal(config) {
     return mergeConfig(config, {
-      plugins: [reactScopedCssPlugin(), tsconfigPaths()]
+      plugins: [cssInjectedByJsPlugin({
+        dev: {
+          enableDev: true
+        },
+        injectCodeFunction: function(cssCode) {
+          customElements.whenDefined('reunionpage-family-tree')
+            .then(() => {
+              customElements.get('reunionpage-family-tree').injectStyles(cssCode)
+            })
+        }
+      })]
     })
   }
 };
