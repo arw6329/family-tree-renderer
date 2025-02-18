@@ -762,7 +762,7 @@ export abstract class AbstractFamilyTreeNode {
     }
 
     log(string) {
-        console.log(`[${
+        console.debug(`[${
             this.constructor.name
         }${
             this.data.profile?.name ? `(${this.data.profile.name})` : ''
