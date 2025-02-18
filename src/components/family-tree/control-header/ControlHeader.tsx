@@ -3,6 +3,7 @@ import "./ControlHeader.scoped.css"
 import { useContext, useState } from "react"
 import JumpToProfileOverlay from "@/components/overlays/JumpToProfileOverlay"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
+import CreateProfileOverlay from "@/components/overlays/CreateProfileOverlay"
 
 interface ControlHeaderProps {
     onRecenter: () => void
@@ -13,8 +14,10 @@ interface ControlHeaderProps {
 const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
     const state = useContext(FamilyTreeStateContext)
     const [selectingUser, setSelectingUser] = useState(false)
+    const [creatingUser, setCreatingUser] = useState(false)
+    const [moreOptionsShown, setMoreOptionsShown] = useState(false)
 
-    return (
+    return (<>
         <header>
             <HeaderButton onClick={() => props.onRecenter()}>
                 <span>Recenter</span>
@@ -37,9 +40,24 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
                     <span>Edit</span>
                 </HeaderButton>
             }
-            {selectingUser && <JumpToProfileOverlay onFinished={() => setSelectingUser(false)} />}
+            {
+                state.editing && (!moreOptionsShown
+                ? <HeaderButton onClick={() => setMoreOptionsShown(true)}>
+                    <span>More</span>
+                </HeaderButton>
+                : <HeaderButton onClick={() => setMoreOptionsShown(false)}>
+                    <span>Less</span>
+                </HeaderButton>)
+            }
         </header>
-    )
+        {moreOptionsShown && state.editing && <header>
+            <HeaderButton onClick={() => setCreatingUser(true)}>
+                <span>Create unconnected person</span>
+            </HeaderButton>
+        </header>}
+        {selectingUser && <JumpToProfileOverlay onFinished={() => setSelectingUser(false)} />}
+        {creatingUser && <CreateProfileOverlay onFinished={() => setCreatingUser(false)} />}
+    </>)
 }
 
 export default ControlHeader
