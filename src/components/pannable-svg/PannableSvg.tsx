@@ -387,18 +387,26 @@ const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) =
     const svg: RefObject<SVGSVGElement | null> = useRef(null)
 
     useEffect(() => {
-        svg.current.viewBox.baseVal.x = 0
-        svg.current.viewBox.baseVal.y = 0
-        svg.current.viewBox.baseVal.width = svg.current.scrollWidth
-        svg.current.viewBox.baseVal.height = svg.current.scrollHeight
-        attachControls(svg.current)
-
         let previousWidth = svg.current.scrollWidth
         let previousHeight = svg.current.scrollHeight
+
+        const currentCenterX = svg.current.viewBox.baseVal.x + svg.current.viewBox.baseVal.width / 2
+        const currentCenterY = svg.current.viewBox.baseVal.y + svg.current.viewBox.baseVal.height / 2
+        svg.current.viewBox.baseVal.x = currentCenterX - previousWidth / 2
+        svg.current.viewBox.baseVal.y = currentCenterY - previousHeight / 2
+        svg.current.viewBox.baseVal.width = previousWidth
+        svg.current.viewBox.baseVal.height = previousHeight
+        attachControls(svg.current)
+
         new ResizeObserver((entries) => {
+            // resize maintains center point
             for(const entry of entries) {
+                const currentCenterX = svg.current.viewBox.baseVal.x + svg.current.viewBox.baseVal.width / 2
+                const currentCenterY = svg.current.viewBox.baseVal.y + svg.current.viewBox.baseVal.height / 2
                 svg.current.viewBox.baseVal.width *= entry.contentBoxSize[0].inlineSize / previousWidth
                 svg.current.viewBox.baseVal.height *= entry.contentBoxSize[0].blockSize / previousHeight
+                svg.current.viewBox.baseVal.x = currentCenterX - svg.current.viewBox.baseVal.width / 2
+                svg.current.viewBox.baseVal.y = currentCenterY - svg.current.viewBox.baseVal.height / 2
                 previousWidth = entry.contentBoxSize[0].inlineSize
                 previousHeight = entry.contentBoxSize[0].blockSize
             }
