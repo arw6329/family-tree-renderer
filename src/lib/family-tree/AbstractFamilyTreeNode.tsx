@@ -1,6 +1,7 @@
 import SvgLine from "@/components/family-tree/svg-line/SvgLine"
 import { center_of_values, move_element_to_end, move_element_to_start, remove_elem, replace_elem } from "@/lib/array-utils/array-utils"
 import { JSX } from "react"
+import { ChildRelationship, SpousalRelationship } from "./FamilyTreeDatabase"
 
 const MIN_NODE_DX = 225
 const GENERATION_DY = 175
@@ -61,7 +62,11 @@ export abstract class AbstractFamilyTreeNode {
         public right_parent: AbstractFamilyTreeNode | null,
         public left_children: AbstractFamilyTreeNode[],
         public right_children: AbstractFamilyTreeNode[],
-        public relationship_data,
+        public relationship_data: {
+            own_child_relationship?: ChildRelationship | null,
+            right_spousal_relationship?: SpousalRelationship | null,
+            left_spousal_relationship?: SpousalRelationship | null
+        },
         public data: { [k: string]: any }
     ) {
 		this.temporary_render_data = {}

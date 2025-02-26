@@ -18,7 +18,7 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
             width={NODE_FOREIGNOBJECT_WIDTH}
             height={NODE_FOREIGNOBJECT_HEIGHT}
         >
-            <button onClick={() => state.setFocusedProfileId(profile.profile_id)}>
+            <button onClick={() => state.setFocusedObjectId('Profile', profile.profile_id)}>
                 <div
                     className="root"
                     data-gender={profile.family_tree_gender}

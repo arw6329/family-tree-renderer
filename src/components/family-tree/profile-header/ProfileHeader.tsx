@@ -60,7 +60,7 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                         <span>{prettyDate(dateOfDeath)}</span>
                     </div>}
                 </div>
-                <button className="close-button" title="Close profile details" onClick={() => state.setFocusedProfileId(null)}>
+                <button className="close-button" title="Close profile details" onClick={() => state.setFocusedObjectId('Profile', null)}>
                     <IconContext.Provider value={{ style: { height: 22, width: 22 } }}>
                         <FaXmark fill="white" />
                     </IconContext.Provider>

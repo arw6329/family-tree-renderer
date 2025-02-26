@@ -1,7 +1,7 @@
 import { AbstractFamilyTreeNode } from './AbstractFamilyTreeNode'
 import { JSX } from 'react'
-import RelationshipInfoButton from '@/components/family-tree/relationship-info-button/RelationshipInfoButton'
 import ProfileBlock from '@/components/family-tree/profile-block/ProfileBlock'
+import SpousalRelationshipInfoButton from '@/components/family-tree/relationship-info-button/SpousalRelationshipInfoButton'
 
 export class ProfileNode extends AbstractFamilyTreeNode {
 	*draw(): Generator<JSX.Element, undefined, never> {
@@ -12,20 +12,10 @@ export class ProfileNode extends AbstractFamilyTreeNode {
         yield* this.draw_lines()
 
         if(this.right_spouse && this.right_spouse instanceof ProfileNode) {
-            yield <RelationshipInfoButton
+            yield <SpousalRelationshipInfoButton
                 x={(this.x + this.right_spouse.x) / 2}
                 y={this.y}
-                onClick={() => {
-                    // const popout = document.createElement('spousal-relationship-info')
-
-                    // popout.dataset.relationship = JSON.stringify(this.relationship_data.right_spousal_relationship)
-                    // popout.dataset.spouse1 = JSON.stringify(this.data.profile)
-                    // popout.dataset.spouse2 = JSON.stringify(this.right_spouse.data.profile)
-    
-                    // document.querySelector('svg').firstElementChild.appendChild(
-                    //     NotchedForeignObjectElement(popout, spouse_detail_button)
-                    // )
-                }}
+                relationship={this.relationship_data.right_spousal_relationship!}
             />
         }
         

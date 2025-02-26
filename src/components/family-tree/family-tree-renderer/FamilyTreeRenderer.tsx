@@ -5,6 +5,7 @@ import PannableSvg from "../../pannable-svg/PannableSvg"
 import ControlHeader from "../control-header/ControlHeader"
 import ProfileHeader from "../profile-header/ProfileHeader"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
+import SpousalRelationshipHeader from "../spousal-relationship-header/SpousalRelationshipHeader"
 
 const FamilyTreeRenderer: React.FC<{}> = (props) => {
     const pannableSvg = useRef(null)
@@ -42,6 +43,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                 <div style={{ position: 'absolute', width: '100%' }}>
                     {state.editing && <div className="under-construction-bar" />}
                     {focusedNode && <ProfileHeader node={focusedNode}/>}
+                    {state.focusedSpousalRelationshipId && <SpousalRelationshipHeader />}
                 </div>
             </div>
             <PannableSvg ref={pannableSvg}>

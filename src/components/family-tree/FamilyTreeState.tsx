@@ -1,6 +1,6 @@
 import { AbstractFamilyTreeNode } from "@/lib/family-tree/AbstractFamilyTreeNode";
 import { DatabaseBuilder } from "@/lib/family-tree/DatabaseBuilder";
-import { FamilyTreeDatabase, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
+import { FamilyTreeDatabase, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
 import { ProfileNode } from "@/lib/family-tree/ProfileNode";
 import { TreeBuilder } from "@/lib/family-tree/TreeBuilder";
 import React, { createContext, JSX, ReactNode, useEffect, useMemo, useState } from "react";
@@ -14,14 +14,17 @@ interface ContextType {
     rootNode: ProfileNode,
     setRootProfile: (profile: Profile) => void,
     focusedProfileId: string | null,
-    setFocusedProfileId: (id: string | null) => void,
+    focusedSpousalRelationshipId: string | null,
+    focusedChildRelationshipId: string | null,
+    setFocusedObjectId: (type: ObjectType, id: string | null) => void,
     editing: boolean,
     setEditing: (editing: boolean) => void,
     profiles: Profile[],
     getNodesBy: (predicate: (node: AbstractFamilyTreeNode) => boolean) => AbstractFamilyTreeNode[],
-    getProfile: (profileId: string) => Profile | null,
+    getProfile: (profileId: string) => Profile | null, // TODO: replace usages with getObjectById
     getSpousesOf: (profile: Profile) => { spouse: Profile, relationship: SpousalRelationship }[],
     getRelationshipBetween: (profile1: Profile, profile2: Profile) => SpousalRelationship | null,
+    getObjectById: <T extends ObjectType>(type: T, id: string) => ObjectTypeToInterface[T] | null,
     hasParents: (profile: Profile) => boolean,
     addNewProfile: (profile: Profile) => void,
     replaceProfile: (profile: Profile) => void,
@@ -42,6 +45,8 @@ const FamilyTreeStateContext = createContext<ContextType>(
 const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children: ReactNode }> = ({ database, children }) => {
     const [rootProfile, setRootProfile] = useState<Profile | null>(Object.values(database.profiles)[0])
     const [focusedProfileId, setFocusedProfileId] = useState<string | null>(null)
+    const [focusedSpousalRelationshipId, setFocusedSpousalRelationshipId] = useState<string | null>(null)
+    const [focusedChildRelationshipId, setFocusedChildRelationshipId] = useState<string | null>(null)
     const [editing, setEditing] = useState<boolean>(false)
     // used to force rerender when database changes
     const [databaseVersion, setDatabaseVersion] = useState(Math.random())
@@ -86,7 +91,33 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
             },
             setRootProfile,
             focusedProfileId,
-            setFocusedProfileId,
+            focusedSpousalRelationshipId,
+            focusedChildRelationshipId,
+            setFocusedObjectId(type, id) {
+                switch(type) {
+                    case 'Profile': {
+                        setFocusedProfileId(id)
+                        setFocusedSpousalRelationshipId(null)
+                        setFocusedChildRelationshipId(null)
+                        break
+                    }
+                    case 'SpousalRelationship': {
+                        setFocusedProfileId(null)
+                        setFocusedSpousalRelationshipId(id)
+                        setFocusedChildRelationshipId(null)
+                        break
+                    }
+                    case 'ChildRelationship': {
+                        setFocusedProfileId(null)
+                        setFocusedSpousalRelationshipId(null)
+                        setFocusedChildRelationshipId(id)
+                        break
+                    }
+                    default: {
+                        throw new Error(`Unrecognized object type ${type}`)
+                    }
+                }
+            },
             editing,
             setEditing,
             profiles: Object.values(database.profiles),
@@ -124,6 +155,22 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
                     )
 
                 return relationship ?? null
+            },
+            getObjectById<T extends ObjectType>(type: T, id: string): ObjectTypeToInterface[T] {
+                switch(type) {
+                    case 'Profile': {
+                        return database.profiles[id] as ObjectTypeToInterface[T]
+                    }
+                    case 'SpousalRelationship': {
+                        return database.spousal_relationships[id] as ObjectTypeToInterface[T]
+                    }
+                    case 'ChildRelationship': {
+                        return database.child_relationships[id] as ObjectTypeToInterface[T]
+                    }
+                    default: {
+                        throw new Error(`Unrecognized object type ${type}`)
+                    }
+                }
             },
             hasParents(profile: Profile) {
                 const childRelationship = Object.values(database.child_relationships)

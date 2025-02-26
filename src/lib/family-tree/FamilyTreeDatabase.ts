@@ -10,6 +10,14 @@ type JSONObject = { [key: string]: JSONValue }
 
 type JSONArray = Array<JSONValue>
 
+export type ObjectType = 'Profile' | 'SpousalRelationship' | 'ChildRelationship'
+
+export type ObjectTypeToInterface = {
+    'Profile': Profile,
+    'SpousalRelationship': SpousalRelationship,
+    'ChildRelationship': ChildRelationship
+}
+
 export type NodeMetadata = {
     type: 'simple',
     key: string,
@@ -35,6 +43,13 @@ export interface SpousalRelationship {
     metadata: NodeMetadata[]
 }
 
+export interface ChildRelationship {
+    relationship_id: string,
+    parent_relationship_id: string,
+    child_profile_id: string,
+    metadata: NodeMetadata[]
+}
+
 export interface FamilyTreeDatabase {
     root_metadata: {
         [metadataId: string]: NodeMetadata
@@ -46,11 +61,6 @@ export interface FamilyTreeDatabase {
         [spousalRelationshipId: string]: SpousalRelationship
     },
     child_relationships: {
-        [childRelationshipId: string]: {
-            relationship_id: string,
-            parent_relationship_id: string,
-            child_profile_id: string,
-            metadata: NodeMetadata[]
-        }
+        [childRelationshipId: string]: ChildRelationship
     }
 }
