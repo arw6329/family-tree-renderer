@@ -18,43 +18,61 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
     const [moreOptionsShown, setMoreOptionsShown] = useState(false)
 
     return (<>
-        <header>
-            <HeaderButton onClick={() => props.onRecenter()}>
-                <span>Recenter</span>
-            </HeaderButton>
-            <HeaderButton onClick={() => setSelectingUser(true)}>
-                <span>Jump to person</span>
-            </HeaderButton>
-            <HeaderButton onClick={() => props.onZoomIn()}>
-                <span>Zoom in</span>
-            </HeaderButton>
-            <HeaderButton onClick={() => props.onZoomOut()}>
-                <span>Zoom out</span>
-            </HeaderButton>
+        <menu>
+            <li>
+                <HeaderButton onClick={() => props.onRecenter()}>
+                    <span>Recenter</span>
+                </HeaderButton>
+            </li>
+            <li>
+                <HeaderButton onClick={() => setSelectingUser(true)}>
+                    <span>Jump to person</span>
+                </HeaderButton>
+            </li>
+            <li>
+                <HeaderButton onClick={() => props.onZoomIn()}>
+                    <span>Zoom in</span>
+                </HeaderButton>
+            </li>
+            <li>
+                <HeaderButton onClick={() => props.onZoomOut()}>
+                    <span>Zoom out</span>
+                </HeaderButton>
+            </li>
             {
                 state.editing
-                ? <HeaderButton onClick={() => state.setEditing(false)}>
-                    <span>Exit edit mode</span>
-                </HeaderButton>
-                : <HeaderButton onClick={() => state.setEditing(true)}>
-                    <span>Edit</span>
-                </HeaderButton>
+                ? <li>
+                    <HeaderButton onClick={() => state.setEditing(false)}>
+                        <span>Exit edit mode</span>
+                    </HeaderButton>
+                </li>
+                : <li>
+                    <HeaderButton onClick={() => state.setEditing(true)}>
+                        <span>Edit</span>
+                    </HeaderButton>
+                </li>
             }
             {
                 state.editing && (!moreOptionsShown
-                ? <HeaderButton onClick={() => setMoreOptionsShown(true)}>
-                    <span>More</span>
-                </HeaderButton>
-                : <HeaderButton onClick={() => setMoreOptionsShown(false)}>
-                    <span>Less</span>
-                </HeaderButton>)
+                ? <li>
+                    <HeaderButton onClick={() => setMoreOptionsShown(true)}>
+                        <span>More</span>
+                    </HeaderButton>
+                </li>
+                : <li>
+                    <HeaderButton onClick={() => setMoreOptionsShown(false)}>
+                        <span>Less</span>
+                    </HeaderButton>
+                </li>)
             }
-        </header>
-        {moreOptionsShown && state.editing && <header>
-            <HeaderButton onClick={() => setCreatingUser(true)}>
-                <span>Create unconnected person</span>
-            </HeaderButton>
-        </header>}
+        </menu>
+        {moreOptionsShown && state.editing && <menu>
+            <li>
+                <HeaderButton onClick={() => setCreatingUser(true)}>
+                    <span>Create unconnected person</span>
+                </HeaderButton>
+            </li>
+        </menu>}
         {selectingUser && <JumpToProfileOverlay onFinished={() => setSelectingUser(false)} />}
         {creatingUser && <CreateProfileOverlay onFinished={() => setCreatingUser(false)} />}
     </>)

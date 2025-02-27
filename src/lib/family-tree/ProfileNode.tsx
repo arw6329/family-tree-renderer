@@ -11,6 +11,13 @@ export class ProfileNode extends AbstractFamilyTreeNode {
 
         yield* this.draw_lines()
 
+        // This needs to be before right SpousalRelationshipInfoButton for tab order
+        yield <ProfileBlock
+            x={this.x}
+            y={this.y}
+            node={this}
+        />
+
         if(this.right_spouse && this.right_spouse instanceof ProfileNode) {
             yield <SpousalRelationshipInfoButton
                 x={(this.x + this.right_spouse.x) / 2}
@@ -58,12 +65,6 @@ export class ProfileNode extends AbstractFamilyTreeNode {
         // container.firstElementChild.addEventListener('dblclick', async evt => {
         //     await reconstruct(this.constructor.create_unconnected_node(this.data), false)
         // })
-
-        yield <ProfileBlock
-            x={this.x}
-            y={this.y}
-            node={this}
-        />
     }
 
     is_representative_of(profile_id: string): boolean {

@@ -41,14 +41,14 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                         <span className="name">{profile.name}</span>
                         {profile.family_tree_gender === 'FEMALE'
                             && <IconContext.Provider value={{ style: { height: 25 } }}>
-                                <FaVenus fill="#ffb3c0" />
+                                <FaVenus fill="#ffb3c0" aria-label="Female gender symbol" />
                             </IconContext.Provider>}
                         {profile.family_tree_gender === 'MALE'
                             && <IconContext.Provider value={{ style: { height: 27, width: 22 } }}>
-                                <FaMars fill="cornflowerblue" />
+                                <FaMars fill="cornflowerblue" aria-label="Male gender symbol" />
                             </IconContext.Provider>}
                     </div>
-                    {relationToRoot && <span className="relationship">{state.rootNode.data.profile.name}'s {relationToRoot.text}</span>}
+                    {relationToRoot && <span className="relationship">{state.rootNode.data.profile.name}&apos;s {relationToRoot.text}</span>}
                 </div>
                 <div className="metadata-row">
                     {dateOfBirth && <div className="metadata">

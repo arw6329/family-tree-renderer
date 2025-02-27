@@ -278,7 +278,12 @@ function attachControls(svg: SVGSVGElement) {
     }
 
     function handle_keyboard_pan(evt: KeyboardEvent) {
-        if(document.activeElement !== svg) {
+        if(evt.code === 'ArrowUp' && evt.altKey && svg.matches(':has(:focus)')) {
+            svg.focus()
+            return
+        }
+
+        if(svg.getRootNode().activeElement !== svg) {
             return
         }
 
@@ -314,6 +319,25 @@ function attachControls(svg: SVGSVGElement) {
         }
     }
 
+    function handle_focus_change(evt) {
+        const target = evt.target
+
+        if(target === svg) {
+            return
+        }
+
+        const focusedElementMinPadding = 50
+
+        const boundingBox = target.getBoundingClientRect()
+        const svgSafeUpperLeft = screenToSVG(boundingBox.left, boundingBox.top)
+        const svgSafeLowerRight = screenToSVG(boundingBox.right, boundingBox.bottom)
+        const currentViewBox = fetchViewBox(svg)
+        const newViewBoxX = Math.max(Math.min(currentViewBox[0], svgSafeUpperLeft.x - focusedElementMinPadding), svgSafeLowerRight.x + focusedElementMinPadding - currentViewBox[2])
+        const newViewBoxY = Math.max(Math.min(currentViewBox[1], svgSafeUpperLeft.y - focusedElementMinPadding), svgSafeLowerRight.y + focusedElementMinPadding - currentViewBox[3])
+        
+        svg.setAttribute('viewBox', [newViewBoxX, newViewBoxY, currentViewBox[2], currentViewBox[3]].join(' '))
+    }
+
     svg.addEventListener('pointerdown', handle_mouse_down)
     svg.addEventListener('pointerup', handle_end_drag_mouse)
     svg.addEventListener('pointerout', handle_end_drag_mouse)
@@ -324,6 +348,8 @@ function attachControls(svg: SVGSVGElement) {
         passive: false
     })
     svg.addEventListener('touchend', handle_touch_end)
+
+    svg.addEventListener('focusin', handle_focus_change)
 
     window.addEventListener('wheel', handle_zoom, {
         passive: false
@@ -445,7 +471,13 @@ const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) =
 
     return (
         // TODO: interactive semantics / aria role
-        <svg viewBox="0 0 0 0" ref={svg} tabIndex={0}>
+        <svg
+            viewBox="0 0 0 0"
+            ref={svg}
+            tabIndex={0}
+            aria-keyshortcuts="Alt+ArrowUp"
+            aria-label="Interactive family tree graphic"
+        >
             {children}
         </svg>
     )

@@ -640,14 +640,42 @@ export abstract class AbstractFamilyTreeNode {
             }
         }
     
-        for(const node of new Set([
+        const nodes = [...new Set([
             // next 2 lines get cousins
             ...(this.left_parent?.left_parent?.all_decendents_across_spouse_chain() || []),
             ...(this.right_parent?.left_parent?.all_decendents_across_spouse_chain() || []),
             ...(this.left_parent?.all_decendents_across_spouse_chain() || []), // in case node had no grandparents
             ...this.all_decendents_across_spouse_chain(), // in case node had no parents
             ...this.all_parent_nodes() // TODO: necessary?
-        ])) {
+        ])]
+
+        // nodes need to be sorted for logical tab order after render
+        nodes.sort((a, b) => {
+            if(a.y < b.y) {
+                return -1
+            } else if(a.y === b.y) {
+                if(a.x < b.x) {
+                    return -1
+                } else if(a.x > b.x) {
+                    return 1
+                } else {
+                    return 0
+                }
+            } else if(a.y > b.y) {
+                return 1
+            } else {
+                // one y val was NaN
+                if(isNaN(a.y) && !isNaN(b.y)) {
+                    return -1
+                } else if(!isNaN(a.y) && isNaN(b.y)) {
+                    return 1
+                } else {
+                    return 0
+                }
+            }
+        })
+
+        for(const node of nodes) {
             yield* node.draw()
             node.temporary_render_data = {}
         }

@@ -18,7 +18,7 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
             width={NODE_FOREIGNOBJECT_WIDTH}
             height={NODE_FOREIGNOBJECT_HEIGHT}
         >
-            <button onClick={() => state.setFocusedObjectId('Profile', profile.profile_id)}>
+            <button onClick={() => state.setFocusedObjectId('Profile', profile.profile_id)} aria-label={`View details for ${profile.name}`}>
                 <div
                     className="root"
                     data-gender={profile.family_tree_gender}
@@ -26,7 +26,7 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
                     data-focus={state.focusedProfileId === profile.profile_id}
                 >
                     <div className="img-wrapper">
-                        <img src="https://reunionpage.net/sprites/reunionpage-logo.png" alt={`${profile.name}`} />
+                        <img src="https://reunionpage.net/sprites/reunionpage-logo.png" alt={`Image of ${profile.name}`} />
                     </div>
                     <div className="column">
                         <span>{profile.name}</span>

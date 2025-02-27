@@ -1,0 +1,37 @@
+/* TODO: a lot of these styles (background/border/padding for this kind of block)
+    are copy-pasted everywhere */
+.root {
+    background-color: #1c1e1f;
+    padding: 10px 14px;
+    border: 1px solid rgb(73, 80, 84);
+    margin: 10px;
+    color: #d9d9d9;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: fit-content;
+}
+
+.title {
+    color: white;
+    font-size: 1.2rem;
+}
+
+ul {
+    margin: 0;
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+kbd {
+    background: #222;
+    font-family: monospace;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: rgb(199, 199, 199);
+    box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 1px, rgba(76, 76, 76, 0.7) 0px 2px 0px 0px inset;
+    font-size: 0.85rem;
+}

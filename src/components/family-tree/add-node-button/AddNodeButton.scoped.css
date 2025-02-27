@@ -1,3 +1,9 @@
+foreignObject:has(:focus-visible) {
+    outline: thick double #32a1ce;
+    outline-offset: 2px;
+    border-radius: 100%;
+}
+
 button {
     background-color: rebeccapurple;
     border: none;
