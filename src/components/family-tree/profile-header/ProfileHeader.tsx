@@ -2,6 +2,7 @@ import HeaderButton from "@/components/header-button/HeaderButton"
 import "./ProfileHeader.scoped.css"
 import { Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase"
 import { FaMars, FaVenus } from "react-icons/fa"
+import { TbGenderGenderqueer } from "react-icons/tb"
 import { FaXmark } from "react-icons/fa6"
 import { useContext, useMemo, useState } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
@@ -46,6 +47,10 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                         {profile.family_tree_gender === 'MALE'
                             && <IconContext.Provider value={{ style: { height: 27, width: 22 } }}>
                                 <FaMars fill="cornflowerblue" aria-label="Male gender symbol" />
+                            </IconContext.Provider>}
+                        {profile.family_tree_gender === 'NONBINARY'
+                            && <IconContext.Provider value={{ style: { height: 28, width: 28, margin: '0 -5px' } }}>
+                                <TbGenderGenderqueer stroke="yellow" aria-label="Nonbinary gender symbol" />
                             </IconContext.Provider>}
                     </div>
                     {relationToRoot && <span className="relationship">{state.rootNode.data.profile.name}&apos;s {relationToRoot.text}</span>}
