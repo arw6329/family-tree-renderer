@@ -70,10 +70,10 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                 <HeaderButton onClick={() => state.setRootProfile(profile)}>
                     <span>Recenter tree here</span>
                 </HeaderButton>
-                <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
-                    <span>{state.editing ? 'Edit details' : 'More details'}</span>
-                </HeaderButton>
                 {state.editing && <>
+                    <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
+                        <span>Edit details</span>
+                    </HeaderButton>
                     <HeaderButton onClick={() => setAddSpousePopupActive(true)}>
                         <span>Add spouse</span>
                     </HeaderButton>
