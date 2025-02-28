@@ -9,8 +9,6 @@ export class ProfileNode extends AbstractFamilyTreeNode {
             throw 'attempted to draw node before it was rendered'
         }
 
-        yield* this.draw_lines()
-
         // This needs to be before right SpousalRelationshipInfoButton for tab order
         yield <ProfileBlock
             x={this.x}

@@ -676,12 +676,16 @@ export abstract class AbstractFamilyTreeNode {
         })
 
         for(const node of nodes) {
+            yield* node.draw_lines()
+        }
+
+        for(const node of nodes) {
             yield* node.draw()
             node.temporary_render_data = {}
         }
     }
 
-    *draw_lines(): Generator<JSX.Element, undefined, never> {
+    private *draw_lines(): Generator<JSX.Element, undefined, undefined> {
         const divorce_line_width = 25
     
         function relationship_divorced(relationship) {

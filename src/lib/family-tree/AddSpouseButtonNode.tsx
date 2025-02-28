@@ -8,8 +8,6 @@ export class AddSpouseButtonNode extends AbstractFamilyTreeNode {
             throw 'attempted to draw node before it was rendered'
         }
 
-        yield* this.draw_lines()
-
         const spouseProfile = this.left_spouse?.data.profile ?? this.right_spouse.data.profile
         yield <AddSpouseButton
             x={this.x}
