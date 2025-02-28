@@ -20,9 +20,15 @@
 ul {
     margin: 0;
     padding-left: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 8px 15px;
+}
+
+li {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
 }
 
 kbd {
@@ -34,4 +40,8 @@ kbd {
     color: rgb(199, 199, 199);
     box-shadow: rgba(0, 0, 0, 0.75) 0px 1px 1px, rgba(76, 76, 76, 0.7) 0px 2px 0px 0px inset;
     font-size: 0.85rem;
+}
+
+.underline {
+    text-decoration: underline;
 }

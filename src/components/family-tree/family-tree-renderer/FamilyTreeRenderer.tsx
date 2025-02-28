@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef } from "react"
+import React, { KeyboardEvent, useContext, useEffect, useMemo, useRef, useState } from "react"
 import "./FamilyTreeRenderer.css"
 import "./FamilyTreeRenderer.scoped.css"
 import PannableSvg from "../../pannable-svg/PannableSvg"
@@ -10,8 +10,14 @@ import KeyShortcutInfo from "@/components/key-shortcut-info/KeyShortcutInfo"
 
 const FamilyTreeRenderer: React.FC<{}> = (props) => {
     const pannableSvg = useRef(null)
-
     const state = useContext(FamilyTreeStateContext)
+    const [keyShortcutMenuOpen, setKeyShortcutMenuOpen] = useState(false)
+
+    function handleKeyDown(event: KeyboardEvent) {
+        if(event.altKey && event.shiftKey && event.code === 'KeyK') {
+            setKeyShortcutMenuOpen(!keyShortcutMenuOpen)
+        }
+    }
 
     useEffect(() => {
         pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)
@@ -34,7 +40,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
     }, [state, state.rootNode, state.focusedProfileId])
 
     return (
-        <div className="root">
+        <div className="root" onKeyDown={handleKeyDown}>
             <ControlHeader
                 onRecenter={() => pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)}
                 onZoomIn={() => pannableSvg.current.zoom(-500)}
@@ -45,7 +51,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                     {state.editing && <div className="under-construction-bar" />}
                     {focusedNode && <ProfileHeader node={focusedNode}/>}
                     {state.focusedSpousalRelationshipId && <SpousalRelationshipHeader />}
-                    <KeyShortcutInfo />
+                    {keyShortcutMenuOpen && <KeyShortcutInfo />}
                 </div>
             </div>
             <PannableSvg ref={pannableSvg}>
