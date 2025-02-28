@@ -10,6 +10,7 @@ const NODE_FOREIGNOBJECT_HEIGHT = 75
 const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x, y, node}) => {
     const state = useContext(FamilyTreeStateContext)
     const profile: Profile = node.data.profile
+    const isAnchorNode = state.rootNode.data.profile.profile_id === profile.profile_id
 
     return (
         <foreignObject
@@ -18,11 +19,15 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
             width={NODE_FOREIGNOBJECT_WIDTH}
             height={NODE_FOREIGNOBJECT_HEIGHT}
         >
-            <button onClick={() => state.setFocusedObjectId('Profile', profile.profile_id)} aria-label={`View details for ${profile.name}`}>
+            <button
+                onClick={() => state.setFocusedObjectId('Profile', profile.profile_id)}
+                aria-label={`View details for ${profile.name}`}
+                {...(isAnchorNode && { 'aria-keyshortcuts': 'Alt+Shift+A' })}
+            >
                 <div
                     className="root"
                     data-gender={profile.family_tree_gender}
-                    data-anchor={state.rootNode.data.profile.profile_id === profile.profile_id}
+                    data-anchor={isAnchorNode}
                     data-focus={state.focusedProfileId === profile.profile_id}
                 >
                     <div className="img-wrapper">

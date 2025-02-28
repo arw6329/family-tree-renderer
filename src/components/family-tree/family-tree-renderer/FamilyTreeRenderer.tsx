@@ -9,6 +9,7 @@ import SpousalRelationshipHeader from "../spousal-relationship-header/SpousalRel
 import KeyShortcutInfo from "@/components/key-shortcut-info/KeyShortcutInfo"
 
 const FamilyTreeRenderer: React.FC<{}> = (props) => {
+    const root = useRef(null)
     const pannableSvg = useRef(null)
     const state = useContext(FamilyTreeStateContext)
     const [keyShortcutMenuOpen, setKeyShortcutMenuOpen] = useState(false)
@@ -16,6 +17,10 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
     function handleKeyDown(event: KeyboardEvent) {
         if(event.altKey && event.shiftKey && event.code === 'KeyK') {
             setKeyShortcutMenuOpen(!keyShortcutMenuOpen)
+        } else if(event.altKey && event.shiftKey && event.code === 'KeyA') {
+            pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)
+            // TODO: querySelector is less than ideal here..
+            root.current.querySelector('[data-anchor=true]').parentElement.focus()
         }
     }
 
@@ -40,7 +45,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
     }, [state, state.rootNode, state.focusedProfileId])
 
     return (
-        <div className="root" onKeyDown={handleKeyDown}>
+        <div className="root" ref={root} onKeyDown={handleKeyDown}>
             <ControlHeader
                 onRecenter={() => pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)}
                 onZoomIn={() => pannableSvg.current.zoom(-500)}
