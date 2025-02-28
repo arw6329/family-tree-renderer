@@ -409,7 +409,11 @@ function attachControls(svg: SVGSVGElement) {
 //     )
 // }
 
-const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) => void }, { children: ReactNode }>(({ children }, ref) => {
+const PannableSvg = forwardRef<{
+    setCenter: (centerX: number, centerY: number) => void
+    getCenter: () => [number, number]
+    zoom: (pixels: number) => void
+}, { children: ReactNode }>(({ children }, ref) => {
     const svg: RefObject<SVGSVGElement | null> = useRef(null)
 
     useEffect(() => {
@@ -444,6 +448,13 @@ const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) =
             setCenter(centerX: number, centerY: number) {
                 svg.current.viewBox.baseVal.x = centerX - svg.current.viewBox.baseVal.width / 2
                 svg.current.viewBox.baseVal.y = centerY - svg.current.viewBox.baseVal.height / 2
+            },
+
+            getCenter() {
+                return [
+                    svg.current.viewBox.baseVal.x + svg.current.viewBox.baseVal.width / 2,
+                    svg.current.viewBox.baseVal.y + svg.current.viewBox.baseVal.height / 2
+                ]
             },
 
             zoom(pixels: number) {
@@ -484,3 +495,5 @@ const PannableSvg = forwardRef<{ setCenter: (centerX: number, centerY: number) =
 })
 
 export default PannableSvg
+
+export type PannableSvgControls = (typeof PannableSvg extends React.ForwardRefExoticComponent<infer T> ? T : never) extends React.RefAttributes<infer T> ? T : never

@@ -40,7 +40,7 @@ export function center_of_values(target: number[],) {
     return (Math.min(...target) + Math.max(...target)) / 2
 }
 
-export function min_by_with_index<T>(target: T[], func: (elem: T) => number) {
+export function min_by_with_index<T>(target: T[], func: (elem: T) => number): [undefined, -1] | [T, number] {
 	if(target.length === 0) {
 		return [undefined, -1]
 	}

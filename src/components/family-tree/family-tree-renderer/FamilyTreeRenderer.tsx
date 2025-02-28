@@ -1,16 +1,17 @@
 import React, { KeyboardEvent, useContext, useEffect, useMemo, useRef, useState } from "react"
 import "./FamilyTreeRenderer.css"
 import "./FamilyTreeRenderer.scoped.css"
-import PannableSvg from "../../pannable-svg/PannableSvg"
+import PannableSvg, { PannableSvgControls } from "../../pannable-svg/PannableSvg"
 import ControlHeader from "../control-header/ControlHeader"
 import ProfileHeader from "../profile-header/ProfileHeader"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import SpousalRelationshipHeader from "../spousal-relationship-header/SpousalRelationshipHeader"
 import KeyShortcutInfo from "@/components/key-shortcut-info/KeyShortcutInfo"
+import { min_by_with_index } from "@/lib/array-utils/array-utils"
 
 const FamilyTreeRenderer: React.FC<{}> = (props) => {
-    const root = useRef(null)
-    const pannableSvg = useRef(null)
+    const svgElements = useRef<SVGGElement>(null)
+    const pannableSvg = useRef<PannableSvgControls>(null)
     const state = useContext(FamilyTreeStateContext)
     const [keyShortcutMenuOpen, setKeyShortcutMenuOpen] = useState(false)
 
@@ -18,14 +19,32 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
         if(event.altKey && event.shiftKey && event.code === 'KeyK') {
             setKeyShortcutMenuOpen(!keyShortcutMenuOpen)
         } else if(event.altKey && event.shiftKey && event.code === 'KeyA') {
-            pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)
+            pannableSvg.current!.setCenter(state.rootNode.x, state.rootNode.y)
             // TODO: querySelector is less than ideal here..
-            root.current.querySelector('[data-anchor=true]').parentElement.focus()
+            svgElements.current!.querySelector('[data-anchor=true]')!.parentElement!.focus()
+        } else if(event.altKey && event.shiftKey && event.code === 'KeyC') {
+            const [centerX, centerY] = pannableSvg.current!.getCenter()
+
+            const focusableElementsWithPos = [...svgElements.current!.querySelectorAll('button')]
+                .map<[HTMLButtonElement, number, number]>(element => {
+                    const fo = element.closest('foreignObject')!
+                    return [
+                        element,
+                        fo.x.baseVal.value + fo.width.baseVal.value / 2,
+                        fo.y.baseVal.value + fo.height.baseVal.value / 2
+                    ]
+                })
+
+            const [[element]] = min_by_with_index(focusableElementsWithPos, ([_, x, y]) => {
+                return Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
+            }) as [[HTMLButtonElement, number, number], number]
+
+            element.focus()
         }
     }
 
     useEffect(() => {
-        pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)
+        pannableSvg.current!.setCenter(state.rootNode.x, state.rootNode.y)
     }, [state.rootNode.data.profile])
 
     const renderedElements = useMemo(() => {
@@ -45,7 +64,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
     }, [state, state.rootNode, state.focusedProfileId])
 
     return (
-        <div className="root" ref={root} onKeyDown={handleKeyDown}>
+        <div className="root" onKeyDown={handleKeyDown}>
             <ControlHeader
                 onRecenter={() => pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)}
                 onZoomIn={() => pannableSvg.current.zoom(-500)}
@@ -60,7 +79,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                 </div>
             </div>
             <PannableSvg ref={pannableSvg}>
-                <g>{renderedElements}</g>
+                <g ref={svgElements}>{renderedElements}</g>
             </PannableSvg>
         </div>
     )

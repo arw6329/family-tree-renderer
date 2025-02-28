@@ -18,6 +18,10 @@ const KeyShortcutInfo: React.FC = () => {
                     <span>Recenter and focus on <span className="underline">a</span>nchor node</span>
                 </li>
                 <li>
+                    <span><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd>:</span>
+                    <span>Focus on element in <span className="underline">c</span>enter of canvas</span>
+                </li>
+                <li>
                     <span><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd>:</span>
                     <span>Toggle this <span className="underline">k</span>eyboard shortcuts menu</span>
                 </li>
