@@ -3,7 +3,10 @@ import { createRoot, type Root } from "react-dom/client"
 import { FamilyTreeDatabase } from "@/lib/family-tree/FamilyTreeDatabase"
 import _FamilyTree from "../family-tree/family-tree/FamilyTree"
 
-const FamilyTree: React.FC<{ database?: FamilyTreeDatabase }> = ({ database }) => {
+const FamilyTree: React.FC<{
+    database?: FamilyTreeDatabase
+    onDatabaseChange?: (database: FamilyTreeDatabase) => Promise<unknown>
+}> = ({ database, onDatabaseChange }) => {
     const rootElem = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -50,7 +53,10 @@ const FamilyTree: React.FC<{ database?: FamilyTreeDatabase }> = ({ database }) =
             })
         }
 
-        rootElem.current.firstElementChild.render?.(<_FamilyTree database={database} />)
+        rootElem.current.firstElementChild.render?.(<_FamilyTree
+            database={database}
+            onDatabaseChange={onDatabaseChange}
+        />)
     })
 
     return (

@@ -13,12 +13,15 @@ const blankDatabase: FamilyTreeDatabase = {
     child_relationships: {}
 }
 
-const FamilyTree: React.FC<{ database?: FamilyTreeDatabase }> = ({ database = blankDatabase }) => {
+const FamilyTree: React.FC<{
+    database?: FamilyTreeDatabase
+    onDatabaseChange?: (database: FamilyTreeDatabase) => Promise<unknown>
+}> = ({ database = blankDatabase, onDatabaseChange }) => {
     const nonEmpty = Object.keys(database.profiles).length > 0
     const [createFirstProfilePopupActive, setCreateFirstProfilePopupActive] = useState(false)
 
     return (
-        <FamilyTreeStateProvider database={database}>
+        <FamilyTreeStateProvider database={database} onDatabaseChange={onDatabaseChange}>
             {nonEmpty ? <FamilyTreeRenderer /> : <>
                 <div className="empty-root">
                     <div className="empty">

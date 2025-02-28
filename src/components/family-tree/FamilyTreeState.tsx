@@ -3,11 +3,13 @@ import { DatabaseBuilder } from "@/lib/family-tree/DatabaseBuilder";
 import { FamilyTreeDatabase, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
 import { ProfileNode } from "@/lib/family-tree/ProfileNode";
 import { TreeBuilder } from "@/lib/family-tree/TreeBuilder";
-import React, { createContext, JSX, ReactNode, useEffect, useMemo, useState } from "react";
+import React, { createContext, JSX, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 // TODO: bring common db exploration funcs like finding child relationships, spouses, etc.
 // for particular node into functions, import here and other places where these operations
 // are duplicated, like AbstractFamilyTreeNode and TreeBuilder 
+
+// TODO: move all these db exploration/modification funcs into another file
 
 // TODO: remove commas for interfaces
 interface ContextType {
@@ -42,7 +44,7 @@ const FamilyTreeStateContext = createContext<ContextType>(
     })
 )
 
-const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children: ReactNode }> = ({ database, children }) => {
+const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDatabaseChange?: (database: FamilyTreeDatabase) => Promise<unknown>, children: ReactNode }> = ({ database, onDatabaseChange, children }) => {
     const [rootProfile, setRootProfile] = useState<Profile | null>(Object.values(database.profiles)[0])
     const [focusedProfileId, setFocusedProfileId] = useState<string | null>(null)
     const [focusedSpousalRelationshipId, setFocusedSpousalRelationshipId] = useState<string | null>(null)
@@ -50,6 +52,16 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
     const [editing, setEditing] = useState<boolean>(false)
     // used to force rerender when database changes
     const [databaseVersion, setDatabaseVersion] = useState(Math.random())
+    const databaseVersionRef = useRef(databaseVersion)
+    const lastNotifiedDatabaseVersion = useRef(databaseVersion)
+    const consumerDatabaseUpdateInProgress = useRef(false)
+
+    function cycleDatabaseVersion() {
+        const version = Math.random()
+        console.log(`Setting db version to ${version}`)
+        setDatabaseVersion(version)
+        databaseVersionRef.current = version
+    }
 
     const rootNode: ProfileNode | null = useMemo(() => {
         if(rootProfile) {
@@ -80,6 +92,36 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
 
         return builder
     }, [database, rootNode, editing])
+
+    if(onDatabaseChange && databaseVersion !== lastNotifiedDatabaseVersion.current && !consumerDatabaseUpdateInProgress.current) {
+        consumerDatabaseUpdateInProgress.current = true
+
+        function createPromise() {
+            console.log(`Sending a consumer db change notification on version ${databaseVersionRef.current}`)
+            const promise: Promise<unknown> = onDatabaseChange!(database)
+            lastNotifiedDatabaseVersion.current = databaseVersionRef.current
+            promise.then(() => {
+                if(databaseVersionRef.current !== lastNotifiedDatabaseVersion.current) {
+                    console.log(`Consumer finished db update, but its version ${lastNotifiedDatabaseVersion.current} does not match the current version ${databaseVersionRef.current}`)
+                    createPromise()
+                } else {
+                    console.log(`Finalizing consumer db update (after promise fulfillment) on db version ${databaseVersionRef.current}`)
+                    consumerDatabaseUpdateInProgress.current = false
+                }
+            })
+            .catch(() => {
+                if(databaseVersionRef.current !== lastNotifiedDatabaseVersion.current) {
+                    console.log(`Consumer finished db update, but its version ${lastNotifiedDatabaseVersion.current} does not match the current version ${databaseVersionRef.current}`)
+                    createPromise()
+                } else {
+                    console.log(`Finalizing consumer db update (after promise rejection) on db version ${databaseVersionRef.current}`)
+                    consumerDatabaseUpdateInProgress.current = false
+                }
+            })
+        }
+
+        createPromise()
+    }
 
     return (
         <FamilyTreeStateContext.Provider value={{
@@ -180,20 +222,20 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
             },
             addNewProfile(profile: Profile) {
                 DatabaseBuilder.fromExisting(database).addNewProfile(profile)
-                setDatabaseVersion(Math.random())
+                cycleDatabaseVersion()
             },
             replaceProfile(profile: Profile) {
                 DatabaseBuilder.fromExisting(database).replaceProfile(profile)
-                setDatabaseVersion(Math.random())
+                cycleDatabaseVersion()
             },
             makeSpouses(profile1: Profile, profile2: Profile) {
                 const relationship = DatabaseBuilder.fromExisting(database).makeSpouses(profile1, profile2)
-                setDatabaseVersion(Math.random())
+                cycleDatabaseVersion()
                 return relationship
             },
             makeChild(parentRelationship: SpousalRelationship, profile: Profile) {
                 DatabaseBuilder.fromExisting(database).makeChild(parentRelationship, profile)
-                setDatabaseVersion(Math.random())
+                cycleDatabaseVersion()
             },
             disconnectChild(child: Profile) {
                 const childRelationship = Object.values(database.child_relationships)
@@ -205,7 +247,7 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
 
                 delete database.child_relationships[childRelationship.relationship_id]
 
-                setDatabaseVersion(Math.random())
+                cycleDatabaseVersion()
             },
             disconnectSpouses(relationship: SpousalRelationship) {
                 const childRelationships = Object.values(database.child_relationships)
@@ -217,7 +259,7 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, children
 
                 delete database.spousal_relationships[relationship.relationship_id]
 
-                setDatabaseVersion(Math.random())
+                cycleDatabaseVersion()
             }
         }}>
             {children}
