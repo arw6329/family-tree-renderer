@@ -29,6 +29,7 @@ li {
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
+    align-items: center;
 }
 
 kbd {
@@ -44,4 +45,14 @@ kbd {
 
 .underline {
     text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+    ul {
+        padding: 0;
+    }
+
+    li {
+        grid-template-columns: 150px auto;
+    }
 }
