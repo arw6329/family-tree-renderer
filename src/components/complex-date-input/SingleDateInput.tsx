@@ -6,9 +6,9 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 
 // onChange will report null on completely empty dates
 const SingleDateInput: React.FC<{ defaultValue?: ParsedSingleDate | null, onChange?: (date: ParsedSingleDate | null) => void }> = ({ defaultValue, onChange }) => {
-    const [month, _setMonth] = useState<number | null>(null)
-    const [day, _setDay] = useState<number | null>(null)
-    const [year, _setYear] = useState<number | null>(null)
+    const [month, _setMonth] = useState<number | null>(defaultValue?.month ?? null)
+    const [day, _setDay] = useState<number | null>(defaultValue?.day ?? null)
+    const [year, _setYear] = useState<number | null>(defaultValue?.year ?? null)
 
     function setMonth(month: number | null) {
         reportChange(year, month, day)
