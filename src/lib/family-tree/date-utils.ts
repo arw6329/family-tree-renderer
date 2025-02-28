@@ -44,6 +44,34 @@ export function prettyDate(date: ComplexDate): string {
     }
 }
 
+export function prettyDateShortYearOnly(date: ComplexDate): string | null {
+    switch(date.type) {
+        case 'date':
+        case 'approximate':
+        case 'calculated':
+        case 'estimated':
+        case 'interpreted': {
+            return date.date.year?.toString() ?? null
+        }
+        case 'range': {
+            if(date.date_start?.year && date.date_end?.year) {
+                return `~${Math.floor((date.date_start.year + date.date_end.year) / 2)}`
+            } else if(date.date_start?.year) {
+                return `>${date.date_start.year}`
+            } else if(date.date_end?.year) {
+                return `<${date.date_end.year}`
+            } else {
+                return null
+            }
+        }
+        case 'period':
+        case 'plaintext':
+        default: {
+            return null
+        }
+    }
+}
+
 export function isComplexDate(date: unknown): date is ComplexDate {
     // TODO: actually implement
     return true

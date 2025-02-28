@@ -3,6 +3,8 @@ import "./ProfileBlock.scoped.css"
 import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import { ProfileNode } from "@/lib/family-tree/ProfileNode"
+import { prettyDateShortYearOnly } from "@/lib/family-tree/date-utils"
+import { getBirthDate, getDeathDate } from "@/lib/family-tree/metadata-helpers"
 
 const NODE_FOREIGNOBJECT_WIDTH = 175
 const NODE_FOREIGNOBJECT_HEIGHT = 75
@@ -11,6 +13,11 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
     const state = useContext(FamilyTreeStateContext)
     const profile: Profile = node.data.profile
     const isAnchorNode = state.rootNode.data.profile.profile_id === profile.profile_id
+
+    const birthDate = getBirthDate(profile.metadata)
+    const birthYear = birthDate && prettyDateShortYearOnly(birthDate)
+    const deathDate = getDeathDate(profile.metadata)
+    const deathYear = deathDate && prettyDateShortYearOnly(deathDate)
 
     return (
         <foreignObject
@@ -35,6 +42,7 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
                     </div>
                     <div className="column">
                         <span>{profile.name}</span>
+                        {(birthYear !== null || deathYear !== null) && <span className="date-range">{birthYear ?? '?'} - {deathYear ?? '?'}</span>}
                     </div>
                 </div>
             </button>

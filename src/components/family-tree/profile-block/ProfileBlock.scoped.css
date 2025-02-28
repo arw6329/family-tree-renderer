@@ -75,4 +75,11 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: baseline;
+    gap: 4px;
+    text-align: left;
+}
+
+.date-range {
+    font-size: 0.7rem;
 }
