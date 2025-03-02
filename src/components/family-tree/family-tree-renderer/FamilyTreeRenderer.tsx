@@ -5,9 +5,10 @@ import PannableSvg, { PannableSvgControls } from "../../pannable-svg/PannableSvg
 import ControlHeader from "../control-header/ControlHeader"
 import ProfileHeader from "../profile-header/ProfileHeader"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
-import SpousalRelationshipHeader from "../spousal-relationship-header/SpousalRelationshipHeader"
+import SpousalRelationshipHeader from "../relationship-headers/SpousalRelationshipHeader"
 import KeyShortcutInfo from "@/components/key-shortcut-info/KeyShortcutInfo"
 import { min_by_with_index } from "@/lib/array-utils/array-utils"
+import ChildRelationshipHeader from "../relationship-headers/ChildRelationshipHeader"
 
 const FamilyTreeRenderer: React.FC<{}> = (props) => {
     const svgElements = useRef<SVGGElement>(null)
@@ -75,6 +76,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                     {state.editing && <div className="under-construction-bar" />}
                     {focusedNode && <ProfileHeader node={focusedNode}/>}
                     {state.focusedSpousalRelationshipId && <SpousalRelationshipHeader />}
+                    {state.focusedChildRelationshipId   && <ChildRelationshipHeader   />}
                     {keyShortcutMenuOpen && <KeyShortcutInfo />}
                 </div>
             </div>

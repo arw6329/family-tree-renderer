@@ -1,5 +1,5 @@
 import HeaderButton from "@/components/header-button/HeaderButton"
-import "./SpousalRelationshipHeader.scoped.css"
+import "./RelationshipHeader.scoped.css"
 import { FaXmark } from "react-icons/fa6"
 import { useContext, useState } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
