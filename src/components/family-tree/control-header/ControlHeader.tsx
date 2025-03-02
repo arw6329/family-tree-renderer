@@ -9,6 +9,7 @@ interface ControlHeaderProps {
     onRecenter: () => void
     onZoomIn: () => void
     onZoomOut: () => void
+    onToggleKeyboardControlsMenu: () => void
 }
 
 const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
@@ -37,6 +38,11 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
             <li>
                 <HeaderButton onClick={() => props.onZoomOut()}>
                     <span>Zoom out</span>
+                </HeaderButton>
+            </li>
+            <li>
+                <HeaderButton onClick={() => props.onToggleKeyboardControlsMenu()}>
+                    <span>Toggle keyboard menu</span>
                 </HeaderButton>
             </li>
             {

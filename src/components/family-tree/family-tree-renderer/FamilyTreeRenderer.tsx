@@ -70,6 +70,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                 onRecenter={() => pannableSvg.current.setCenter(state.rootNode.x, state.rootNode.y)}
                 onZoomIn={() => pannableSvg.current.zoom(-500)}
                 onZoomOut={() => pannableSvg.current.zoom(500)}
+                onToggleKeyboardControlsMenu={() => setKeyShortcutMenuOpen(!keyShortcutMenuOpen)}
             />
             <div style={{ position: 'relative' }}>
                 <div style={{ position: 'absolute', width: '100%' }}>
