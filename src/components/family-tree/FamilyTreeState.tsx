@@ -226,6 +226,9 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
             },
             replaceProfile(profile: Profile) {
                 DatabaseBuilder.fromExisting(database).replaceProfile(profile)
+                if(profile.profile_id === rootProfile?.profile_id) {
+                    setRootProfile(profile)
+                }
                 cycleDatabaseVersion()
             },
             makeSpouses(profile1: Profile, profile2: Profile) {
