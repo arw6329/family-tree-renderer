@@ -26,5 +26,13 @@ Prepopulated.args = {
     }
 };
 
+export const PrepopulatedFastUpdateCallback = Template.bind({});
+PrepopulatedFastUpdateCallback.args = {
+    database: database,
+    onDatabaseChange: (database) => {
+        return new Promise<void>((resolve, reject) => resolve())
+    }
+};
+
 export const Blank = Template.bind({});
 Blank.args = {};
