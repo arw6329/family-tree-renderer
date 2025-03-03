@@ -61,7 +61,7 @@ const FamilyTree: React.FC<{
 
     return (
         <div style={{ height: '100%' }} ref={rootElem}>
-            <reunionpage-family-tree style={{ height: '100%' }} />
+            <reunionpage-family-tree style={{ display: 'block', height: '100%', backgroundColor: '#1f2325' }} />
         </div>
     )
 }

@@ -19,10 +19,12 @@ const config: StorybookConfig = {
           enableDev: true
         },
         injectCodeFunction: function(cssCode) {
-          customElements.whenDefined('reunionpage-family-tree')
-            .then(() => {
-              customElements.get('reunionpage-family-tree').injectStyles(cssCode)
-            })
+          if(typeof window !== 'undefined') {
+            customElements.whenDefined('reunionpage-family-tree')
+              .then(() => {
+                customElements.get('reunionpage-family-tree').injectStyles(cssCode)
+              })
+          }
         }
       })]
     })

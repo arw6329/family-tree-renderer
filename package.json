@@ -1,10 +1,9 @@
 {
-  "name": "family-tree-renderer",
+  "name": "@reunionpage/react-family-tree",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "vite build",

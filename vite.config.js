@@ -17,10 +17,12 @@ export default defineConfig({
         }),
         cssInjectedByJsPlugin({
             injectCodeFunction: function(cssCode, options) {
-                customElements.whenDefined('reunionpage-family-tree')
-                .then(() => {
-                    customElements.get('reunionpage-family-tree').injectStyles(cssCode)
-                })
+                if(typeof window !== 'undefined') {
+                    customElements.whenDefined('reunionpage-family-tree')
+                    .then(() => {
+                        customElements.get('reunionpage-family-tree').injectStyles(cssCode)
+                    })
+                }
             }
         })
     ],
