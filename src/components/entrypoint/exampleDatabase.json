@@ -3,408 +3,1300 @@
     "profiles": {
         "64ecce36-6f21-49ad-9451-1d408c21b775": {
             "profile_id": "64ecce36-6f21-49ad-9451-1d408c21b775",
-            "name": "April Williams",
-            "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": "Welcome to ReunionPage!\r\n\r\nYou are signed in as the default administrator of this demo for ReunionPage. You will get an account like this when you create your site.",
-            "own": true,
-            "editable": true
+            "name": "April Wilson",
+            "family_tree_gender": "FEMALE",
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1976,
+                                    "month": 1,
+                                    "day": 11,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "117449a6-8f9d-47f9-8c35-f4119d11d4e9": {
             "profile_id": "117449a6-8f9d-47f9-8c35-f4119d11d4e9",
             "name": "Timothy Adams",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "DEATH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1977,
+                                    "month": 2,
+                                    "day": 7,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "4708bbe2-bbd5-481b-b406-cc9846c2ef80": {
             "profile_id": "4708bbe2-bbd5-481b-b406-cc9846c2ef80",
             "name": "Amy Harolds",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1895,
+                                    "month": 5,
+                                    "day": 13,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "simple",
+                    "key": "DEATH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1977,
+                                    "month": 4,
+                                    "day": 16,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "9a627f91-a909-44c5-af8f-d6b6bf7a46ad": {
             "profile_id": "9a627f91-a909-44c5-af8f-d6b6bf7a46ad",
             "name": "Alexander Adams",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1920,
+                                    "month": 0,
+                                    "day": 19,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "simple",
+                    "key": "DEATH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2004,
+                                    "month": 5,
+                                    "day": null,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "8946459d-3d16-48b6-9baa-022245f8cf8a": {
             "profile_id": "8946459d-3d16-48b6-9baa-022245f8cf8a",
             "name": "Jerry Willow",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1928,
+                                    "month": 0,
+                                    "day": 10,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "simple",
+                    "key": "DEATH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2012,
+                                    "month": 1,
+                                    "day": 20,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "c7ea0286-8862-4abb-ac37-3402bd28a8cb": {
             "profile_id": "c7ea0286-8862-4abb-ac37-3402bd28a8cb",
             "name": "Cynthia Willow",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1896,
+                                    "month": 11,
+                                    "day": null,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "simple",
+                    "key": "DEATH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1974,
+                                    "month": 0,
+                                    "day": 31,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "e871a293-4a6a-4d9e-a5fe-46d645679758": {
             "profile_id": "e871a293-4a6a-4d9e-a5fe-46d645679758",
             "name": "Fred Lambert",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1904,
+                                    "month": 8,
+                                    "day": 17,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "bca106d3-e7d6-4e0f-95ec-25cea84e4924": {
             "profile_id": "bca106d3-e7d6-4e0f-95ec-25cea84e4924",
             "name": "Jake Adams",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1953,
+                                    "month": 5,
+                                    "day": 17,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "4c20ea63-ef48-4676-b4ad-408bb416b441": {
             "profile_id": "4c20ea63-ef48-4676-b4ad-408bb416b441",
             "name": "Olivia Adams",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1947,
+                                    "month": 8,
+                                    "day": 24,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "5c24f884-445b-46f9-88b1-2b2133dfc40b": {
             "profile_id": "5c24f884-445b-46f9-88b1-2b2133dfc40b",
             "name": "Timothy Adams",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1948,
+                                    "month": 0,
+                                    "day": 8,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "cacdbd26-09b5-437c-9763-298f226228e2": {
             "profile_id": "cacdbd26-09b5-437c-9763-298f226228e2",
             "name": "Taylor Humes",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1953,
+                                    "month": 3,
+                                    "day": 4,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "e7b298b4-6cbd-4778-9836-9dd526984aeb": {
             "profile_id": "e7b298b4-6cbd-4778-9836-9dd526984aeb",
             "name": "Christina Adams",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1976,
+                                    "month": 6,
+                                    "day": 1,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "ff92ba09-e033-4c44-8ea4-2a9def7ced53": {
             "profile_id": "ff92ba09-e033-4c44-8ea4-2a9def7ced53",
             "name": "Cullen Adams",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": []
         },
         "901dc00d-0757-4652-8076-23c9456aae62": {
             "profile_id": "901dc00d-0757-4652-8076-23c9456aae62",
             "name": "Marie Adams",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1970,
+                                    "month": 10,
+                                    "day": null,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "253683fe-cad1-4394-b7a3-dd009ade40a2": {
             "profile_id": "253683fe-cad1-4394-b7a3-dd009ade40a2",
             "name": "Timothy Wilson",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1976,
+                                    "month": 4,
+                                    "day": null,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "546111f7-5568-4134-82e8-14d9ce820b35": {
             "profile_id": "546111f7-5568-4134-82e8-14d9ce820b35",
             "name": "Carrie Wilson",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2000,
+                                    "month": 9,
+                                    "day": 10,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "5b72f8eb-8a5c-4ba9-b5b4-7b8a082ebbed": {
             "profile_id": "5b72f8eb-8a5c-4ba9-b5b4-7b8a082ebbed",
             "name": "Carlo Wilson",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": []
         },
         "689ac867-78e6-42e3-b167-8959ca875b72": {
             "profile_id": "689ac867-78e6-42e3-b167-8959ca875b72",
             "name": "Tay Wilson",
-            "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "family_tree_gender": "NONBINARY",
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1996,
+                                    "month": 8,
+                                    "day": null,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "145cc7dc-8c30-4b31-8c69-9001fd6c291f": {
             "profile_id": "145cc7dc-8c30-4b31-8c69-9001fd6c291f",
             "name": "Arjun Patel",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1952,
+                                    "month": 6,
+                                    "day": 8,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "b9878880-0ca4-4919-8609-51e2734f1840": {
             "profile_id": "b9878880-0ca4-4919-8609-51e2734f1840",
             "name": "Steve Adams",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1971,
+                                    "month": 5,
+                                    "day": 12,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "ebb3da38-2968-4ff1-9bd0-b8ff9cbaa256": {
             "profile_id": "ebb3da38-2968-4ff1-9bd0-b8ff9cbaa256",
             "name": "Arham Chopra",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1972,
+                                    "month": 2,
+                                    "day": 4,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "10b81f38-9595-4c39-974c-516ddef3bd98": {
             "profile_id": "10b81f38-9595-4c39-974c-516ddef3bd98",
             "name": "Sammie Fox",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2007,
+                                    "month": 7,
+                                    "day": 29,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "dbccc7ca-cffb-4689-b473-447cf65e7133": {
             "profile_id": "dbccc7ca-cffb-4689-b473-447cf65e7133",
             "name": "Jane Howell",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": []
         },
         "1646f499-3a03-44a6-87b8-bc88926325f2": {
             "profile_id": "1646f499-3a03-44a6-87b8-bc88926325f2",
             "name": "William Adams",
             "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": []
         },
         "3ff6c30a-2fad-4aca-bb3e-18df17d5918a": {
             "profile_id": "3ff6c30a-2fad-4aca-bb3e-18df17d5918a",
             "name": "William Adams",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2024,
+                                    "month": 7,
+                                    "day": 2,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "8ac35751-2129-4504-a68b-9283e4462671": {
             "profile_id": "8ac35751-2129-4504-a68b-9283e4462671",
             "name": "Alex Adams",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2026,
+                                    "month": 5,
+                                    "day": 28,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "ee2a67c7-537f-446a-8170-bd394f858d14": {
             "profile_id": "ee2a67c7-537f-446a-8170-bd394f858d14",
             "name": "Anna Adams",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1999,
+                                    "month": 9,
+                                    "day": 26,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "a0e08dae-46b6-4d32-9209-67bf05538f24": {
             "profile_id": "a0e08dae-46b6-4d32-9209-67bf05538f24",
             "name": "Taylor Adams",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1996,
+                                    "month": 5,
+                                    "day": 21,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "37fa8126-9d6e-485f-85b7-38ca25e39812": {
             "profile_id": "37fa8126-9d6e-485f-85b7-38ca25e39812",
             "name": "Emma Wilson",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1948,
+                                    "month": 6,
+                                    "day": 23,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "cd036d53-6c9f-4b6c-bf0a-606827921e9c": {
             "profile_id": "cd036d53-6c9f-4b6c-bf0a-606827921e9c",
             "name": "Maria Wilson",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": "Maria was born in Scottsdale, AZ. She is currently going to school at Penn State University with double majors in art history and anthropology.",
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1972,
+                                    "month": 9,
+                                    "day": 20,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "a4823564-a6f6-4654-8c93-465642e8a9ad": {
             "profile_id": "a4823564-a6f6-4654-8c93-465642e8a9ad",
             "name": "Marvin Wilson",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1979,
+                                    "month": 10,
+                                    "day": 9,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "d80ad58b-387f-4a12-a76b-568622f950cd": {
             "profile_id": "d80ad58b-387f-4a12-a76b-568622f950cd",
             "name": "Jazmine Brooke",
-            "family_tree_gender": "NEUTRAL",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "family_tree_gender": "NONBINARY",
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1971,
+                                    "month": 11,
+                                    "day": 12,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "b910d201-5fe6-4791-bef3-350c1c0b4629": {
             "profile_id": "b910d201-5fe6-4791-bef3-350c1c0b4629",
             "name": "Amelia Wilson",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": []
         },
         "6a253bb4-520a-4ec9-90e7-4b0c6607f1fd": {
             "profile_id": "6a253bb4-520a-4ec9-90e7-4b0c6607f1fd",
             "name": "Jennifer Wilson",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1996,
+                                    "month": 1,
+                                    "day": null,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "b867ef44-6871-43c2-94d9-38b94cb1a397": {
             "profile_id": "b867ef44-6871-43c2-94d9-38b94cb1a397",
             "name": "Rebecca Wilson",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2004,
+                                    "month": 9,
+                                    "day": 15,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "0cd3657d-6513-4264-a667-3be4ac6acdb9": {
             "profile_id": "0cd3657d-6513-4264-a667-3be4ac6acdb9",
             "name": "Margaret Moore",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1920,
+                                    "month": 7,
+                                    "day": null,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "simple",
+                    "key": "DEATH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2000,
+                                    "month": 9,
+                                    "day": 12,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "d0d1c8fc-5695-405a-9942-ab99436325fd": {
             "profile_id": "d0d1c8fc-5695-405a-9942-ab99436325fd",
             "name": "Nick Wilson",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1921,
+                                    "month": 10,
+                                    "day": 3,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "824f87e2-828b-4bc9-b33d-42d96ea94bb8": {
             "profile_id": "824f87e2-828b-4bc9-b33d-42d96ea94bb8",
             "name": "Delores Moore",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1897,
+                                    "month": 9,
+                                    "day": 31,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "simple",
+                    "key": "DEATH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1975,
+                                    "month": 11,
+                                    "day": 12,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "057220fb-ab29-46cd-8597-467592552d26": {
             "profile_id": "057220fb-ab29-46cd-8597-467592552d26",
             "name": "Jim Moore",
             "family_tree_gender": "MALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1899,
+                                    "month": 6,
+                                    "day": 11,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                },
+                {
+                    "type": "simple",
+                    "key": "DEATH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1974,
+                                    "month": 9,
+                                    "day": 9,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "8b757bd1-f341-4de6-9f11-8325bdd871a8": {
             "profile_id": "8b757bd1-f341-4de6-9f11-8325bdd871a8",
             "name": "Lisa Stuckey",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2008,
+                                    "month": 0,
+                                    "day": 24,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "84b36f43-3c3d-48f4-b56f-207d9e039281": {
             "profile_id": "84b36f43-3c3d-48f4-b56f-207d9e039281",
             "name": "Jennifer Stuckey",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2008,
+                                    "month": 0,
+                                    "day": 28,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "4e229239-b2f9-4066-8184-8ebea17ab2f5": {
             "profile_id": "4e229239-b2f9-4066-8184-8ebea17ab2f5",
             "name": "Elizabeth Moore",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2009,
+                                    "month": 0,
+                                    "day": 24,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "e0b7186d-d6de-4a03-a11d-eef8a53368b1": {
             "profile_id": "e0b7186d-d6de-4a03-a11d-eef8a53368b1",
             "name": "Jessica Yoho",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 2004,
+                                    "month": 0,
+                                    "day": 26,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "4b143fad-85ac-4835-8692-b7c5a410fdd0": {
             "profile_id": "4b143fad-85ac-4835-8692-b7c5a410fdd0",
             "name": "Ella Watson",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1978,
+                                    "month": 8,
+                                    "day": 6,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         },
         "b317f15c-bf77-4370-9413-b52d323c713d": {
             "profile_id": "b317f15c-bf77-4370-9413-b52d323c713d",
             "name": "August Watson",
             "family_tree_gender": "FEMALE",
-            "metadata": [],
-            "bio": null,
-            "own": false,
-            "editable": true
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "BIRTH",
+                    "value": null,
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DATE",
+                            "value": {
+                                "type": "date",
+                                "date": {
+                                    "year": 1999,
+                                    "month": 1,
+                                    "day": 3,
+                                    "bce": false
+                                }
+                            },
+                            "children": []
+                        }
+                    ]
+                }
+            ]
         }
     },
     "spousal_relationships": {
@@ -412,113 +1304,136 @@
             "relationship_id": "92a1d4c4-8435-4737-92d0-5b5ad4869700",
             "spouse_1_profile_id": "117449a6-8f9d-47f9-8c35-f4119d11d4e9",
             "spouse_2_profile_id": "4708bbe2-bbd5-481b-b406-cc9846c2ef80",
-            "description": null,
-            "metadata": []
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "MARRIAGE",
+                    "value": null,
+                    "children": []
+                },
+                {
+                    "type": "simple",
+                    "key": "DIVORCE",
+                    "value": null,
+                    "children": []
+                }
+            ]
         },
         "fa3e71d9-eba8-4dda-9f37-0a7b44ab97c2": {
             "relationship_id": "fa3e71d9-eba8-4dda-9f37-0a7b44ab97c2",
             "spouse_1_profile_id": "8946459d-3d16-48b6-9baa-022245f8cf8a",
             "spouse_2_profile_id": "9a627f91-a909-44c5-af8f-d6b6bf7a46ad",
-            "description": null,
             "metadata": []
         },
         "4a920b05-ed01-4524-9abe-707151fe5870": {
             "relationship_id": "4a920b05-ed01-4524-9abe-707151fe5870",
             "spouse_1_profile_id": "c7ea0286-8862-4abb-ac37-3402bd28a8cb",
             "spouse_2_profile_id": "e871a293-4a6a-4d9e-a5fe-46d645679758",
-            "description": "Cynthia and Fred Willow married out of high school on May 15, 1967, in Fox Creek, Missouri.\n\nThey moved to California together while Fred was stationed at Edwards Air Force Base before moving back to Missouri and having 4 children together.\n\nCynthia was widowed in March of 2019.",
             "metadata": []
         },
         "f5b6d6b7-e786-4b79-9a62-58b254ce4b20": {
             "relationship_id": "f5b6d6b7-e786-4b79-9a62-58b254ce4b20",
             "spouse_1_profile_id": "bca106d3-e7d6-4e0f-95ec-25cea84e4924",
             "spouse_2_profile_id": "cacdbd26-09b5-437c-9763-298f226228e2",
-            "description": null,
             "metadata": []
         },
         "67e6ee32-44c8-434c-8680-8eea35b04713": {
             "relationship_id": "67e6ee32-44c8-434c-8680-8eea35b04713",
             "spouse_1_profile_id": "253683fe-cad1-4394-b7a3-dd009ade40a2",
             "spouse_2_profile_id": "e7b298b4-6cbd-4778-9836-9dd526984aeb",
-            "description": null,
             "metadata": []
         },
         "078a070c-ec23-49f4-9d49-699d8824c626": {
             "relationship_id": "078a070c-ec23-49f4-9d49-699d8824c626",
             "spouse_1_profile_id": "145cc7dc-8c30-4b31-8c69-9001fd6c291f",
             "spouse_2_profile_id": "4c20ea63-ef48-4676-b4ad-408bb416b441",
-            "description": null,
             "metadata": []
         },
         "2a07064d-ba5b-474b-a995-fcd0f7bf2cc4": {
             "relationship_id": "2a07064d-ba5b-474b-a995-fcd0f7bf2cc4",
             "spouse_1_profile_id": "b9878880-0ca4-4919-8609-51e2734f1840",
             "spouse_2_profile_id": "ebb3da38-2968-4ff1-9bd0-b8ff9cbaa256",
-            "description": null,
             "metadata": []
         },
         "b848aa05-b57b-423e-8703-ad1081fbe87d": {
             "relationship_id": "b848aa05-b57b-423e-8703-ad1081fbe87d",
             "spouse_1_profile_id": "10b81f38-9595-4c39-974c-516ddef3bd98",
             "spouse_2_profile_id": "b9878880-0ca4-4919-8609-51e2734f1840",
-            "description": null,
             "metadata": []
         },
         "d62b5e9f-dffc-4eaa-b428-466854266e1c": {
             "relationship_id": "d62b5e9f-dffc-4eaa-b428-466854266e1c",
             "spouse_1_profile_id": "1646f499-3a03-44a6-87b8-bc88926325f2",
             "spouse_2_profile_id": "dbccc7ca-cffb-4689-b473-447cf65e7133",
-            "description": null,
             "metadata": []
         },
         "6aafe1a6-14b3-42d5-9d24-e5a1bf8871b1": {
             "relationship_id": "6aafe1a6-14b3-42d5-9d24-e5a1bf8871b1",
             "spouse_1_profile_id": "37fa8126-9d6e-485f-85b7-38ca25e39812",
             "spouse_2_profile_id": "5c24f884-445b-46f9-88b1-2b2133dfc40b",
-            "description": null,
             "metadata": []
         },
         "8e2f2888-b3f9-4787-9c7e-27779da4dc06": {
             "relationship_id": "8e2f2888-b3f9-4787-9c7e-27779da4dc06",
             "spouse_1_profile_id": "a4823564-a6f6-4654-8c93-465642e8a9ad",
             "spouse_2_profile_id": "d80ad58b-387f-4a12-a76b-568622f950cd",
-            "description": null,
             "metadata": []
         },
         "4f45a193-42df-4021-8d0f-11d9eb6b8c0b": {
             "relationship_id": "4f45a193-42df-4021-8d0f-11d9eb6b8c0b",
             "spouse_1_profile_id": "0cd3657d-6513-4264-a667-3be4ac6acdb9",
             "spouse_2_profile_id": "d0d1c8fc-5695-405a-9942-ab99436325fd",
-            "description": null,
-            "metadata": []
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "MARRIAGE",
+                    "value": null,
+                    "children": []
+                },
+                {
+                    "type": "simple",
+                    "key": "DIVORCE",
+                    "value": null,
+                    "children": []
+                }
+            ]
         },
         "48585c01-91ed-4f90-a173-49c58946c52e": {
             "relationship_id": "48585c01-91ed-4f90-a173-49c58946c52e",
             "spouse_1_profile_id": "057220fb-ab29-46cd-8597-467592552d26",
             "spouse_2_profile_id": "824f87e2-828b-4bc9-b33d-42d96ea94bb8",
-            "description": null,
             "metadata": []
         },
         "df306388-a186-4f8c-a885-8029e77038f5": {
             "relationship_id": "df306388-a186-4f8c-a885-8029e77038f5",
             "spouse_1_profile_id": "84b36f43-3c3d-48f4-b56f-207d9e039281",
             "spouse_2_profile_id": "8b757bd1-f341-4de6-9f11-8325bdd871a8",
-            "description": null,
             "metadata": []
         },
         "39f7a765-915c-4f91-bf0c-3d365376c785": {
             "relationship_id": "39f7a765-915c-4f91-bf0c-3d365376c785",
             "spouse_1_profile_id": "b9878880-0ca4-4919-8609-51e2734f1840",
             "spouse_2_profile_id": "e0b7186d-d6de-4a03-a11d-eef8a53368b1",
-            "description": null,
             "metadata": []
         },
         "e06c42e4-5d1e-4870-81d7-1c2a8a2bb0d0": {
             "relationship_id": "e06c42e4-5d1e-4870-81d7-1c2a8a2bb0d0",
             "spouse_1_profile_id": "4b143fad-85ac-4835-8692-b7c5a410fdd0",
             "spouse_2_profile_id": "ebb3da38-2968-4ff1-9bd0-b8ff9cbaa256",
-            "description": null,
-            "metadata": []
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "MARRIAGE",
+                    "value": null,
+                    "children": []
+                },
+                {
+                    "type": "simple",
+                    "key": "DIVORCE",
+                    "value": null,
+                    "children": []
+                }
+            ]
         }
     },
     "child_relationships": {
@@ -526,196 +1441,196 @@
             "relationship_id": "b98f12ef-9672-4992-a025-1b0207704c8b",
             "parent_relationship_id": "92a1d4c4-8435-4737-92d0-5b5ad4869700",
             "child_profile_id": "9a627f91-a909-44c5-af8f-d6b6bf7a46ad",
-            "description": null,
             "metadata": []
         },
         "7a9bb75e-d00a-4d58-a52a-d408eb67f5ad": {
             "relationship_id": "7a9bb75e-d00a-4d58-a52a-d408eb67f5ad",
             "parent_relationship_id": "4a920b05-ed01-4524-9abe-707151fe5870",
             "child_profile_id": "8946459d-3d16-48b6-9baa-022245f8cf8a",
-            "description": null,
             "metadata": []
         },
         "90bc35bf-61f4-4728-aaa7-a8adb825125c": {
             "relationship_id": "90bc35bf-61f4-4728-aaa7-a8adb825125c",
             "parent_relationship_id": "fa3e71d9-eba8-4dda-9f37-0a7b44ab97c2",
             "child_profile_id": "bca106d3-e7d6-4e0f-95ec-25cea84e4924",
-            "description": null,
             "metadata": []
         },
         "7b569b12-1e03-48e8-b788-efd39b19a3f2": {
             "relationship_id": "7b569b12-1e03-48e8-b788-efd39b19a3f2",
             "parent_relationship_id": "fa3e71d9-eba8-4dda-9f37-0a7b44ab97c2",
             "child_profile_id": "4c20ea63-ef48-4676-b4ad-408bb416b441",
-            "description": null,
             "metadata": []
         },
         "0e3f07e4-def0-44c4-ba8b-7a8fc750f7f9": {
             "relationship_id": "0e3f07e4-def0-44c4-ba8b-7a8fc750f7f9",
             "parent_relationship_id": "fa3e71d9-eba8-4dda-9f37-0a7b44ab97c2",
             "child_profile_id": "5c24f884-445b-46f9-88b1-2b2133dfc40b",
-            "description": null,
             "metadata": []
         },
         "1abe9ef1-3de5-437f-9f7c-f2ac73b31ef7": {
             "relationship_id": "1abe9ef1-3de5-437f-9f7c-f2ac73b31ef7",
             "parent_relationship_id": "f5b6d6b7-e786-4b79-9a62-58b254ce4b20",
             "child_profile_id": "e7b298b4-6cbd-4778-9836-9dd526984aeb",
-            "description": null,
             "metadata": []
         },
         "5f94b494-f378-47bc-94d0-26180a858337": {
             "relationship_id": "5f94b494-f378-47bc-94d0-26180a858337",
             "parent_relationship_id": "f5b6d6b7-e786-4b79-9a62-58b254ce4b20",
             "child_profile_id": "ff92ba09-e033-4c44-8ea4-2a9def7ced53",
-            "description": null,
             "metadata": []
         },
         "f2e10835-79da-4951-a722-78ba5134464b": {
             "relationship_id": "f2e10835-79da-4951-a722-78ba5134464b",
             "parent_relationship_id": "f5b6d6b7-e786-4b79-9a62-58b254ce4b20",
             "child_profile_id": "901dc00d-0757-4652-8076-23c9456aae62",
-            "description": null,
             "metadata": []
         },
         "5aff65d4-0995-4a9b-b902-413ddf29e1a5": {
             "relationship_id": "5aff65d4-0995-4a9b-b902-413ddf29e1a5",
             "parent_relationship_id": "67e6ee32-44c8-434c-8680-8eea35b04713",
             "child_profile_id": "546111f7-5568-4134-82e8-14d9ce820b35",
-            "description": null,
-            "metadata": []
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "ADOPTION",
+                    "value": null,
+                    "children": []
+                }
+            ]
         },
         "83cb1331-6e6b-4963-af57-08ad97f38e0e": {
             "relationship_id": "83cb1331-6e6b-4963-af57-08ad97f38e0e",
             "parent_relationship_id": "67e6ee32-44c8-434c-8680-8eea35b04713",
             "child_profile_id": "5b72f8eb-8a5c-4ba9-b5b4-7b8a082ebbed",
-            "description": null,
             "metadata": []
         },
         "8ecbee13-c9a0-4851-9d83-f69ea28c4b69": {
             "relationship_id": "8ecbee13-c9a0-4851-9d83-f69ea28c4b69",
             "parent_relationship_id": "67e6ee32-44c8-434c-8680-8eea35b04713",
             "child_profile_id": "689ac867-78e6-42e3-b167-8959ca875b72",
-            "description": null,
             "metadata": []
         },
         "6ffcdd0c-4e90-4ac6-88d1-958d6cabe4a1": {
             "relationship_id": "6ffcdd0c-4e90-4ac6-88d1-958d6cabe4a1",
             "parent_relationship_id": "078a070c-ec23-49f4-9d49-699d8824c626",
             "child_profile_id": "b9878880-0ca4-4919-8609-51e2734f1840",
-            "description": null,
             "metadata": []
         },
         "44154232-78d2-428b-ae91-8b9cdde47918": {
             "relationship_id": "44154232-78d2-428b-ae91-8b9cdde47918",
             "parent_relationship_id": "b848aa05-b57b-423e-8703-ad1081fbe87d",
             "child_profile_id": "1646f499-3a03-44a6-87b8-bc88926325f2",
-            "description": null,
             "metadata": []
         },
         "64fb7b0f-c5bb-4ae9-9302-089d977b2453": {
             "relationship_id": "64fb7b0f-c5bb-4ae9-9302-089d977b2453",
             "parent_relationship_id": "d62b5e9f-dffc-4eaa-b428-466854266e1c",
             "child_profile_id": "3ff6c30a-2fad-4aca-bb3e-18df17d5918a",
-            "description": null,
-            "metadata": []
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "ADOPTION",
+                    "value": null,
+                    "children": []
+                }
+            ]
         },
         "e77a09bf-f7c4-440b-84a6-88b69e08cbbd": {
             "relationship_id": "e77a09bf-f7c4-440b-84a6-88b69e08cbbd",
             "parent_relationship_id": "d62b5e9f-dffc-4eaa-b428-466854266e1c",
             "child_profile_id": "8ac35751-2129-4504-a68b-9283e4462671",
-            "description": null,
-            "metadata": []
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "ADOPTION",
+                    "value": null,
+                    "children": []
+                }
+            ]
         },
         "65518a29-4f52-4500-8600-7bf72faa5e2c": {
             "relationship_id": "65518a29-4f52-4500-8600-7bf72faa5e2c",
             "parent_relationship_id": "2a07064d-ba5b-474b-a995-fcd0f7bf2cc4",
             "child_profile_id": "ee2a67c7-537f-446a-8170-bd394f858d14",
-            "description": null,
             "metadata": []
         },
         "757526ab-118d-4245-8a5d-ba2d0bf0929a": {
             "relationship_id": "757526ab-118d-4245-8a5d-ba2d0bf0929a",
             "parent_relationship_id": "2a07064d-ba5b-474b-a995-fcd0f7bf2cc4",
             "child_profile_id": "a0e08dae-46b6-4d32-9209-67bf05538f24",
-            "description": null,
             "metadata": []
         },
         "0f73aceb-48b8-4c87-a3a3-d468ea7cc5e2": {
             "relationship_id": "0f73aceb-48b8-4c87-a3a3-d468ea7cc5e2",
             "parent_relationship_id": "6aafe1a6-14b3-42d5-9d24-e5a1bf8871b1",
             "child_profile_id": "cd036d53-6c9f-4b6c-bf0a-606827921e9c",
-            "description": null,
             "metadata": []
         },
         "baf18b46-0078-4faa-947c-3e774b577181": {
             "relationship_id": "baf18b46-0078-4faa-947c-3e774b577181",
             "parent_relationship_id": "6aafe1a6-14b3-42d5-9d24-e5a1bf8871b1",
             "child_profile_id": "a4823564-a6f6-4654-8c93-465642e8a9ad",
-            "description": null,
             "metadata": []
         },
         "91b5ec6e-0bc5-48c0-b3e6-b78581ef9b64": {
             "relationship_id": "91b5ec6e-0bc5-48c0-b3e6-b78581ef9b64",
             "parent_relationship_id": "8e2f2888-b3f9-4787-9c7e-27779da4dc06",
             "child_profile_id": "b910d201-5fe6-4791-bef3-350c1c0b4629",
-            "description": null,
             "metadata": []
         },
         "c866ba65-f369-4b62-9efb-d7ab6e7a145b": {
             "relationship_id": "c866ba65-f369-4b62-9efb-d7ab6e7a145b",
             "parent_relationship_id": "8e2f2888-b3f9-4787-9c7e-27779da4dc06",
             "child_profile_id": "6a253bb4-520a-4ec9-90e7-4b0c6607f1fd",
-            "description": null,
             "metadata": []
         },
         "83f1e782-ecce-4599-938e-a5156d96ee85": {
             "relationship_id": "83f1e782-ecce-4599-938e-a5156d96ee85",
             "parent_relationship_id": "8e2f2888-b3f9-4787-9c7e-27779da4dc06",
             "child_profile_id": "b867ef44-6871-43c2-94d9-38b94cb1a397",
-            "description": null,
-            "metadata": []
+            "metadata": [
+                {
+                    "type": "simple",
+                    "key": "ADOPTION",
+                    "value": null,
+                    "children": []
+                }
+            ]
         },
         "07b97b7f-b8f0-4e77-9170-92954392a46b": {
             "relationship_id": "07b97b7f-b8f0-4e77-9170-92954392a46b",
             "parent_relationship_id": "4f45a193-42df-4021-8d0f-11d9eb6b8c0b",
             "child_profile_id": "37fa8126-9d6e-485f-85b7-38ca25e39812",
-            "description": null,
             "metadata": []
         },
         "a58a1cde-5ce0-4697-a2c3-2cdafe4951b4": {
             "relationship_id": "a58a1cde-5ce0-4697-a2c3-2cdafe4951b4",
             "parent_relationship_id": "6aafe1a6-14b3-42d5-9d24-e5a1bf8871b1",
             "child_profile_id": "64ecce36-6f21-49ad-9451-1d408c21b775",
-            "description": null,
             "metadata": []
         },
         "61e95bf0-7ef2-4d49-bf1a-0b7d69670b0d": {
             "relationship_id": "61e95bf0-7ef2-4d49-bf1a-0b7d69670b0d",
             "parent_relationship_id": "48585c01-91ed-4f90-a173-49c58946c52e",
             "child_profile_id": "0cd3657d-6513-4264-a667-3be4ac6acdb9",
-            "description": null,
             "metadata": []
         },
         "6e2d10b6-85f5-480f-8cdc-22ad160d1253": {
             "relationship_id": "6e2d10b6-85f5-480f-8cdc-22ad160d1253",
             "parent_relationship_id": "48585c01-91ed-4f90-a173-49c58946c52e",
             "child_profile_id": "8b757bd1-f341-4de6-9f11-8325bdd871a8",
-            "description": null,
             "metadata": []
         },
         "01c386a1-44d3-442d-843e-4229baf256a5": {
             "relationship_id": "01c386a1-44d3-442d-843e-4229baf256a5",
             "parent_relationship_id": "48585c01-91ed-4f90-a173-49c58946c52e",
             "child_profile_id": "4e229239-b2f9-4066-8184-8ebea17ab2f5",
-            "description": null,
             "metadata": []
         },
         "7eed253b-fb11-4529-b8ee-38a2965046df": {
             "relationship_id": "7eed253b-fb11-4529-b8ee-38a2965046df",
             "parent_relationship_id": "e06c42e4-5d1e-4870-81d7-1c2a8a2bb0d0",
             "child_profile_id": "b317f15c-bf77-4370-9413-b52d323c713d",
-            "description": null,
             "metadata": []
         }
     }
