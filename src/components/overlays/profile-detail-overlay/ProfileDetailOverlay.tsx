@@ -1,13 +1,13 @@
-import ModalDialog from "../../modal-dialog/ModalDialog"
-import MetadataFrame from "../../metadata-frame/MetadataFrame"
+import ModalDialog from "../../building-blocks/modal-dialog/ModalDialog"
+import MetadataFrame from "../../building-blocks/metadata-frame/MetadataFrame"
 import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import { IconContext } from "react-icons"
 import { FaMars, FaVenus } from "react-icons/fa6"
 import { useContext, useState } from "react"
 import { FamilyTreeStateContext } from "../../family-tree/FamilyTreeState"
 import "./ProfileDetailOverlay.scoped.css"
-import ComplexDateInput from "@/components/complex-date-input/ComplexDateInput"
-import ActionButton from "@/components/action-button/ActionButton"
+import ComplexDateInput from "@/components/building-blocks/complex-date-input/ComplexDateInput"
+import ActionButton from "@/components/building-blocks/action-button/ActionButton"
 import { getBirthDate, getDeathDate, setBirthDate, setDeathDate } from "@/lib/family-tree/metadata-helpers"
 
 const ProfileDetailOverlay: React.FC<{ profile: Profile, onFinished: () => void }> = ({ profile, onFinished }) => {

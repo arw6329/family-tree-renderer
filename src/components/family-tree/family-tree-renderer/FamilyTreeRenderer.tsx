@@ -6,7 +6,7 @@ import ControlHeader from "../control-header/ControlHeader"
 import ProfileHeader from "../profile-header/ProfileHeader"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import SpousalRelationshipHeader from "../relationship-headers/SpousalRelationshipHeader"
-import KeyShortcutInfo from "@/components/key-shortcut-info/KeyShortcutInfo"
+import KeyShortcutInfo from "@/components/ui/key-shortcut-info/KeyShortcutInfo"
 import { min_by_with_index } from "@/lib/array-utils/array-utils"
 import ChildRelationshipHeader from "../relationship-headers/ChildRelationshipHeader"
 

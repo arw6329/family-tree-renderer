@@ -1,4 +1,4 @@
-import HeaderButton from "@/components/header-button/HeaderButton"
+import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import "./ControlHeader.scoped.css"
 import { useContext, useState } from "react"
 import JumpToProfileOverlay from "@/components/overlays/JumpToProfileOverlay"

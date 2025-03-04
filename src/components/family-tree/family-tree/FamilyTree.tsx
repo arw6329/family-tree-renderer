@@ -2,7 +2,7 @@ import { FamilyTreeDatabase } from "@/lib/family-tree/FamilyTreeDatabase"
 import { FamilyTreeStateProvider } from "../FamilyTreeState"
 import FamilyTreeRenderer from "../family-tree-renderer/FamilyTreeRenderer"
 import "./FamilyTree.scoped.css"
-import ActionButton from "@/components/action-button/ActionButton"
+import ActionButton from "@/components/building-blocks/action-button/ActionButton"
 import { useState } from "react"
 import CreateProfileOverlay from "@/components/overlays/CreateProfileOverlay"
 

@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import ProfilePicker from "../family-tree/profile-picker/ProfilePicker"
-import ModalDialog from "../modal-dialog/ModalDialog"
+import ModalDialog from "../building-blocks/modal-dialog/ModalDialog"
 import { FamilyTreeStateContext } from "../family-tree/FamilyTreeState"
 import { SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase"
 

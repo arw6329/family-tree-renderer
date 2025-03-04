@@ -1,9 +1,9 @@
 import { useContext, useState } from "react"
 import ProfilePicker from "../family-tree/profile-picker/ProfilePicker"
-import ModalDialog from "../modal-dialog/ModalDialog"
+import ModalDialog from "../building-blocks/modal-dialog/ModalDialog"
 import { FamilyTreeStateContext } from "../family-tree/FamilyTreeState"
 import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
-import StageTracker from "../stage-tracker/StageTracker"
+import StageTracker from "../building-blocks/stage-tracker/StageTracker"
 
 interface SelectedParent {
     newlyCreated: boolean,

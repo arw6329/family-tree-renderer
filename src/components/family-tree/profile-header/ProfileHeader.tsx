@@ -1,4 +1,4 @@
-import HeaderButton from "@/components/header-button/HeaderButton"
+import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import "./ProfileHeader.scoped.css"
 import { Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase"
 import { FaMars, FaVenus } from "react-icons/fa"
@@ -14,7 +14,7 @@ import AddParentsOverlay from "@/components/overlays/AddParentsOverlay"
 import ProfileDetailOverlay from "@/components/overlays/profile-detail-overlay/ProfileDetailOverlay"
 import { getBirthDate, getDeathDate } from "@/lib/family-tree/metadata-helpers"
 import { prettyDate } from "@/lib/family-tree/date-utils"
-import DismissableBlock from "@/components/dismissable-block/DismissableBlock"
+import DismissableBlock from "@/components/building-blocks/dismissable-block/DismissableBlock"
 
 const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     const state = useContext(FamilyTreeStateContext)

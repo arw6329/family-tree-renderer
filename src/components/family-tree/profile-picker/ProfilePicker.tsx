@@ -1,7 +1,7 @@
 import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import "./ProfilePicker.scoped.css"
 import { useContext, useState } from "react"
-import ActionButton from "@/components/action-button/ActionButton"
+import ActionButton from "@/components/building-blocks/action-button/ActionButton"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 
 interface ProfilePickerProps {

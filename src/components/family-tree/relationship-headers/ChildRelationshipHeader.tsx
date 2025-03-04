@@ -1,8 +1,8 @@
-import HeaderButton from "@/components/header-button/HeaderButton"
+import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import "./RelationshipHeader.scoped.css"
 import { useContext } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
-import DismissableBlock from "@/components/dismissable-block/DismissableBlock"
+import DismissableBlock from "@/components/building-blocks/dismissable-block/DismissableBlock"
 
 const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const state = useContext(FamilyTreeStateContext)

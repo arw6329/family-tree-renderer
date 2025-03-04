@@ -1,11 +1,11 @@
-import HeaderButton from "@/components/header-button/HeaderButton"
+import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import "./RelationshipHeader.scoped.css"
 import { FaXmark } from "react-icons/fa6"
 import { useContext, useState } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import { IconContext } from "react-icons"
 import AddChildOverlay from "@/components/overlays/AddChildOverlay"
-import DismissableBlock from "@/components/dismissable-block/DismissableBlock"
+import DismissableBlock from "@/components/building-blocks/dismissable-block/DismissableBlock"
 
 const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
     const state = useContext(FamilyTreeStateContext)
