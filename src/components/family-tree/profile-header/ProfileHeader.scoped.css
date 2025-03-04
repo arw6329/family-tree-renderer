@@ -14,8 +14,8 @@ header {
 }
 
 .profile-pic {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
     border-radius: 100%;
 }
@@ -29,19 +29,7 @@ header {
     color: #a0a0a0;
 }
 
-.close-button {
-    background: none;
-    border: none;
-    align-self: baseline;
-    padding: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
 .metadata-row {
-    flex-grow: 1;
     display: flex;
     gap: 20px;
 }

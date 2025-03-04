@@ -19,17 +19,6 @@ header {
     padding: 0 6px;
 }
 
-.close-button {
-    background: none;
-    border: none;
-    align-self: baseline;
-    padding: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
 .metadata-row {
     flex-grow: 1;
     display: flex;

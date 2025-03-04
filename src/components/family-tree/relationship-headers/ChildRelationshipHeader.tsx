@@ -1,9 +1,8 @@
 import HeaderButton from "@/components/header-button/HeaderButton"
 import "./RelationshipHeader.scoped.css"
-import { FaXmark } from "react-icons/fa6"
 import { useContext } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
-import { IconContext } from "react-icons"
+import DismissableBlock from "@/components/dismissable-block/DismissableBlock"
 
 const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const state = useContext(FamilyTreeStateContext)
@@ -15,17 +14,14 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
 
     return (
         <header>
-            <div className="row" style={{ minHeight: 80 }}>
-                <span className="name">Relationship between<br />{parent1.name}, {parent2.name}, and {child.name}</span>
-                <div className="metadata-row">
-                    
+            <DismissableBlock closeButtonTitle="Close relationship details" onDismiss={() => state.setFocusedObjectId('ChildRelationship', null)}>
+                <div className="row" style={{ minHeight: 80 }}>
+                    <span className="name">Relationship between<br />{parent1.name}, {parent2.name}, and {child.name}</span>
+                    <div className="metadata-row">
+                        
+                    </div>
                 </div>
-                <button className="close-button" title="Close relationship details" onClick={() => state.setFocusedObjectId('ChildRelationship', null)}>
-                    <IconContext.Provider value={{ style: { height: 22, width: 22 } }}>
-                        <FaXmark fill="white" />
-                    </IconContext.Provider>
-                </button>
-            </div>
+            </DismissableBlock>
             <div className="row">
                 {state.editing && <>
                     <HeaderButton onClick={() => {

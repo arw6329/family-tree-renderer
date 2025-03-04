@@ -1,0 +1,16 @@
+.root {
+    position: relative;
+}
+
+.close-button {
+    background: none;
+    border: medium;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}

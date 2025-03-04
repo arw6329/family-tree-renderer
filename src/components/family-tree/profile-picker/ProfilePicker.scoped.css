@@ -11,7 +11,7 @@
     max-height: 100%;
     box-sizing: border-box;
     min-height: 0;
-    min-width: 600px;
+    min-width: min(600px, 85vw);
 }
 
 .profiles {
