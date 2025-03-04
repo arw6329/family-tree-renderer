@@ -43,7 +43,7 @@ export default function App() {
 }
 ```
 
-I am planning to add entrypoints/separate packages for Vue and other environments (as as web component), but as of right now only React projects can comsume this library.
+I am planning to add entrypoints/separate packages for Vue and other environments (as as web component), but as of right now only React projects can consume this library.
 
 ## Save family tree on edit
 
