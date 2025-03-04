@@ -3,6 +3,8 @@ import { JSX } from 'react'
 import ProfileBlock from '@/components/family-tree/profile-block/ProfileBlock'
 import SpousalRelationshipInfoButton from '@/components/family-tree/relationship-info-button/SpousalRelationshipInfoButton'
 import ChildRelationshipInfoButton from '@/components/family-tree/relationship-info-button/ChildRelationshipInfoButton'
+import { getPedigree } from './metadata-helpers'
+import ChildRelationshipLabel from '@/components/family-tree/child-relationship-label/ChildRelationshipLabel'
 
 export class ProfileNode extends AbstractFamilyTreeNode {
 	*draw(): Generator<JSX.Element, undefined, never> {
@@ -21,6 +23,17 @@ export class ProfileNode extends AbstractFamilyTreeNode {
                 y={(this.y + this.left_parent.y) / 2}
                 relationship={this.relationship_data.own_child_relationship!}
             />
+
+            const pedigree = getPedigree(this.relationship_data.own_child_relationship!.metadata)
+            switch(pedigree) {
+                case 'adoptive': {
+                    yield <ChildRelationshipLabel
+                        x={this.x}
+                        y={(this.y + this.left_parent.y) / 2 + (this.y - this.left_parent.y) / 5.5}
+                        labelText='ADOPTIVE'
+                    />
+                }
+            }
         }
 
         // This needs to be before right SpousalRelationshipInfoButton for tab order

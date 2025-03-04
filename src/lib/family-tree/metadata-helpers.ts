@@ -87,3 +87,13 @@ export function setDeathDate(metadata: NodeMetadata[], date: ComplexDate | null)
 
     return metadata
 }
+
+export function getPedigree(metadata: NodeMetadata[]): 'adoptive' | 'biological' | 'foster' | null {
+    const adoptionRecord = metadata.find(record => record.type === 'simple' && record.key === 'ADOPTION')
+
+    if(adoptionRecord) {
+        return 'adoptive'
+    } else {
+        return null
+    }
+}
