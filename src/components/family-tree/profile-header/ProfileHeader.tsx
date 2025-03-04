@@ -36,7 +36,7 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     return (
         <header>
             <div className="row">
-                <img className="profile-pic" src="https://reunionpage.net/sprites/reunionpage-logo.png" alt={`${profile.name}`} />
+                <img className="profile-pic" src={state.getProfilePictureURL(profile)} alt={`${profile.name}`} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                         <span className="name">{profile.name}</span>

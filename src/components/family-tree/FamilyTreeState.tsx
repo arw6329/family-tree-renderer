@@ -4,6 +4,7 @@ import { FamilyTreeDatabase, ObjectType, ObjectTypeToInterface, Profile, Spousal
 import { ProfileNode } from "@/lib/family-tree/ProfileNode";
 import { TreeBuilder } from "@/lib/family-tree/TreeBuilder";
 import React, { createContext, JSX, ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import defaultProfilePicture from "@/static/reunionpage-logo.png"
 
 // TODO: bring common db exploration funcs like finding child relationships, spouses, etc.
 // for particular node into functions, import here and other places where these operations
@@ -33,7 +34,8 @@ interface ContextType {
     makeSpouses: (profile1: Profile, profile2: Profile) => SpousalRelationship,
     makeChild: (parentRelationship: SpousalRelationship, profile: Profile) => void,
     disconnectChild: (child: Profile) => void,
-    disconnectSpouses: (relationship: SpousalRelationship) => void
+    disconnectSpouses: (relationship: SpousalRelationship) => void,
+    getProfilePictureURL: (profile: Profile) => string
 }
 
 const FamilyTreeStateContext = createContext<ContextType>(
@@ -263,6 +265,9 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
                 delete database.spousal_relationships[relationship.relationship_id]
 
                 cycleDatabaseVersion()
+            },
+            getProfilePictureURL(profile: Profile) {
+                return defaultProfilePicture
             }
         }}>
             {children}

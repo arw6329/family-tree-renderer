@@ -1,7 +1,8 @@
 import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import "./ProfilePicker.scoped.css"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import ActionButton from "@/components/action-button/ActionButton"
+import { FamilyTreeStateContext } from "../FamilyTreeState"
 
 interface ProfilePickerProps {
     action: string
@@ -13,6 +14,7 @@ interface ProfilePickerProps {
 }
 
 const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, validModes, onSelectExisting, onCreateNew, onCancel }) => {
+    const state = useContext(FamilyTreeStateContext)
     const [selected, setSelected] = useState<Profile | null>(null)
     const [input, setInput] = useState('')
     const [mode, setMode] = useState<'create' | 'select'>(validModes !== 'create' ? 'select' : 'create')
@@ -48,7 +50,7 @@ const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, validMo
                                         data-selected={selected?.profile_id === profile.profile_id}
                                         onClick={() => setSelected(profile)}
                                     >
-                                        <img className="profile-pic" loading="lazy" src="https://reunionpage.net/sprites/reunionpage-logo.png" />
+                                        <img className="profile-pic" loading="lazy" src={state.getProfilePictureURL(profile)} />
                                         <span>{profile.name}</span>
                                     </button>
                                 ))}

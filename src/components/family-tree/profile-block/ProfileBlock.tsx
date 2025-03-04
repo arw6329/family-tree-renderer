@@ -38,7 +38,7 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
                     data-focus={state.focusedProfileId === profile.profile_id}
                 >
                     <div className="img-wrapper">
-                        <img src="https://reunionpage.net/sprites/reunionpage-logo.png" alt={`Image of ${profile.name}`} />
+                        <img src={state.getProfilePictureURL(profile)} alt={`Image of ${profile.name}`} loading="lazy" />
                     </div>
                     <div className="column">
                         <span>{profile.name}</span>
