@@ -8,15 +8,15 @@ import { FamilyTreeStateContext } from "../../family-tree/FamilyTreeState"
 import "./ProfileDetailOverlay.scoped.css"
 import ComplexDateInput from "@/components/building-blocks/complex-date-input/ComplexDateInput"
 import ActionButton from "@/components/building-blocks/action-button/ActionButton"
-import { getBirthDate, getDeathDate, setBirthDate, setDeathDate } from "@/lib/family-tree/metadata-helpers"
+import { getEventDate, setEventDate } from "@/lib/family-tree/metadata-helpers"
 
 const ProfileDetailOverlay: React.FC<{ profile: Profile, onFinished: () => void }> = ({ profile, onFinished }) => {
     const state = useContext(FamilyTreeStateContext)
     
     const [name, setName] = useState(profile.name)
     const [gender, setGender] = useState(profile.family_tree_gender)
-    const [dateOfBirth, setDateOfBirth] = useState(getBirthDate(profile.metadata))
-    const [dateOfDeath, setDateOfDeath] = useState(getDeathDate(profile.metadata))
+    const [dateOfBirth, setDateOfBirth] = useState(getEventDate('BIRTH', profile.metadata))
+    const [dateOfDeath, setDateOfDeath] = useState(getEventDate('DEATH', profile.metadata))
 
     return (
         <ModalDialog onClose={onFinished}>
@@ -60,9 +60,9 @@ const ProfileDetailOverlay: React.FC<{ profile: Profile, onFinished: () => void 
                                 profile_id: profile.profile_id,
                                 name: name,
                                 family_tree_gender: gender,
-                                metadata: setDeathDate(setBirthDate(profile.metadata, dateOfBirth), dateOfDeath)
+                                metadata: setEventDate('DEATH', setEventDate('BIRTH', profile.metadata, dateOfBirth), dateOfDeath)
                             }
-                            state.replaceProfile(newProfile)
+                            state.replaceObject('Profile', newProfile)
                             onFinished()
                         }}>
                             <span>Save</span>
@@ -101,7 +101,6 @@ const styles = {
         backgroundColor: '#1c1e1f',
         padding: 16,
         gap: 16,
-        minWidth: 600,
         boxSizing: 'border-box' as const
     },
 

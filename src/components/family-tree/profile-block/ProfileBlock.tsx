@@ -4,7 +4,7 @@ import { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import { ProfileNode } from "@/lib/family-tree/ProfileNode"
 import { prettyDateShortYearOnly } from "@/lib/family-tree/date-utils"
-import { getBirthDate, getDeathDate } from "@/lib/family-tree/metadata-helpers"
+import { getEventDate } from "@/lib/family-tree/metadata-helpers"
 
 const NODE_FOREIGNOBJECT_WIDTH = 175
 const NODE_FOREIGNOBJECT_HEIGHT = 75
@@ -14,9 +14,9 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
     const profile: Profile = node.data.profile
     const isAnchorNode = state.rootNode.data.profile.profile_id === profile.profile_id
 
-    const birthDate = getBirthDate(profile.metadata)
+    const birthDate = getEventDate('BIRTH', profile.metadata)
     const birthYear = birthDate && prettyDateShortYearOnly(birthDate)
-    const deathDate = getDeathDate(profile.metadata)
+    const deathDate = getEventDate('DEATH', profile.metadata)
     const deathYear = deathDate && prettyDateShortYearOnly(deathDate)
 
     return (

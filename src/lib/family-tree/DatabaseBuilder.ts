@@ -1,4 +1,4 @@
-import { FamilyTreeDatabase, Profile, SpousalRelationship } from "./FamilyTreeDatabase";
+import { ChildRelationship, FamilyTreeDatabase, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "./FamilyTreeDatabase";
 
 export class DatabaseBuildError extends Error {}
 
@@ -18,12 +18,39 @@ export class DatabaseBuilder {
         this.database.profiles[profile.profile_id] = profile
     }
 
-    replaceProfile(profile: Profile) {
-        if(!(profile.profile_id in this.database.profiles)) {
-            throw new DatabaseBuildError(`Profile ${profile.profile_id} does not exists`)
+    replaceObject<T extends ObjectType>(type: T, object: ObjectTypeToInterface[T]) {
+        switch(type) {
+            case 'Profile': {
+                const profile = object as Profile
+                if(!(profile.profile_id in this.database.profiles)) {
+                    throw new DatabaseBuildError(`Profile ${profile.profile_id} does not exists`)
+                }
+        
+                this.database.profiles[profile.profile_id] = profile
+                return
+            }
+            case 'SpousalRelationship': {
+                const relationship = object as SpousalRelationship
+                if(!(relationship.relationship_id in this.database.spousal_relationships)) {
+                    throw new DatabaseBuildError(`Spousal relationship ${relationship.relationship_id} does not exists`)
+                }
+        
+                this.database.spousal_relationships[relationship.relationship_id] = relationship
+                return
+            }
+            case 'ChildRelationship': {
+                const relationship = object as ChildRelationship
+                if(!(relationship.relationship_id in this.database.child_relationships)) {
+                    throw new DatabaseBuildError(`Child relationship ${relationship.relationship_id} does not exists`)
+                }
+        
+                this.database.child_relationships[relationship.relationship_id] = relationship
+                return
+            }
+            default: {
+                throw new Error(`Unrecognized object type ${type}`)
+            }
         }
-
-        this.database.profiles[profile.profile_id] = profile
     }
 
     makeSpouses(profile1: Profile, profile2: Profile): SpousalRelationship {

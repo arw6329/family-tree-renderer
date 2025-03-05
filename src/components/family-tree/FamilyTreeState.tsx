@@ -30,7 +30,7 @@ interface ContextType {
     getObjectById: <T extends ObjectType>(type: T, id: string) => ObjectTypeToInterface[T] | null,
     hasParents: (profile: Profile) => boolean,
     addNewProfile: (profile: Profile) => void,
-    replaceProfile: (profile: Profile) => void,
+    replaceObject: <T extends ObjectType>(type: T, object: ObjectTypeToInterface[T]) => void,
     makeSpouses: (profile1: Profile, profile2: Profile) => SpousalRelationship,
     makeChild: (parentRelationship: SpousalRelationship, profile: Profile) => void,
     disconnectChild: (child: Profile) => void,
@@ -226,10 +226,24 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
                 DatabaseBuilder.fromExisting(database).addNewProfile(profile)
                 cycleDatabaseVersion()
             },
-            replaceProfile(profile: Profile) {
-                DatabaseBuilder.fromExisting(database).replaceProfile(profile)
-                if(profile.profile_id === rootProfile?.profile_id) {
-                    setRootProfile(profile)
+            replaceObject<T extends ObjectType>(type: T, object: ObjectTypeToInterface[T]) {
+                switch(type) {
+                    case 'Profile': {
+                        const profile = object as Profile
+                        DatabaseBuilder.fromExisting(database).replaceObject(type, object)
+                        if(profile.profile_id === rootProfile?.profile_id) {
+                            setRootProfile(profile)
+                        }
+                        break
+                    }
+                    case 'SpousalRelationship':
+                    case 'ChildRelationship': {
+                        DatabaseBuilder.fromExisting(database).replaceObject(type, object)
+                        break
+                    }
+                    default: {
+                        throw new Error(`Unrecognized object type ${type}`)
+                    }
                 }
                 cycleDatabaseVersion()
             },

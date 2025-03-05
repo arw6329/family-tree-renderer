@@ -1,8 +1,9 @@
 import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import "./RelationshipHeader.scoped.css"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import DismissableBlock from "@/components/building-blocks/dismissable-block/DismissableBlock"
+import ChildRelationshipDetailOverlay from "@/components/overlays/child-relationship-detail-overlay/ChildRelationshipDetailOverlay"
 
 const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const state = useContext(FamilyTreeStateContext)
@@ -11,6 +12,7 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const parent1 = state.getObjectById('Profile', parentsSpousalRelationship.spouse_1_profile_id)!
     const parent2 = state.getObjectById('Profile', parentsSpousalRelationship.spouse_2_profile_id)!
     const child = state.getObjectById('Profile', relationship.child_profile_id)!
+    const [moreDetailsPopupActive, setMoreDetailsPopupActive] = useState(false)
 
     return (
         <header>
@@ -30,8 +32,18 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
                     }}>
                         <span>Break relationship</span>
                     </HeaderButton>
+                    <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
+                        <span>Edit details</span>
+                    </HeaderButton>
                 </>}
             </div>
+
+            {moreDetailsPopupActive && <>
+                <ChildRelationshipDetailOverlay
+                    relationship={relationship}
+                    onFinished={() => setMoreDetailsPopupActive(false)}
+                />
+            </>}
         </header>
     )
 }

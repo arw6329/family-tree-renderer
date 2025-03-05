@@ -12,7 +12,7 @@ import AddSpouseOverlay from "@/components/overlays/AddSpouseOverlay"
 import AddChildOverlay from "@/components/overlays/AddChildOverlay"
 import AddParentsOverlay from "@/components/overlays/AddParentsOverlay"
 import ProfileDetailOverlay from "@/components/overlays/profile-detail-overlay/ProfileDetailOverlay"
-import { getBirthDate, getDeathDate } from "@/lib/family-tree/metadata-helpers"
+import { getEventDate } from "@/lib/family-tree/metadata-helpers"
 import { prettyDate } from "@/lib/family-tree/date-utils"
 import DismissableBlock from "@/components/building-blocks/dismissable-block/DismissableBlock"
 
@@ -30,8 +30,8 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
 
     const spouses = state.getSpousesOf(profile)
 
-    const dateOfBirth = getBirthDate(profile.metadata)
-    const dateOfDeath = getDeathDate(profile.metadata)
+    const dateOfBirth = getEventDate('BIRTH', profile.metadata)
+    const dateOfDeath = getEventDate('DEATH', profile.metadata)
 
     return (
         <header>

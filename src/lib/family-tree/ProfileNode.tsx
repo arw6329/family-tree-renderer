@@ -30,7 +30,7 @@ export class ProfileNode extends AbstractFamilyTreeNode {
                     yield <ChildRelationshipLabel
                         x={this.x}
                         y={(this.y + this.left_parent.y) / 2 + (this.y - this.left_parent.y) / 5.5}
-                        labelText='ADOPTIVE'
+                        labelText="ADOPTIVE"
                     />
                 }
             }
