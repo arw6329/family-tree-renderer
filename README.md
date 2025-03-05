@@ -2,6 +2,8 @@
 
 ReunionPage is an interactive in-browser family tree renderer that allows you to build, edit, and explore family trees, written in React.
 
+See the [development branch](https://github.com/arw6329/family-tree-renderer/tree/development) for the latest version. It may have a more up-to-date version of this README.
+
 ## Demo
 
 https://family-tree-demo.arw9234.net
