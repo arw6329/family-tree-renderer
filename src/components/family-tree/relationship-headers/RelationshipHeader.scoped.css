@@ -17,6 +17,8 @@ header {
     font-size: 1.3rem;
     color: white;
     padding: 0 6px;
+    max-width: 450px;
+    box-sizing: border-box;
 }
 
 .metadata-row {

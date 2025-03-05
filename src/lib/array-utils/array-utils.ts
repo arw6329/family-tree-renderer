@@ -29,6 +29,18 @@ export function remove_elem_if_present<T>(target: T[], elem: T) {
     target.splice(index, 1)
 }
 
+export function remove_elems_by<T>(target: T[], predicate: (elem: T) => boolean) {
+    const indices: number[] = []
+    target.forEach((elem, i) => {
+        if(predicate(elem)) {
+            indices.push(i)
+        }
+    })
+    indices.forEach((index, i) => {
+        target.splice(index - i, 1)
+    })   
+}
+
 export function replace_elem<T>(target: T[], old_elem: T, new_elem: T) {
     let index = target.indexOf(old_elem)
     if(index < 0)

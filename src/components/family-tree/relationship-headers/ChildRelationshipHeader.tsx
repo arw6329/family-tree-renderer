@@ -4,6 +4,8 @@ import { useContext, useState } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import DismissableBlock from "@/components/building-blocks/dismissable-block/DismissableBlock"
 import ChildRelationshipDetailOverlay from "@/components/overlays/child-relationship-detail-overlay/ChildRelationshipDetailOverlay"
+import { getEventDate, getPedigree } from "@/lib/family-tree/metadata-helpers"
+import { prettyDate } from "@/lib/family-tree/date-utils"
 
 const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const state = useContext(FamilyTreeStateContext)
@@ -13,14 +15,34 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const parent2 = state.getObjectById('Profile', parentsSpousalRelationship.spouse_2_profile_id)!
     const child = state.getObjectById('Profile', relationship.child_profile_id)!
     const [moreDetailsPopupActive, setMoreDetailsPopupActive] = useState(false)
+    const pedigree = getPedigree(relationship.metadata)
+    const dateOfAdoption = getEventDate('ADOPTION', relationship.metadata)
+    const dateOfFoster = getEventDate('FOSTER', relationship.metadata)
 
     return (
         <header>
             <DismissableBlock closeButtonTitle="Close relationship details" onDismiss={() => state.setFocusedObjectId('ChildRelationship', null)}>
                 <div className="row" style={{ minHeight: 80 }}>
-                    <span className="name">Relationship between<br />{parent1.name}, {parent2.name}, and {child.name}</span>
+                    <span className="name">Relationship between {child.name} and parents</span>
                     <div className="metadata-row">
-                        
+                        {pedigree && <div className="metadata">
+                            <label>Pedigree</label>
+                            <span>{
+                                {
+                                    'adoptive': 'Adoptive',
+                                    'biological': 'Biological',
+                                    'foster': 'Foster'
+                                }[pedigree]
+                            }</span>
+                        </div>}
+                        {dateOfAdoption && <div className="metadata">
+                            <label>Adoption date</label>
+                            <span>{prettyDate(dateOfAdoption)}</span>
+                        </div>}
+                        {dateOfFoster && <div className="metadata">
+                            <label>Foster date</label>
+                            <span>{prettyDate(dateOfFoster)}</span>
+                        </div>}
                     </div>
                 </div>
             </DismissableBlock>
