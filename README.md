@@ -12,6 +12,18 @@ This project is in early development and a work in progress. Don't expect it to 
 
 This project is currently in major version 0. I will try to avoid making backwards-incompatible changes while in this version but will not guarantee as such. The codebase, API, features, and visuals of this component are subject to change. I will bump the project to version 1.0.0 once it is in a state I consider stable.
 
+## Table of Contents
+
+- [Features](#features)
+- [Install](#install)
+- [Basic Usage](#basic-usage)
+    - [Save family tree on edit](#save-family-tree-on-edit)
+    - [Populate with data](#populate-with-data)
+- [TODO/Planned Features](#todoplanned-features)
+- [Accessibility](#accessibility)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 - Fully interactive with pan/zoom, recenter/rebuild on different nodes
@@ -45,7 +57,7 @@ export default function App() {
 
 I am planning to add entrypoints/separate packages for Vue and other environments (as as web component), but as of right now only React projects can consume this library.
 
-## Save family tree on edit
+### Save family tree on edit
 
 By default the family tree will be lost upon closing/reloading the page.
 
@@ -97,7 +109,7 @@ In this case, `onDatabaseChange` will not be called for the subsequent 3 edits s
 
 Once the fetch call completes and the promise resolves, `onDatabaseChange` will immediately be called again with the most recent version of the tree. Only the most recent version will be passed to `onDatabaseChange`, so even though 3 edits were made while the first one was being processed, you will only be notified once.
 
-## Populate with data
+### Populate with data
 
 Use the `database` prop to populate the tree with saved data (for example, data previously passed to `onDatabaseChange` and saved):
 
@@ -116,6 +128,20 @@ const database = { /* ... */ }
 - Options to enable/disable editing and other fine tuning
 - Arbitrary metadata editing for profiles and relationships
 - Support replacing default profile nodes with custom components
+
+## Accessibility
+
+I consider it extremely important that this project is accessible to users of all abilities. This means not only following accessibility best practices and ensuring WCAG compliance to the highest degree possible, but designing an experience that is actually pleasant and intuitive to users with alternate input devices. While web accessibility is a complex issue affecting all websites, complex, interactive charts, diagrams, and data visualizations such as this project present a unique challenge, since they are inherently designed to present complex information in a visual (aka inaccessible) way that is difficult to express via semantic HTML and often involve custom control schemes. This has led to the vast majority of these kinds of experiences being inaccessible as [industry experts have noted](https://www.youtube.com/watch?v=SWB-KLXN-Ok&t=1510s).
+
+ReunionPage features a set of custom keyboard controls to make controlling and navigating the family tree renderer accessible to keyboard-only users. This includes not only the standard tab-based keyboard navigation, but also custom hotkeys for moving focus to points of interest, such as the current anchor node or the node that the user is centered on visually. Users can also pan the canvas using the arrow keys or WASD, and I am planning on adding keyboard controls for zoom as well. There are also hotkeys for returning focus to the canvas to prevent users getting focus-trapped in large trees. I am also planning on adding arrow-key-based controls for moving focus around in the tree in an intuitive manner, rather than requiring the user to linearly tab through elements in the tree, plus other controls like hotkeys to open the "Jump to profile" menu. Keyboard controls can be viewed by pressing Alt + Shift + K (for keyboard) while the family tree has focus or with a button in the control menu.
+
+My goal with this control scheme is to not only make it possible for keyboard-only users to use this product but to make the experience as pleasant as doing so with a traditional pointer device.
+
+This was partially inspired by webapps like Discord that make heavy use of custom hotkeys for accessible navigation.
+
+I am also considering ways that this library can generate textual summaries of the information in the family tree and present that to the browser/OS/accessibility software via ARIA or other semantic markup (for example, "Family tree centered on Jane Doe. The tree shows that Jane Doe has x siblings, y generations of z descendants with a spouses, and b generations of c ancestors. ..."), since this would make the information presented in the tree accessible to low- or no-vision users or in any other situation where the user can't currently see the tree in its entirety.
+
+If you have any input on how to make the experience more accessible, I would greatly appreciate your contribution in the form of an issue on GitHub.
 
 ## Contributing
 
