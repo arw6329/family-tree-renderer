@@ -10,6 +10,10 @@ const ChildRelationshipInfoButton: React.FC<{ x: number, y: number, relationship
     const parent2 = state.getObjectById('Profile', parentsSpousalRelationship.spouse_2_profile_id)!
     const child = state.getObjectById('Profile', relationship.child_profile_id)!
 
+    if(!state.editing && relationship.metadata.length === 0) {
+        return
+    }
+
     return (
         <RelationshipInfoButton
             x={x}

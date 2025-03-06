@@ -8,6 +8,10 @@ const SpousalRelationshipInfoButton: React.FC<{ x: number, y: number, relationsh
     const spouse1 = state.getObjectById('Profile', relationship.spouse_1_profile_id)!
     const spouse2 = state.getObjectById('Profile', relationship.spouse_2_profile_id)!
 
+    if(!state.editing && relationship.metadata.length === 0) {
+        return
+    }
+
     return (
         <RelationshipInfoButton
             x={x}
