@@ -13,6 +13,16 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
     const state = useContext(FamilyTreeStateContext)
     const profile: Profile = node.data.profile
     const isAnchorNode = state.rootNode.data.profile.profile_id === profile.profile_id
+    const parentsSpousalRelationshipId = node.relationship_data.own_child_relationship?.parent_relationship_id
+    const parentsSpousalRelationship = parentsSpousalRelationshipId
+        ? state.getObjectById('SpousalRelationship', parentsSpousalRelationshipId)
+        : null
+    const parent1 = parentsSpousalRelationship
+        ? state.getObjectById('Profile', parentsSpousalRelationship.spouse_1_profile_id)!
+        : null
+    const parent2 = parentsSpousalRelationship
+        ? state.getObjectById('Profile', parentsSpousalRelationship.spouse_2_profile_id)!
+        : null
 
     const birthDate = getEventDate('BIRTH', profile.metadata)
     const birthYear = birthDate && prettyDateShortYearOnly(birthDate)
@@ -30,6 +40,20 @@ const ProfileBlock: React.FC<{ x: number, y: number, node: ProfileNode }> = ({x,
                 onClick={() => state.setFocusedObjectId('Profile', profile.profile_id)}
                 aria-label={`View details for ${profile.name}`}
                 {...(isAnchorNode && { 'aria-keyshortcuts': 'Alt+Shift+A' })}
+
+                data-focus-id={profile.profile_id}
+                data-preferred-focus-neighbors-up={[
+                    node.relationship_data.own_child_relationship?.relationship_id,
+                    node.relationship_data.own_child_relationship?.parent_relationship_id,
+                    parent1?.profile_id,
+                    parent2?.profile_id
+                ].filter(x => x).join(' ')}
+                data-preferred-focus-neighbors-down={[
+                    ...node.left_children.map(child => child.relationship_data.own_child_relationship?.relationship_id),
+                    ...node.left_children.map(child => child.data.profile?.profile_id),
+                    ...node.right_children.map(child => child.relationship_data.own_child_relationship?.relationship_id),
+                    ...node.right_children.map(child => child.data.profile?.profile_id)
+                ].filter(x => x).join(' ')}
             >
                 <div
                     className="root"

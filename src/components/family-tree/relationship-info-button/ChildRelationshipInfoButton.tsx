@@ -18,6 +18,16 @@ const ChildRelationshipInfoButton: React.FC<{ x: number, y: number, relationship
             onClick={() => {
                 state.setFocusedObjectId('ChildRelationship', relationship.relationship_id)
             }}
+
+            focusId={relationship.relationship_id}
+            preferredFocusNeigborsUp={[
+                parentsSpousalRelationship.relationship_id,
+                parentsSpousalRelationship.spouse_1_profile_id,
+                parentsSpousalRelationship.spouse_2_profile_id
+            ]}
+            preferredFocusNeighborsDown={[
+                child.profile_id
+            ]}
         />
     )
 }

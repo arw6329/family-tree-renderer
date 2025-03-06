@@ -16,6 +16,17 @@ const SpousalRelationshipInfoButton: React.FC<{ x: number, y: number, relationsh
             onClick={() => {
                 state.setFocusedObjectId('SpousalRelationship', relationship.relationship_id)
             }}
+
+            focusId={relationship.relationship_id}
+            preferredFocusNeighborsDown={
+                // TODO: this is inefficient, data could be accessed from a FamilyTreeNode instead
+                // of searching the entire db
+                state.getChildrenOf(relationship)
+                .flatMap(child => [
+                    child.relationship.relationship_id,
+                    child.child.profile_id
+                ])
+            }
         />
     )
 }

@@ -7,8 +7,8 @@ import ProfileHeader from "../profile-header/ProfileHeader"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import SpousalRelationshipHeader from "../relationship-headers/SpousalRelationshipHeader"
 import KeyShortcutInfo from "@/components/ui/key-shortcut-info/KeyShortcutInfo"
-import { min_by_with_index } from "@/lib/array-utils/array-utils"
 import ChildRelationshipHeader from "../relationship-headers/ChildRelationshipHeader"
+import { focusClosestChild } from "./focus-control"
 
 const FamilyTreeRenderer: React.FC<{}> = (props) => {
     const svgElements = useRef<SVGGElement>(null)
@@ -25,22 +25,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
             svgElements.current!.querySelector('[data-anchor=true]')!.parentElement!.focus()
         } else if(event.altKey && event.shiftKey && event.code === 'KeyC') {
             const [centerX, centerY] = pannableSvg.current!.getCenter()
-
-            const focusableElementsWithPos = [...svgElements.current!.querySelectorAll('button')]
-                .map<[HTMLButtonElement, number, number]>(element => {
-                    const fo = element.closest('foreignObject')!
-                    return [
-                        element,
-                        fo.x.baseVal.value + fo.width.baseVal.value / 2,
-                        fo.y.baseVal.value + fo.height.baseVal.value / 2
-                    ]
-                })
-
-            const [[element]] = min_by_with_index(focusableElementsWithPos, ([_, x, y]) => {
-                return Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
-            }) as [[HTMLButtonElement, number, number], number]
-
-            element.focus()
+            focusClosestChild(svgElements.current!, centerX, centerY)
         }
     }
 

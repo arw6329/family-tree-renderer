@@ -1,6 +1,7 @@
 import { LinearAnimator } from "@/lib/LinearAnimator"
 import { forwardRef, ReactNode, RefObject, useEffect, useImperativeHandle, useRef, useState } from "react"
 import "./PannableSvg.scoped.css"
+import { focusClosestActiveElementNeighborWithDirection } from "../family-tree/family-tree-renderer/focus-control"
 
 const ZOOM_SCALE_WHEEL = 0.0005
 const ZOOM_SCALE_PINCH = 1
@@ -278,9 +279,31 @@ function attachControls(svg: SVGSVGElement) {
     }
 
     function handle_keyboard_pan(evt: KeyboardEvent) {
-        if(evt.code === 'ArrowUp' && evt.altKey && svg.matches(':has(:focus)')) {
-            svg.focus()
-            return
+        if(svg.matches(':has(:focus)')) {
+            if(evt.code === 'ArrowUp' && evt.altKey) {
+                svg.focus()
+                return
+            }
+
+            console.log(evt)
+            switch(evt.code) {
+                case 'KeyA':
+                case 'ArrowLeft':
+                    focusClosestActiveElementNeighborWithDirection(svg, 'left')
+                    return
+                case 'KeyD':
+                case 'ArrowRight':
+                    focusClosestActiveElementNeighborWithDirection(svg, 'right')
+                    return
+                case 'KeyW':
+                case 'ArrowUp':
+                    focusClosestActiveElementNeighborWithDirection(svg, 'up')
+                    return
+                case 'KeyS':
+                case 'ArrowDown':
+                    focusClosestActiveElementNeighborWithDirection(svg, 'down')
+                    return
+            }
         }
 
         if(svg.getRootNode().activeElement !== svg) {

@@ -1,6 +1,6 @@
 import { AbstractFamilyTreeNode } from "@/lib/family-tree/AbstractFamilyTreeNode";
 import { DatabaseBuilder } from "@/lib/family-tree/DatabaseBuilder";
-import { FamilyTreeDatabase, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
+import { ChildRelationship, FamilyTreeDatabase, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
 import { ProfileNode } from "@/lib/family-tree/ProfileNode";
 import { TreeBuilder } from "@/lib/family-tree/TreeBuilder";
 import React, { createContext, JSX, ReactNode, useEffect, useMemo, useRef, useState } from "react";
@@ -26,6 +26,7 @@ interface ContextType {
     getNodesBy: (predicate: (node: AbstractFamilyTreeNode) => boolean) => AbstractFamilyTreeNode[],
     getProfile: (profileId: string) => Profile | null, // TODO: replace usages with getObjectById
     getSpousesOf: (profile: Profile) => { spouse: Profile, relationship: SpousalRelationship }[],
+    getChildrenOf: (relationship: SpousalRelationship) => { child: Profile, relationship: ChildRelationship }[],
     getRelationshipBetween: (profile1: Profile, profile2: Profile) => SpousalRelationship | null,
     getObjectById: <T extends ObjectType>(type: T, id: string) => ObjectTypeToInterface[T] | null,
     hasParents: (profile: Profile) => boolean,
@@ -188,6 +189,19 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
                     }
                 }
                 return spouses
+            },
+            getChildrenOf(spousalRelationship: SpousalRelationship) {
+                const children = []
+                for(const relationshipId in database.child_relationships) {
+                    const childRelationship = database.child_relationships[relationshipId]
+                    if(childRelationship.parent_relationship_id === spousalRelationship.relationship_id) {
+                        children.push({
+                            child: database.profiles[childRelationship.child_profile_id],
+                            relationship: childRelationship
+                        })
+                    }
+                }
+                return children
             },
             getRelationshipBetween(profile1: Profile, profile2: Profile) {
                 const relationship = Object.values(database.spousal_relationships)

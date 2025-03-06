@@ -8,7 +8,23 @@ import { FamilyTreeStateContext } from "../FamilyTreeState"
 const NODE_FOREIGNOBJECT_WIDTH = 25
 const NODE_FOREIGNOBJECT_HEIGHT = 25
 
-const RelationshipInfoButton: React.FC<{ x: number, y: number, ariaLabel: string, onClick: MouseEventHandler }> = ({x, y, ariaLabel, onClick}) => {
+const RelationshipInfoButton: React.FC<{
+    x: number,
+    y: number,
+    ariaLabel: string,
+    focusId?: string,
+    preferredFocusNeigborsUp?: string[],
+    preferredFocusNeighborsDown?: string[],
+    onClick: MouseEventHandler
+}> = ({
+    x,
+    y,
+    ariaLabel,
+    focusId,
+    preferredFocusNeigborsUp,
+    preferredFocusNeighborsDown,
+    onClick
+}) => {
     const state = useContext(FamilyTreeStateContext)
 
     return (
@@ -18,7 +34,13 @@ const RelationshipInfoButton: React.FC<{ x: number, y: number, ariaLabel: string
             width={NODE_FOREIGNOBJECT_WIDTH}
             height={NODE_FOREIGNOBJECT_HEIGHT}
         >
-            <button onClick={onClick} aria-label={ariaLabel}>
+            <button
+                onClick={onClick}
+                aria-label={ariaLabel}
+                data-focus-id={focusId}
+                data-preferred-focus-neighbors-up={preferredFocusNeigborsUp?.join(' ')}
+                data-preferred-focus-neighbors-down={preferredFocusNeighborsDown?.join(' ')}
+            >
                 {state.editing
                     ? <IconContext.Provider value={{ style: { width: '90%', height: '90%', margin: 'auto' } }}>
                         <FaGear fill="#dfdfdf" />
