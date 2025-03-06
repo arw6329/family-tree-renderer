@@ -6,7 +6,11 @@ See the [development branch](https://github.com/arw6329/family-tree-renderer/tre
 
 ## Demo
 
-https://family-tree-demo.arw9234.net
+You can find a demo here:
+
+- https://family-tree-demo.arw9234.net
+
+Source code for the demo is available at https://github.com/arw6329/family-tree-demo
 
 ## Disclaimer
 
@@ -79,19 +83,36 @@ To save the family tree as the user makes edits, pass a callback function to the
 
 The function passed to `onDatabaseChange` accepts a `database` parameter, which is a JSON object representing the family tree. `onDatabaseChange` MUST return a promise that resolves when you are ready to handle another update event. Once `onDatabaseChange` is called, it will NOT be called again until the promise it returns either resolves or rejects. This allows you to do an async save operation (like posting the data to a backend API) without worrying about race conditions.
 
-Here is an example of how you could use `onDatabaseChange` to post the tree to a backend API every time a change is made:
+Here is a simple example of how you could use `onDatabaseChange` to post the tree to a backend API every time a change is made:
+
+```jsx
+<FamilyTree
+    onDatabaseChange={(database) => {
+        return fetch('/api/family-tree', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(database)
+        })
+    }}
+/>
+```
+
+Or a more flexible example using the `Promise` constructor:
 
 ```jsx
 <FamilyTree
     onDatabaseChange={(database) => {
         return new Promise(async (resolve, reject) => {
-            await fetch('/api/family-tree', {
+            const response = await fetch('/api/family-tree', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(database)
             })
+            // more processing..
             resolve()
         })
     }}
@@ -128,8 +149,11 @@ const database = { /* ... */ }
 - Profile picture uploading
 - GEDCOM import (and export?)
 - Options to enable/disable editing and other fine tuning
-- Arbitrary metadata editing for profiles and relationships
+- Arbitrary/more metadata editing for profiles and relationships
 - Support replacing default profile nodes with custom components
+- Additional views (ex. timeline, map views)
+- Light mode
+- Vue and web component entrypoints
 
 ## Accessibility
 
