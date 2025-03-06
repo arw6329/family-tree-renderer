@@ -18,10 +18,13 @@ export class ProfileNode extends AbstractFamilyTreeNode {
             && this.left_parent.is_rendered()
             && this.right_parent.is_rendered()
         ) {
+            const childRelationshipId = this.relationship_data.own_child_relationship!.relationship_id
+
             yield <ChildRelationshipInfoButton
                 x={this.x}
                 y={(this.y + this.left_parent.y) / 2}
                 relationship={this.relationship_data.own_child_relationship!}
+                key={this.key() + '--' + childRelationshipId}
             />
 
             const pedigree = getPedigree(this.relationship_data.own_child_relationship!.metadata)
@@ -31,6 +34,7 @@ export class ProfileNode extends AbstractFamilyTreeNode {
                         x={this.x}
                         y={(this.y + this.left_parent.y) / 2 + (this.y - this.left_parent.y) / 5.5}
                         labelText="ADOPTIVE"
+                        key={this.key() + `--crlabel-${childRelationshipId}`}
                     />
                     break
                 }
@@ -39,6 +43,7 @@ export class ProfileNode extends AbstractFamilyTreeNode {
                         x={this.x}
                         y={(this.y + this.left_parent.y) / 2 + (this.y - this.left_parent.y) / 5.5}
                         labelText="FOSTER"
+                        key={this.key() + `--crlabel-${childRelationshipId}`}
                     />
                     break
                 }
@@ -50,6 +55,7 @@ export class ProfileNode extends AbstractFamilyTreeNode {
             x={this.x}
             y={this.y}
             node={this}
+            key={this.key()}
         />
 
         if(this.right_spouse && this.right_spouse instanceof ProfileNode) {
@@ -57,6 +63,7 @@ export class ProfileNode extends AbstractFamilyTreeNode {
                 x={(this.x + this.right_spouse.x) / 2}
                 y={this.y}
                 relationship={this.relationship_data.right_spousal_relationship!}
+                key={this.key() + '--' + this.relationship_data.right_spousal_relationship!.relationship_id}
             />
         }
         
@@ -75,5 +82,9 @@ export class ProfileNode extends AbstractFamilyTreeNode {
 
     is_representative_of(profile_id: string): boolean {
         return this.data.profile.profile_id === profile_id
+    }
+
+    key(): string {
+        return `profile-${this.data.profile.profile_id}`
     }
 }

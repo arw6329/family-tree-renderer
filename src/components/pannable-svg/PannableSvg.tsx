@@ -285,7 +285,6 @@ function attachControls(svg: SVGSVGElement) {
                 return
             }
 
-            console.log(evt)
             switch(evt.code) {
                 case 'KeyA':
                 case 'ArrowLeft':
@@ -437,9 +436,18 @@ const PannableSvg = forwardRef<{
     getCenter: () => [number, number]
     zoom: (pixels: number) => void
 }, { children: ReactNode }>(({ children }, ref) => {
+    console.log('PannableSVG Render')
     const svg: RefObject<SVGSVGElement | null> = useRef(null)
-
+    const initialized = useRef(false)
+    
     useEffect(() => {
+        if(svg.current === null || initialized.current) {
+            console.log('PannableSVG <svg> was null or controls were already attached')
+            return
+        }
+
+        initialized.current = true
+
         let previousWidth = svg.current.scrollWidth
         let previousHeight = svg.current.scrollHeight
 
@@ -452,6 +460,11 @@ const PannableSvg = forwardRef<{
         attachControls(svg.current)
 
         new ResizeObserver((entries) => {
+            if(!svg.current) {
+                console.log('PannableSVG <svg> was null during ResizeObserver')
+                return
+            }
+
             // resize maintains center point
             for(const entry of entries) {
                 const currentCenterX = svg.current.viewBox.baseVal.x + svg.current.viewBox.baseVal.width / 2
@@ -484,8 +497,6 @@ const PannableSvg = forwardRef<{
                 const aspectRatio = svg.current.scrollWidth / svg.current.scrollHeight
                 const pxDeltaWidth = pixels / (aspectRatio + 1) * aspectRatio
                 const pxDeltaHeight = pixels - pxDeltaWidth
-
-                console.log(aspectRatio, pxDeltaWidth, pxDeltaHeight)
 
                 const newWidth = svg.current.viewBox.baseVal.width + pxDeltaWidth
                 const clampedNewWidth = Math.min(svg.current.scrollWidth / ZOOM_MIN, Math.max(svg.current.scrollWidth / ZOOM_MAX, newWidth))

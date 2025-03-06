@@ -126,6 +126,8 @@ export abstract class AbstractFamilyTreeNode {
 
 	abstract is_representative_of(profile_id: string): boolean
 
+    abstract key(): string
+
 	// doesn't include this node
 	spouse_chain_left(): AbstractFamilyTreeNode[] {
 		return [...function* (node) {
@@ -700,6 +702,7 @@ export abstract class AbstractFamilyTreeNode {
                 y1={this.y}
                 x2={this.x + (this.right_spouse.x - this.x) / 2}
                 y2={this.y}
+                key={this.key() + '--line--rspouse-connector'}
             />
     
             const spousal_relationship = this.relationship_data.right_spousal_relationship
@@ -709,6 +712,7 @@ export abstract class AbstractFamilyTreeNode {
                     y1={this.y + divorce_line_width / 2}
                     x2={this.x + (this.right_spouse.x - this.x) / 2 + divorce_line_width / 2}
                     y2={this.y - divorce_line_width / 2}
+                    key={this.key() + '--line--rspouse-divorce'}
                 />
             }
         }
@@ -719,6 +723,7 @@ export abstract class AbstractFamilyTreeNode {
                 y1={this.y}
                 x2={this.x + (this.left_spouse.x - this.x) / 2}
                 y2={this.y}
+                key={this.key() + '--line--lspouse-connector'}
             />
     
             const spousal_relationship = this.relationship_data.left_spousal_relationship
@@ -728,6 +733,7 @@ export abstract class AbstractFamilyTreeNode {
                     y1={this.y + divorce_line_width / 2}
                     x2={this.x + (this.left_spouse.x - this.x) / 2 + divorce_line_width / 2}
                     y2={this.y - divorce_line_width / 2}
+                    key={this.key() + '--line--lspouse-divorce'}
                 />
             }
         }
@@ -742,6 +748,7 @@ export abstract class AbstractFamilyTreeNode {
                     x2={this.x}
                     y2={this.y}
                     incomplete={true}
+                    key={this.key() + '--line--rspouse-skipped-hint'}
                 />
             } else if(!this.left_spouse) {
                 yield <SvgLine
@@ -750,6 +757,7 @@ export abstract class AbstractFamilyTreeNode {
                     x2={this.x}
                     y2={this.y}
                     incomplete={true}
+                    key={this.key() + '--line--lspouse-skipped-hint'}
                 />
             } else {
                 throw new Error('Treebuilder skipped spouses for node that had spouses on both sides - cannot draw lines')
@@ -765,6 +773,7 @@ export abstract class AbstractFamilyTreeNode {
                 x2={this.x}
                 y2={this.y}
                 incomplete={true}
+                key={this.key() + '--line--parents-skipped-hint'}
             />
         }
         
@@ -776,6 +785,7 @@ export abstract class AbstractFamilyTreeNode {
                 y1={this.y}
                 x2={center_of_values(rendered_left_children.map(child => child.x))}
                 y2={this.y + GENERATION_DY / 2}
+                key={this.key() + '--line--children-connector'}
             />
     
             if(rendered_left_children.length > 1) {
@@ -784,6 +794,7 @@ export abstract class AbstractFamilyTreeNode {
                     y1={this.y + GENERATION_DY / 2}
                     x2={Math.max(...rendered_left_children.map(child => child.x))}
                     y2={this.y + GENERATION_DY / 2}
+                    key={this.key() + '--line--children-siblings-bar'}
                 />
             }
         }
@@ -794,6 +805,7 @@ export abstract class AbstractFamilyTreeNode {
                 y1={this.y}
                 x2={this.x}
                 y2={this.y - GENERATION_DY / 2}
+                key={this.key() + '--line--parents-connector'}
             />
         }
     }

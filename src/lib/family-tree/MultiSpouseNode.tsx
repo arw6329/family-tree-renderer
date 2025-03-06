@@ -2,6 +2,7 @@ import MultiSpouseBlock from '@/components/family-tree/multi-spouse-block/MultiS
 import { AbstractFamilyTreeNode } from './AbstractFamilyTreeNode'
 import { ProfileNode } from './ProfileNode'
 import { JSX } from 'react'
+import { Profile } from './FamilyTreeDatabase'
 
 export class MultiSpouseNode extends AbstractFamilyTreeNode {
     static merge_spouses_left(node: AbstractFamilyTreeNode) {
@@ -117,10 +118,15 @@ export class MultiSpouseNode extends AbstractFamilyTreeNode {
             x={this.x}
             y={this.y}
             spouseCount={this.data.profiles.length}
+            key={this.key()}
         />
     }
 
     is_representative_of(profile_id: string) {
         return this.data.profiles.some(profile => profile.profile_id === profile_id)
+    }
+
+    key(): string {
+        return `multispouse-${this.data.profiles.map((profile: Profile) => profile.profile_id).join(':')}`
     }
 }

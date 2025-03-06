@@ -56,7 +56,6 @@ export function focusClosestActiveElementNeighborWithDirection(parent: SVGElemen
             const sameGenerationElems = tabbableElements
                 .filter(elem => getForeignObjectCenter(elem.closest('foreignObject')!)[1] === currentCenter[1])
             const currentIndex = sameGenerationElems.indexOf(focusedElement as FocusableElement)
-            console.log(tabbableElements, sameGenerationElems, currentIndex)
             sameGenerationElems[currentIndex + (direction === 'left' ? 1 : - 1)]?.focus()
             return
         }

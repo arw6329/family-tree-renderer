@@ -154,6 +154,7 @@ const database = { /* ... */ }
 - Additional views (ex. timeline, map views)
 - Light mode
 - Vue and web component entrypoints
+- Support providing profiles programmatically (ex. from an existing system)
 
 ## Accessibility
 
