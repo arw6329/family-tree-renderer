@@ -10,9 +10,6 @@ import { prettyDate } from "@/lib/family-tree/date-utils"
 const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const state = useContext(FamilyTreeStateContext)
     const relationship = state.getObjectById('ChildRelationship', state.focusedChildRelationshipId!)!
-    const parentsSpousalRelationship = state.getObjectById('SpousalRelationship', relationship.parent_relationship_id)!
-    const parent1 = state.getObjectById('Profile', parentsSpousalRelationship.spouse_1_profile_id)!
-    const parent2 = state.getObjectById('Profile', parentsSpousalRelationship.spouse_2_profile_id)!
     const child = state.getObjectById('Profile', relationship.child_profile_id)!
     const [moreDetailsPopupActive, setMoreDetailsPopupActive] = useState(false)
     const pedigree = getPedigree(relationship.metadata)
