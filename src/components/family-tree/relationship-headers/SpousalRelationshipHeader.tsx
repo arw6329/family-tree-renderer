@@ -6,10 +6,12 @@ import { FamilyTreeStateContext } from "../FamilyTreeState"
 import { IconContext } from "react-icons"
 import AddChildOverlay from "@/components/overlays/AddChildOverlay"
 import DismissableBlock from "@/components/building-blocks/dismissable-block/DismissableBlock"
+import SpousalRelationshipDetailOverlay from "@/components/overlays/SpousalRelationshipDetailOverlay"
 
 const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
     const state = useContext(FamilyTreeStateContext)
     const [addChildOverlayActive, setAddChildOverlayActive] = useState(false)
+    const [moreDetailsPopupActive, setMoreDetailsPopupActive] = useState(false)
 
     const relationship = state.getObjectById('SpousalRelationship', state.focusedSpousalRelationshipId!)!
     const spouse1 = state.getObjectById('Profile', relationship.spouse_1_profile_id)!
@@ -33,6 +35,9 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
                     }}>
                         <span>Break relationship</span>
                     </HeaderButton>
+                    <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
+                        <span>Edit details</span>
+                    </HeaderButton>
                     <HeaderButton onClick={() => setAddChildOverlayActive(true)}>
                         <span>Add child</span>
                     </HeaderButton>
@@ -43,6 +48,13 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
                 <AddChildOverlay
                     parentRelationship={relationship}
                     onFinished={() => setAddChildOverlayActive(false)}
+                />
+            </>}
+
+            {moreDetailsPopupActive && <>
+                <SpousalRelationshipDetailOverlay
+                    relationship={relationship}
+                    onFinished={() => setMoreDetailsPopupActive(false)}
                 />
             </>}
         </header>

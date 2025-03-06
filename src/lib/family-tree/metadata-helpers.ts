@@ -4,6 +4,11 @@ import { isComplexDate } from "./date-utils";
 import { NodeMetadata } from "./FamilyTreeDatabase";
 
 type Pedigree = 'adoptive' | 'biological' | 'foster'
+type SpousalRelationshipType = 'married' | 'divorced' | 'never-married'
+
+export function getFirstRecord(key: string, metadata: NodeMetadata[]): NodeMetadata | null {
+    return metadata.find(record => record.type === 'simple' && record.key === key) ?? null
+}
 
 export function getEventDate(eventKey: string, metadata: NodeMetadata[]): ComplexDate | null {
     const date = (metadata.find(record => record.type === 'simple' && record.key === eventKey)
@@ -94,4 +99,26 @@ export function setPedigree(metadata: NodeMetadata[], pedigree: Pedigree | null)
     if(pedigree !== 'foster') {
         remove_elems_by(metadata, record => record.type === 'simple' && record.key === 'FOSTER')
     }
+}
+
+export function getSpousalRelationshipType(metadata: NodeMetadata[]): Pedigree | null {
+    const pedigreeRecord = metadata.find(record => record.type === 'simple' && record.key === 'PEDIGREE') as (NodeMetadata & {type: 'simple'}) | undefined
+
+    switch(pedigreeRecord?.value) {
+        // avoids returning null pedigree (and unknown values)
+        // in case other data (like adoption record) exists
+        case 'adoptive':
+        case 'foster':
+        case 'biological': {
+            return pedigreeRecord.value
+        }
+    }
+
+    const adoptionRecord = metadata.find(record => record.type === 'simple' && record.key === 'ADOPTION')
+
+    if(adoptionRecord) {
+        return 'adoptive'
+    }
+
+    return null
 }
