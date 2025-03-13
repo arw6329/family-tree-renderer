@@ -1,13 +1,22 @@
 import { remove_elems_by } from "../array-utils/array-utils";
 import { ComplexDate } from "./ComplexDate";
 import { isComplexDate } from "./date-utils";
-import { NodeMetadata } from "./FamilyTreeDatabase";
+import { NodeMetadata, Profile, SpousalRelationship } from "./FamilyTreeDatabase";
 
 type Pedigree = 'adoptive' | 'biological' | 'foster'
-type SpousalRelationshipType = 'married' | 'divorced' | 'never-married'
+export type SpousalRelationshipType = 'married' | 'divorced' | 'never-married'
 
 export function getFirstRecord(key: string, metadata: NodeMetadata[]): NodeMetadata | null {
     return metadata.find(record => record.type === 'simple' && record.key === key) ?? null
+}
+
+export function blankRecord(key: string): NodeMetadata {
+    return {
+        type: 'simple' as const,
+        key: key,
+        value: null,
+        children: []
+    }
 }
 
 export function getEventDate(eventKey: string, metadata: NodeMetadata[]): ComplexDate | null {
@@ -101,24 +110,65 @@ export function setPedigree(metadata: NodeMetadata[], pedigree: Pedigree | null)
     }
 }
 
-export function getSpousalRelationshipType(metadata: NodeMetadata[]): Pedigree | null {
-    const pedigreeRecord = metadata.find(record => record.type === 'simple' && record.key === 'PEDIGREE') as (NodeMetadata & {type: 'simple'}) | undefined
+export function getSpousalRelationshipType(metadata: NodeMetadata[]): SpousalRelationshipType | null {
+    const marriages = metadata.filter(record => record.type === 'simple' && record.key === 'MARRIAGE') as (NodeMetadata & {type: 'simple'})[]
 
-    switch(pedigreeRecord?.value) {
-        // avoids returning null pedigree (and unknown values)
-        // in case other data (like adoption record) exists
-        case 'adoptive':
-        case 'foster':
-        case 'biological': {
-            return pedigreeRecord.value
+    if(marriages.length > 0) {
+        if(marriages.every(marriage => getFirstRecord('DIVORCE', marriage.children))) {
+            return 'divorced'
+        } else {
+            return 'married'
         }
     }
 
-    const adoptionRecord = metadata.find(record => record.type === 'simple' && record.key === 'ADOPTION')
-
-    if(adoptionRecord) {
-        return 'adoptive'
-    }
-
     return null
+}
+
+// Returns true if metadata includes only simple records with keys in legalChildren
+// and has no records with duplicate keys
+export type SimpleMetadataSpec = { [key: string]: SimpleMetadataSpec }
+export function isMetadataSimple(metadata: NodeMetadata[], simpleSchema: SimpleMetadataSpec): boolean {
+    const encounteredChildren: string[] = []
+    for(const record of metadata) {
+        if(record.type === 'pointer') {
+            return false
+        }
+
+        if(encounteredChildren.includes(record.key)) {
+            return false
+        }
+
+        if(!(record.key in simpleSchema)) {
+            return false
+        }
+
+        if(!isMetadataSimple(record.children, simpleSchema[record.key])) {
+            return false
+        }
+
+        encounteredChildren.push(record.key)
+    }
+    return true
+}
+
+export function profileHasSimpleMetadata(profile: Profile): boolean {
+    return isMetadataSimple(profile.metadata, {
+        BIRTH: {
+            DATE: {}
+        },
+        DEATH: {
+            DATE: {}
+        }
+    })
+}
+
+export function spousalRelationshipHasSimpleMetadata(relationship: SpousalRelationship): boolean {
+    return isMetadataSimple(relationship.metadata, {
+        MARRIAGE: {
+            DATE: {},
+            DIVORCE: {
+                DATE: {}
+            }
+        }
+    })
 }

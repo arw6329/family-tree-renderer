@@ -20,28 +20,6 @@ header {
     border-radius: 100%;
 }
 
-.name {
-    font-size: 1.6rem;
-    color: white;
-}
-
 .relationship {
     color: #a0a0a0;
-}
-
-.metadata-row {
-    display: flex;
-    gap: 20px;
-}
-
-.metadata {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin: 2px 16px;
-}
-
-.metadata span {
-    color: #ccc;
-    font-weight: bold;
 }

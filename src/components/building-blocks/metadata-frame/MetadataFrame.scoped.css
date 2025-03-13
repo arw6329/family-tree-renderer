@@ -1,4 +1,4 @@
-.root {
+.frame-root {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -8,11 +8,11 @@
 }
 
 /* top-level blocks and rows only */
-.root > :is(.kv-block, .kv-table-row) {
+.frame-root > :is(.kv-block, .kv-table-row) {
     border: 1px solid #495054;
 }
 
-.root > .kv-block {
+.frame-root > .kv-block {
     background-color: #495054;
 }
 

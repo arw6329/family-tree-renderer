@@ -2,6 +2,7 @@ import SvgLine from "@/components/family-tree/svg-line/SvgLine"
 import { center_of_values, move_element_to_end, move_element_to_start, remove_elem, replace_elem } from "@/lib/array-utils/array-utils"
 import { JSX } from "react"
 import { ChildRelationship, SpousalRelationship } from "./FamilyTreeDatabase"
+import { getSpousalRelationshipType } from "./metadata-helpers"
 
 const MIN_NODE_DX = 225
 const GENERATION_DY = 175
@@ -690,12 +691,6 @@ export abstract class AbstractFamilyTreeNode {
     private *draw_lines(): Generator<JSX.Element, undefined, undefined> {
         const divorce_line_width = 25
     
-        function relationship_divorced(relationship) {
-            const marriage_count = relationship.metadata.filter(node => node.key.toUpperCase() === 'MARRIAGE').length
-            const divorce_count = relationship.metadata.filter(node => node.key.toUpperCase() === 'DIVORCE').length
-            return divorce_count > 0 && marriage_count === divorce_count
-        }
-    
         if(this.right_spouse?.is_rendered()) {
             yield <SvgLine
                 x1={this.x}
@@ -706,7 +701,7 @@ export abstract class AbstractFamilyTreeNode {
             />
     
             const spousal_relationship = this.relationship_data.right_spousal_relationship
-            if(spousal_relationship && relationship_divorced(spousal_relationship)) {
+            if(spousal_relationship && getSpousalRelationshipType(spousal_relationship.metadata) === 'divorced') {
                 yield <SvgLine
                     x1={this.x + (this.right_spouse.x - this.x) / 2 - divorce_line_width / 2}
                     y1={this.y + divorce_line_width / 2}
@@ -727,7 +722,7 @@ export abstract class AbstractFamilyTreeNode {
             />
     
             const spousal_relationship = this.relationship_data.left_spousal_relationship
-            if(spousal_relationship && relationship_divorced(spousal_relationship)) {
+            if(spousal_relationship && getSpousalRelationshipType(spousal_relationship.metadata) === 'divorced') {
                 yield <SvgLine
                     x1={this.x + (this.left_spouse.x - this.x) / 2 - divorce_line_width / 2}
                     y1={this.y + divorce_line_width / 2}

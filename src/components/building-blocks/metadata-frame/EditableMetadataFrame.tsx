@@ -1,10 +1,11 @@
 import { NodeMetadata } from "@/lib/family-tree/FamilyTreeDatabase"
 import "./MetadataFrame.scoped.css"
 import { range } from "@/lib/range"
-import { ReactNode, useState } from "react"
+import { ReactElement, ReactNode, useState } from "react"
 import Flex from "../flex/Flex"
 import { isMetadataSimple, SimpleMetadataSpec } from "@/lib/family-tree/metadata-helpers"
 
+type MetadataChangeCallback = (metadata: NodeMetadata[]) => void
 
 function row(record: NodeMetadata, depth: number) {
     return (
@@ -31,7 +32,7 @@ function block(record: NodeMetadata, depth: number) {
         children: record.children
     }
 
-    if(dereffedRecord.children.length) {
+    if (dereffedRecord.children.length) {
         return (
             <details className="kv-block">
                 <summary>{row(dereffedRecord, depth)}</summary>
@@ -45,24 +46,28 @@ function block(record: NodeMetadata, depth: number) {
     }
 }
 
-const MetadataFrame: React.FC<{
+const EditableMetadataFrame: React.FC<{
     metadata: NodeMetadata[],
     simpleSchema: SimpleMetadataSpec,
-    simpleRepresentation: (metadata: NodeMetadata[]) => ReactNode
-}> = ({ metadata, simpleSchema, simpleRepresentation }) => {
+    onMetadataChange: MetadataChangeCallback,
+    simpleRepresentation: (metadata: NodeMetadata[], onMetadataChange: MetadataChangeCallback) => ReactElement<{ onMetadataChange: MetadataChangeCallback }>
+}> = ({ metadata, simpleSchema, onMetadataChange, simpleRepresentation }) => {
     const [simple, setSimple] = useState(isMetadataSimple(metadata, simpleSchema))
-
+    const [newMetadata, setNewMetadata] = useState(metadata)
     return (
         <Flex column={true} gap={12}>
             <div>
                 <button onClick={() => setSimple(true)}>simple</button>
                 <button onClick={() => setSimple(false)}>advanced</button>
             </div>
-            {simple ? simpleRepresentation(metadata) : <div className="frame-root">
-                {metadata.map(record => block(record, 0))}
+            {simple ? simpleRepresentation(newMetadata, (metadata) => {
+                setNewMetadata(metadata)
+                onMetadataChange(metadata)
+            }) : <div className="frame-root">
+                {newMetadata.map(record => block(record, 0))}
             </div>}
         </Flex>
     )
 }
 
-export default MetadataFrame
+export default EditableMetadataFrame

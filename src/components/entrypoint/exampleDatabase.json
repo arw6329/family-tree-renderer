@@ -1309,13 +1309,14 @@
                     "type": "simple",
                     "key": "MARRIAGE",
                     "value": null,
-                    "children": []
-                },
-                {
-                    "type": "simple",
-                    "key": "DIVORCE",
-                    "value": null,
-                    "children": []
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DIVORCE",
+                            "value": null,
+                            "children": []
+                        }
+                    ]
                 }
             ]
         },
@@ -1388,13 +1389,14 @@
                     "type": "simple",
                     "key": "MARRIAGE",
                     "value": null,
-                    "children": []
-                },
-                {
-                    "type": "simple",
-                    "key": "DIVORCE",
-                    "value": null,
-                    "children": []
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DIVORCE",
+                            "value": null,
+                            "children": []
+                        }
+                    ]
                 }
             ]
         },
@@ -1425,13 +1427,14 @@
                     "type": "simple",
                     "key": "MARRIAGE",
                     "value": null,
-                    "children": []
-                },
-                {
-                    "type": "simple",
-                    "key": "DIVORCE",
-                    "value": null,
-                    "children": []
+                    "children": [
+                        {
+                            "type": "simple",
+                            "key": "DIVORCE",
+                            "value": null,
+                            "children": []
+                        }
+                    ]
                 }
             ]
         }
