@@ -198,13 +198,13 @@ const ComplexDateInput: React.FC<{ type: 'moment' | 'timespan', defaultValue?: C
                 {type === 'moment'
                     ? <>
                         <optgroup label="Single dates">
-                            <option value="date">Exact or partial date</option>
-                            <option value="approximate">Approximate date</option>
+                            <option value="date">Exactly</option>
+                            <option value="approximate">Approximately</option>
                         </optgroup>
                         <optgroup label="Date ranges">
-                            <option value="range">Some time between dates</option>
-                            <option value="range-after">Some time after date</option>
-                            <option value="range-before">Some time before date</option>
+                            <option value="range">Between</option>
+                            <option value="range-after">After</option>
+                            <option value="range-before">Before</option>
                         </optgroup>
                     </> : <>
                         <optgroup label="Time intervals">

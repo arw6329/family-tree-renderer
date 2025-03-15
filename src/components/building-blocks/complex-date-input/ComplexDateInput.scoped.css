@@ -1,6 +1,7 @@
 .root {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 6px;
     align-items: baseline;
     max-width: 100%;

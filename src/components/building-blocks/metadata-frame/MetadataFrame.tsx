@@ -4,15 +4,15 @@ import { range } from "@/lib/range"
 import { ReactNode, useState } from "react"
 import Flex from "../flex/Flex"
 import { isMetadataSimple, SimpleMetadataSpec } from "@/lib/family-tree/metadata-helpers"
+import { recordValueToString } from "./record-value-to-string"
 
-
-function row(record: NodeMetadata, depth: number) {
+function row(record: NodeMetadata & { type: 'simple' }, depth: number) {
     return (
         <div className="kv-table-row">
             {range(1, depth).map(() => <div className="depth-marker" />)}
             <div className="label-value-wrapper">
                 <label>{record.key}</label>
-                <span>{record.value}</span>
+                <span>{recordValueToString(record)}</span>
             </div>
         </div>
     )

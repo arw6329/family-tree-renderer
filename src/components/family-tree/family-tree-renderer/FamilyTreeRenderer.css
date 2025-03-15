@@ -4,7 +4,7 @@
     height: 100%;
 }
 
-input {
+input, textarea {
     padding: 8px 12px;
     background-color: #242728;
     border: 1px solid #495054;

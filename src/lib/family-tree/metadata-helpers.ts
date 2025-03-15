@@ -151,6 +151,7 @@ export function isMetadataSimple(metadata: NodeMetadata[], simpleSchema: SimpleM
     return true
 }
 
+// TODO: unused?
 export function profileHasSimpleMetadata(profile: Profile): boolean {
     return isMetadataSimple(profile.metadata, {
         BIRTH: {
@@ -162,6 +163,7 @@ export function profileHasSimpleMetadata(profile: Profile): boolean {
     })
 }
 
+// TODO: unused?
 export function spousalRelationshipHasSimpleMetadata(relationship: SpousalRelationship): boolean {
     return isMetadataSimple(relationship.metadata, {
         MARRIAGE: {

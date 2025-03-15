@@ -201,6 +201,10 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
                 <EditMetadataOverlay
                     minWidth={780}
                     metadata={relationship.metadata}
+                    legalRootKeys={[
+                        'MARRIAGE',
+                        'NOTE'
+                    ]}
                     onEditMetadata={(metadata) => {
                         const newRelationship: SpousalRelationship = {
                             relationship_id: relationship.relationship_id,

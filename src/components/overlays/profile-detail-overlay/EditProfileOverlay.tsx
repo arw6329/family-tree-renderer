@@ -15,6 +15,13 @@ const EditProfileOverlay: React.FC<{ profile: Profile, onFinished: () => void }>
     return (
         <EditMetadataOverlay
             metadata={profile.metadata}
+            legalRootKeys={[
+                'BIRTH',
+                'DEATH',
+                'BURIAL',
+                'CREMATION',
+                'NOTE'
+            ]}
             onEditMetadata={(metadata) => {
                 const newProfile: Profile = {
                     profile_id: profile.profile_id,
