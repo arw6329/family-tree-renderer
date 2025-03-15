@@ -1,11 +1,11 @@
 import { NodeMetadata } from "@/lib/family-tree/FamilyTreeDatabase"
 import "../MetadataFrame.scoped.css"
-import { ReactElement, useEffect, useRef, useState } from "react"
+import { ReactElement, useState } from "react"
 import Flex from "../../flex/Flex"
 import { blankRecord, isMetadataSimple, SimpleMetadataSpec } from "@/lib/family-tree/metadata-helpers"
 import { range } from "@/lib/range"
 import ComplexDateInput from "../../complex-date-input/ComplexDateInput"
-import { getTypeOfValue, validChildrenOf } from "@/lib/family-tree/metadata-record-helpers"
+import { getTypeOfValue, startExpanded, validChildrenOf } from "@/lib/family-tree/metadata-record-helpers"
 import { IconContext } from "react-icons"
 import { IoIosTrash } from "react-icons/io"
 import { remove_elem } from "@/lib/array-utils/array-utils"
@@ -73,7 +73,7 @@ function block(record: NodeMetadata, depth: number, onChange: () => void, onDele
 
     if(validChildren.length || dereffedRecord.children.length) {
         return (
-            <details className="kv-block">
+            <details className="kv-block" open={startExpanded(dereffedRecord.key)}>
                 <summary>
                     <Row record={dereffedRecord} depth={depth} onChange={onChange} onDelete={onDelete} />
                 </summary>

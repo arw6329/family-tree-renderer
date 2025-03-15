@@ -7,7 +7,7 @@ import DismissableBlock from "@/components/building-blocks/dismissable-block/Dis
 import ViewMetadataOverlay from "@/components/overlays/ViewMetadataOverlay"
 import LabeledElement from "@/components/building-blocks/labeled-text/LabeledText"
 import Grid from "@/components/building-blocks/grid/Grid"
-import { blankRecord, getEventDate, getFirstRecord, getSpousalRelationshipType, setEventDate, SpousalRelationshipType } from "@/lib/family-tree/metadata-helpers"
+import { blankRecord, getEventDate, getFirstRecord, getSpousalRelationshipType, isMetadataSimple, setEventDate, SpousalRelationshipType } from "@/lib/family-tree/metadata-helpers"
 import { prettyDate } from "@/lib/family-tree/date-utils"
 import { NodeMetadata, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase"
 import EditMetadataOverlay from "@/components/overlays/EditMetadataOverlay"
@@ -157,15 +157,24 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
                 </div>
             </DismissableBlock>
             <div className="row">
+                {(state.editing || !isMetadataSimple(relationship.metadata, {
+                    MARRIAGE: {
+                        DATE: {},
+                        DIVORCE: {
+                            DATE: {}
+                        }
+                    }
+                })) && <>
+                    <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
+                        <span>{state.editing ? 'Edit' : 'View'} details</span>
+                    </HeaderButton>
+                </>}
                 {state.editing && <>
                     <HeaderButton onClick={() => {
                         state.disconnectSpouses(relationship)
                         state.setFocusedObjectId('SpousalRelationship', null)
                     }}>
                         <span>Break relationship</span>
-                    </HeaderButton>
-                    <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
-                        <span>Edit details</span>
                     </HeaderButton>
                     <HeaderButton onClick={() => setAddChildOverlayActive(true)}>
                         <span>Add child</span>
@@ -185,15 +194,6 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
                     metadata={relationship.metadata}
                     onFinished={() => setMoreDetailsPopupActive(false)}
                     title={<span>Relationship between {spouse1.name} and {spouse2.name}</span>}
-                    simpleSchema={{
-                        MARRIAGE: {
-                            DATE: {},
-                            DIVORCE: {
-                                DATE: {}
-                            }
-                        }
-                    }}
-                    simpleRepresentation={(metadata) => <SimpleMetadataRow metadata={metadata} />}
                 />                    
             </>}
 

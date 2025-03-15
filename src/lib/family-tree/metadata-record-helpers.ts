@@ -53,3 +53,16 @@ export function validChildrenOf(key: string): string[] {
             return [ 'NOTE' ]
     }
 }
+
+export function startExpanded(key: string): boolean {
+    switch(key) {
+        case 'BIRTH':
+        case 'DEATH':
+        case 'MARRIAGE': {
+            return true
+        }
+        default: {
+            return false
+        }
+    }
+}

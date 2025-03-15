@@ -13,6 +13,7 @@ import SimpleMetadataRow from "./SimpleMetadataRow"
 import NameAndGender from "./NameAndGender"
 import EditProfileOverlay from "@/components/overlays/profile-detail-overlay/EditProfileOverlay"
 import ViewProfileOverlay from "@/components/overlays/profile-detail-overlay/ViewProfileOverlay"
+import { isMetadataSimple } from "@/lib/family-tree/metadata-helpers"
 
 const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     const state = useContext(FamilyTreeStateContext)
@@ -44,10 +45,19 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                 <HeaderButton onClick={() => state.setRootProfile(profile)}>
                     <span>Recenter tree here</span>
                 </HeaderButton>
-                {state.editing && <>
+                {(state.editing || !isMetadataSimple(profile.metadata, {
+                    BIRTH: {
+                        DATE: {}
+                    },
+                    DEATH: {
+                        DATE: {}
+                    }
+                })) && <>
                     <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
-                        <span>Edit details</span>
+                        <span>{state.editing ? 'Edit' : 'View'} details</span>
                     </HeaderButton>
+                </>}
+                {state.editing && <>
                     <HeaderButton onClick={() => setAddSpousePopupActive(true)}>
                         <span>Add spouse</span>
                     </HeaderButton>
