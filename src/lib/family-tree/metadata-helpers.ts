@@ -86,31 +86,6 @@ export function getPedigree(metadata: NodeMetadata[]): Pedigree | null {
     return null
 }
 
-// TODO: unused?
-export function setPedigree(metadata: NodeMetadata[], pedigree: Pedigree | null) {
-    const pedigreeRecord = metadata.find(record => record.type === 'simple' && record.key === 'PEDIGREE') as NodeMetadata & {type: 'simple'}
-
-    if(pedigreeRecord) {
-        pedigreeRecord.value = pedigree
-    } else if(pedigree) {
-        // pedigree truthiness check avoids pushing new empty PEDIGREE node
-        metadata.push({
-            type: 'simple',
-            key: 'PEDIGREE',
-            value: pedigree,
-            children: []
-        })
-    }
-
-    if(pedigree !== 'adoptive') {
-        remove_elems_by(metadata, record => record.type === 'simple' && record.key === 'ADOPTION')
-    }
-    
-    if(pedigree !== 'foster') {
-        remove_elems_by(metadata, record => record.type === 'simple' && record.key === 'FOSTER')
-    }
-}
-
 export function getSpousalRelationshipType(metadata: NodeMetadata[]): SpousalRelationshipType | null {
     const marriages = metadata.filter(record => record.type === 'simple' && record.key === 'MARRIAGE') as (NodeMetadata & {type: 'simple'})[]
 

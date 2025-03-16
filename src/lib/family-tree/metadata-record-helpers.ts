@@ -1,4 +1,4 @@
-export type MetadataRecordValueType = 'date' | 'text-short' | 'text-long' | 'none'
+export type MetadataRecordValueType = 'date' | 'text-short' | 'text-long' | { type: 'enum', values: {[key: string]: string} } | 'none'
 
 export function getTypeOfValue(key: string): MetadataRecordValueType {
     switch(key) {
@@ -17,6 +17,16 @@ export function getTypeOfValue(key: string): MetadataRecordValueType {
         case 'STATE': 
         case 'COUNTRY': {
             return 'text-short'
+        }
+        case 'PEDIGREE': {
+            return {
+                type: 'enum',
+                values: {
+                    'biological': 'Biological',
+                    'adoptive': 'Adoptive',
+                    'foster': 'Foster'
+                }
+            }
         }
         default: {
             return 'none'
@@ -58,7 +68,9 @@ export function startExpanded(key: string): boolean {
     switch(key) {
         case 'BIRTH':
         case 'DEATH':
-        case 'MARRIAGE': {
+        case 'MARRIAGE':
+        case 'ADOPTION': 
+        case 'FOSTER': {
             return true
         }
         default: {

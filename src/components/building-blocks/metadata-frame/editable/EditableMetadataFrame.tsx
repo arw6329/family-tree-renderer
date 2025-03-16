@@ -50,6 +50,16 @@ const Row: React.FC<{
                             onChange()
                         }}
                     />}
+                    {type instanceof Object && type.type === 'enum' && <select
+                        defaultValue={record.value}
+                        onChange={(event) => {
+                            record.value = event.target.value || null
+                            onChange()
+                        }}    
+                    >
+                        <option value="" />
+                        {Object.entries(type.values).map(([key, prettyKey]) => <option value={key}>{prettyKey}</option>)}    
+                    </select>}
                 </Flex>
                 <button aria-label={`Delete ${record.key} record`} onClick={onDelete}>
                     <IconContext.Provider value={{ style: { height: '100%', width: 27 } }}>

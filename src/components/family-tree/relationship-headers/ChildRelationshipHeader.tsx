@@ -3,9 +3,11 @@ import "./RelationshipHeader.scoped.css"
 import { useContext, useState } from "react"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import DismissableBlock from "@/components/building-blocks/dismissable-block/DismissableBlock"
-import ChildRelationshipDetailOverlay from "@/components/overlays/child-relationship-detail-overlay/ChildRelationshipDetailOverlay"
-import { getEventDate, getPedigree } from "@/lib/family-tree/metadata-helpers"
+import { getEventDate, getPedigree, isMetadataSimple } from "@/lib/family-tree/metadata-helpers"
 import { prettyDate } from "@/lib/family-tree/date-utils"
+import EditMetadataOverlay from "@/components/overlays/EditMetadataOverlay"
+import ViewMetadataOverlay from "@/components/overlays/ViewMetadataOverlay"
+import { ChildRelationship } from "@/lib/family-tree/FamilyTreeDatabase"
 
 const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const state = useContext(FamilyTreeStateContext)
@@ -44,6 +46,21 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
                 </div>
             </DismissableBlock>
             <div className="row">
+                {(state.editing || !isMetadataSimple(relationship.metadata, {
+                    // TODO: counts as simple if conflicting records are present
+                    // maybe just migrate to doubletime for these kinds of checks?
+                    PEDIGREE: {},
+                    ADOPTION: {
+                        DATE: {}
+                    },
+                    FOSTER: {
+                        DATE: {}
+                    }
+                })) && <>
+                    <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
+                        <span>{state.editing ? 'Edit' : 'View'} details</span>
+                    </HeaderButton>
+                </>}
                 {state.editing && <>
                     <HeaderButton onClick={() => {
                         state.disconnectChild(child)
@@ -51,17 +68,39 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
                     }}>
                         <span>Break relationship</span>
                     </HeaderButton>
-                    <HeaderButton onClick={() => setMoreDetailsPopupActive(true)}>
-                        <span>Edit details</span>
-                    </HeaderButton>
                 </>}
             </div>
 
-            {moreDetailsPopupActive && <>
-                <ChildRelationshipDetailOverlay
-                    relationship={relationship}
+            {moreDetailsPopupActive && !state.editing && <>
+                <ViewMetadataOverlay
+                    metadata={relationship.metadata}
                     onFinished={() => setMoreDetailsPopupActive(false)}
-                />
+                    title={<span>Relationship between {child.name} and parents</span>}
+                />                    
+            </>}
+
+            {moreDetailsPopupActive && state.editing && <>
+                <EditMetadataOverlay
+                    minWidth={780}
+                    metadata={relationship.metadata}
+                    legalRootKeys={[
+                        'PEDIGREE',
+                        'ADOPTION',
+                        'FOSTER',
+                        'NOTE'
+                    ]}
+                    onEditMetadata={(metadata) => {
+                        const newRelationship: ChildRelationship = {
+                            relationship_id: relationship.relationship_id,
+                            parent_relationship_id: relationship.parent_relationship_id,
+                            child_profile_id: relationship.child_profile_id,
+                            metadata: metadata
+                        }
+                        state.replaceObject('ChildRelationship', newRelationship)
+                    }}
+                    onFinished={() => setMoreDetailsPopupActive(false)}
+                    title={<span>Relationship between {child.name} and parents</span>}
+                />                    
             </>}
         </header>
     )
