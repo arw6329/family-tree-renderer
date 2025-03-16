@@ -44,7 +44,7 @@ const SingleDateInput: React.FC<{ defaultValue?: ParsedSingleDate | null, onChan
         <div className="single-date-input">
             <select
                 className="month-input"
-                defaultValue={defaultValue?.month ? months[defaultValue.month] : undefined}
+                defaultValue={typeof defaultValue?.month === 'number' ? months[defaultValue.month] : undefined}
                 onChange={(event) => setMonth(months.includes(event.target.value) ? months.indexOf(event.target.value) : null)}
             >
                 <option></option>

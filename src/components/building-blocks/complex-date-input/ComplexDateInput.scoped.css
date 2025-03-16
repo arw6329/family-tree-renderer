@@ -3,6 +3,6 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 6px;
-    align-items: baseline;
+    align-items: stretch;
     max-width: 100%;
 }
