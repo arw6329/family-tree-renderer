@@ -1,8 +1,7 @@
 import ActionButton from "@/components/building-blocks/action-button/ActionButton"
 import Flex from "@/components/building-blocks/flex/Flex"
 import { NodeMetadata } from "@/lib/family-tree/FamilyTreeDatabase"
-import { ReactElement, ReactNode, useState } from "react"
-import { SimpleMetadataSpec } from "@/lib/family-tree/metadata-helpers"
+import { ReactNode, useState } from "react"
 import EditableMetadataFrame from "../building-blocks/metadata-frame/editable/EditableMetadataFrame"
 import SectionedDialog from "../building-blocks/sectioned-dialog/SectionedDialog"
 
@@ -14,10 +13,8 @@ const EditMetadataOverlay: React.FC<{
     onEditMetadata: MetadataChangeCallback,
     onFinished: () => void,
     title: ReactNode,
-    simpleSchema: SimpleMetadataSpec,
-    simpleRepresentation: (metadata: NodeMetadata[], onMetadataChange: MetadataChangeCallback) => ReactElement<{ onMetadataChange: MetadataChangeCallback }>,
     minWidth?: number
-}> = ({ metadata, legalRootKeys, onEditMetadata, onFinished, title, simpleSchema, simpleRepresentation, minWidth }) => {
+}> = ({ metadata, legalRootKeys, onEditMetadata, onFinished, title, minWidth }) => {
     const [newMetadata, setNewMetadata] = useState(metadata)
     return (
         <SectionedDialog
@@ -28,11 +25,9 @@ const EditMetadataOverlay: React.FC<{
                 <EditableMetadataFrame
                     metadata={metadata}
                     legalRootKeys={legalRootKeys}
-                    simpleSchema={simpleSchema}
                     onMetadataChange={(metadata) => {
                         setNewMetadata(metadata)
                     }}
-                    simpleRepresentation={simpleRepresentation}
                 />
             }
             footer={

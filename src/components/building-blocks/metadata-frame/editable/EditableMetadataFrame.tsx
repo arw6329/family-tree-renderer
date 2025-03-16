@@ -1,8 +1,8 @@
 import { NodeMetadata } from "@/lib/family-tree/FamilyTreeDatabase"
 import "../MetadataFrame.scoped.css"
-import { ReactElement, useState } from "react"
+import { useState } from "react"
 import Flex from "../../flex/Flex"
-import { blankRecord, isMetadataSimple, SimpleMetadataSpec } from "@/lib/family-tree/metadata-helpers"
+import { blankRecord } from "@/lib/family-tree/metadata-helpers"
 import { range } from "@/lib/range"
 import ComplexDateInput from "../../complex-date-input/ComplexDateInput"
 import { getTypeOfValue, startExpanded, validChildrenOf } from "@/lib/family-tree/metadata-record-helpers"
@@ -107,49 +107,37 @@ function block(record: NodeMetadata, depth: number, onChange: () => void, onDele
 const EditableMetadataFrame: React.FC<{
     metadata: NodeMetadata[],
     legalRootKeys: string[],
-    simpleSchema: SimpleMetadataSpec,
     onMetadataChange: MetadataChangeCallback,
-    simpleRepresentation: (metadata: NodeMetadata[], onMetadataChange: MetadataChangeCallback) => ReactElement<{ onMetadataChange: MetadataChangeCallback }>
-}> = ({ metadata, legalRootKeys, simpleSchema, onMetadataChange, simpleRepresentation }) => {
-    const [simple, setSimple] = useState(isMetadataSimple(metadata, simpleSchema))
+}> = ({ metadata, legalRootKeys, onMetadataChange }) => {
     const [newMetadata, setNewMetadata] = useState(structuredClone(metadata))
     return (
-        <Flex column={true} gap={12}>
-            <div>
-                <button onClick={() => setSimple(true)}>simple</button>
-                <button onClick={() => setSimple(false)}>advanced</button>
-            </div>
-            {simple ? simpleRepresentation(newMetadata, (metadata) => {
+        <div className="frame-root">
+            {newMetadata.map(record => block(record, 0, () => {
+                const metadata = structuredClone(newMetadata)
                 setNewMetadata(metadata)
                 onMetadataChange(metadata)
-            }) : <div className="frame-root">
-                {newMetadata.map(record => block(record, 0, () => {
-                    const metadata = structuredClone(newMetadata)
-                    setNewMetadata(metadata)
-                    onMetadataChange(metadata)
-                }, () => {
-                    remove_elem(newMetadata, record)
-                    const metadata = structuredClone(newMetadata)
-                    setNewMetadata(metadata)
-                    onMetadataChange(metadata)
-                }))}
-                <div className="kv-table-row">
-                    <Flex gap={5} alignItems="center" style={{ flexGrow: 1, padding: '10px' }}>
-                        <label>Add record</label>
-                        <select onChange={(event) => {
-                            const metadata = structuredClone(newMetadata)
-                            metadata.push(blankRecord(event.target.value))
-                            setNewMetadata(metadata)
-                            event.target.value = ''
-                            onMetadataChange(metadata)
-                        }}>
-                            <option value="">- Select record type -</option>
-                            {legalRootKeys.map(child => <option value={child}>{child}</option>)}
-                        </select>
-                    </Flex>
-                </div>
-            </div>}
-        </Flex>
+            }, () => {
+                remove_elem(newMetadata, record)
+                const metadata = structuredClone(newMetadata)
+                setNewMetadata(metadata)
+                onMetadataChange(metadata)
+            }))}
+            <div className="kv-table-row">
+                <Flex gap={5} alignItems="center" style={{ flexGrow: 1, padding: '10px' }}>
+                    <label>Add record</label>
+                    <select onChange={(event) => {
+                        const metadata = structuredClone(newMetadata)
+                        metadata.push(blankRecord(event.target.value))
+                        setNewMetadata(metadata)
+                        event.target.value = ''
+                        onMetadataChange(metadata)
+                    }}>
+                        <option value="">- Select record type -</option>
+                        {legalRootKeys.map(child => <option value={child}>{child}</option>)}
+                    </select>
+                </Flex>
+            </div>
+        </div>
     )
 }
 

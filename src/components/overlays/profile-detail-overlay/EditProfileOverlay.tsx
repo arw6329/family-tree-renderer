@@ -4,7 +4,6 @@ import { FamilyTreeStateContext } from "../../family-tree/FamilyTreeState"
 import EditMetadataOverlay from "../EditMetadataOverlay"
 import LabeledElement from "@/components/building-blocks/labeled-text/LabeledText"
 import Flex from "@/components/building-blocks/flex/Flex"
-import EditableSimpleMetadataRow from "@/components/family-tree/profile-header/EditableSimpleMetadataRow"
 
 const EditProfileOverlay: React.FC<{ profile: Profile, onFinished: () => void }> = ({ profile, onFinished }) => {
     const state = useContext(FamilyTreeStateContext)
@@ -55,18 +54,6 @@ const EditProfileOverlay: React.FC<{ profile: Profile, onFinished: () => void }>
                     </LabeledElement>
                 </Flex>
             }
-            simpleSchema={{
-                BIRTH: {
-                    DATE: {}
-                },
-                DEATH: {
-                    DATE: {}
-                }
-            }}
-            simpleRepresentation={(metadata, onMetadataChange) => <EditableSimpleMetadataRow
-                metadata={metadata}
-                onMetadataChange={onMetadataChange}
-            />}
         />
     )
 }

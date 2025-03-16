@@ -1,7 +1,7 @@
 import { remove_elems_by } from "../array-utils/array-utils";
 import { ComplexDate } from "./ComplexDate";
 import { isComplexDate } from "./date-utils";
-import { NodeMetadata, Profile, SpousalRelationship } from "./FamilyTreeDatabase";
+import { NodeMetadata } from "./FamilyTreeDatabase";
 
 type Pedigree = 'adoptive' | 'biological' | 'foster'
 export type SpousalRelationshipType = 'married' | 'divorced' | 'never-married'
@@ -86,6 +86,7 @@ export function getPedigree(metadata: NodeMetadata[]): Pedigree | null {
     return null
 }
 
+// TODO: unused?
 export function setPedigree(metadata: NodeMetadata[], pedigree: Pedigree | null) {
     const pedigreeRecord = metadata.find(record => record.type === 'simple' && record.key === 'PEDIGREE') as NodeMetadata & {type: 'simple'}
 
@@ -149,28 +150,4 @@ export function isMetadataSimple(metadata: NodeMetadata[], simpleSchema: SimpleM
         encounteredChildren.push(record.key)
     }
     return true
-}
-
-// TODO: unused?
-export function profileHasSimpleMetadata(profile: Profile): boolean {
-    return isMetadataSimple(profile.metadata, {
-        BIRTH: {
-            DATE: {}
-        },
-        DEATH: {
-            DATE: {}
-        }
-    })
-}
-
-// TODO: unused?
-export function spousalRelationshipHasSimpleMetadata(relationship: SpousalRelationship): boolean {
-    return isMetadataSimple(relationship.metadata, {
-        MARRIAGE: {
-            DATE: {},
-            DIVORCE: {
-                DATE: {}
-            }
-        }
-    })
 }
