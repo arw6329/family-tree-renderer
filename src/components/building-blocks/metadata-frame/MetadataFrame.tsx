@@ -15,7 +15,11 @@ const Row: React.FC<{
             {range(1, depth).map(() => <div className="depth-marker" />)}
             <Flex gap={5} alignItems="center" wrap={true} style={{ flexGrow: 1, padding: 10 }}>
                 <label>{record.key}</label>
-                <span>{recordValueToString(record)}</span>
+                {
+                    typeof record.value === 'string' && record.value.match(/^https?:\/\//)
+                    ? <a target="_blank" href={record.value}>{record.value}</a>
+                    : <span>{recordValueToString(record)}</span>
+                }
             </Flex>
         </div>
     )
