@@ -15,7 +15,7 @@ import defaultProfilePicture from "@/static/reunionpage-logo.png"
 // TODO: remove commas for interfaces
 interface ContextType {
     rootNode: ProfileNode,
-    setRootProfile: (profile: Profile) => void,
+    setRootProfileId: (profileId: string) => void,
     focusedProfileId: string | null,
     focusedSpousalRelationshipId: string | null,
     focusedChildRelationshipId: string | null,
@@ -30,12 +30,14 @@ interface ContextType {
     getRelationshipBetween: (profile1: Profile, profile2: Profile) => SpousalRelationship | null,
     getObjectById: <T extends ObjectType>(type: T, id: string) => ObjectTypeToInterface[T] | null,
     hasParents: (profile: Profile) => boolean,
+    isEmpty: () => boolean,
     addNewProfile: (profile: Profile) => void,
     replaceObject: <T extends ObjectType>(type: T, object: ObjectTypeToInterface[T]) => void,
     makeSpouses: (profile1: Profile, profile2: Profile) => SpousalRelationship,
     makeChild: (parentRelationship: SpousalRelationship, profile: Profile) => void,
     disconnectChild: (child: Profile) => void,
     disconnectSpouses: (relationship: SpousalRelationship) => void,
+    replaceDatabase: (database: FamilyTreeDatabase) => void,
     getProfilePictureURL: (profile: Profile) => string
 }
 
@@ -47,8 +49,9 @@ const FamilyTreeStateContext = createContext<ContextType>(
     })
 )
 
-const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDatabaseChange?: (database: FamilyTreeDatabase) => Promise<unknown>, children: ReactNode }> = ({ database, onDatabaseChange, children }) => {
-    const [rootProfile, setRootProfile] = useState<Profile | null>(Object.values(database.profiles)[0])
+const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, onDatabaseChange?: (database: FamilyTreeDatabase) => Promise<unknown>, children: ReactNode }> = ({ initialDatabase, onDatabaseChange, children }) => {
+    const [database, setDatabase] = useState(initialDatabase)
+    const [rootProfileId, setRootProfileId] = useState(Object.keys(database.profiles)[0])
     const [focusedProfileId, setFocusedProfileId] = useState<string | null>(null)
     const [focusedSpousalRelationshipId, setFocusedSpousalRelationshipId] = useState<string | null>(null)
     const [focusedChildRelationshipId, setFocusedChildRelationshipId] = useState<string | null>(null)
@@ -67,14 +70,14 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
     }
 
     const rootNode: ProfileNode | null = useMemo(() => {
-        if(rootProfile) {
+        if(rootProfileId) {
             return ProfileNode.create_unconnected_node({
-                profile: rootProfile
+                profile: database.profiles[rootProfileId]
             })
         } else {
             return null
         }
-    }, [rootProfile, databaseVersion, editing])
+    }, [rootProfileId, databaseVersion, editing])
 
     const builder = useMemo(() => {
         if(!rootNode) {
@@ -134,7 +137,7 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
                 }
                 return rootNode
             },
-            setRootProfile,
+            setRootProfileId,
             focusedProfileId,
             focusedSpousalRelationshipId,
             focusedChildRelationshipId,
@@ -236,6 +239,9 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
                 
                 return !!childRelationship
             },
+            isEmpty() {
+                return Object.keys(database.profiles).length > 0
+            },
             addNewProfile(profile: Profile) {
                 DatabaseBuilder.fromExisting(database).addNewProfile(profile)
                 cycleDatabaseVersion()
@@ -243,11 +249,7 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
             replaceObject<T extends ObjectType>(type: T, object: ObjectTypeToInterface[T]) {
                 switch(type) {
                     case 'Profile': {
-                        const profile = object as Profile
                         DatabaseBuilder.fromExisting(database).replaceObject(type, object)
-                        if(profile.profile_id === rootProfile?.profile_id) {
-                            setRootProfile(profile)
-                        }
                         break
                     }
                     case 'SpousalRelationship':
@@ -292,6 +294,11 @@ const FamilyTreeStateProvider: React.FC<{ database: FamilyTreeDatabase, onDataba
 
                 delete database.spousal_relationships[relationship.relationship_id]
 
+                cycleDatabaseVersion()
+            },
+            replaceDatabase(database: FamilyTreeDatabase) {
+                setDatabase(database)
+                setRootProfileId(Object.keys(database.profiles)[0])
                 cycleDatabaseVersion()
             },
             getProfilePictureURL(profile: Profile) {

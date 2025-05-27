@@ -42,7 +42,7 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                 </div>
             </DismissableBlock>
             <div className="row">
-                <HeaderButton onClick={() => state.setRootProfile(profile)}>
+                <HeaderButton onClick={() => state.setRootProfileId(profile.profile_id)}>
                     <span>Recenter tree here</span>
                 </HeaderButton>
                 {(state.editing || !isMetadataSimple(profile.metadata, {

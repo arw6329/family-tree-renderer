@@ -13,7 +13,7 @@ const JumpToProfileOverlay: React.FC<{ onFinished: () => void }> = ({ onFinished
                 profiles={state.profiles}
                 validModes="select"
                 onSelectExisting={(profile) => {
-                    state.setRootProfile(profile)
+                    state.setRootProfileId(profile.profile_id)
                     onFinished()
                 }}
                 onCancel={() => onFinished()}

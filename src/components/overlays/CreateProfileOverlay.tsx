@@ -14,7 +14,7 @@ const CreateProfileOverlay: React.FC<{ onFinished: () => void }> = ({ onFinished
                 validModes="create"
                 onCreateNew={(profile) => {
                     state.addNewProfile(profile)
-                    state.setRootProfile(profile)
+                    state.setRootProfileId(profile.profile_id)
                     onFinished()
                 }}
                 onCancel={() => onFinished()}
