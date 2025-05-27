@@ -74,6 +74,7 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
             {moreDetailsPopupActive && !state.editing && <>
                 <ViewMetadataOverlay
                     metadata={relationship.metadata}
+                    metadataLookup={id => state.getRootMetadata(id)}
                     onFinished={() => setMoreDetailsPopupActive(false)}
                     title={<span>Relationship between {child.name} and parents</span>}
                 />                    

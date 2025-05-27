@@ -4,6 +4,7 @@ import { range } from "@/lib/range"
 import { recordValueToString } from "./record-value-to-string"
 import Flex from "../flex/Flex"
 import { startExpanded } from "@/lib/family-tree/metadata-record-helpers"
+import { derefRecord } from "@/lib/family-tree/metadata-helpers"
 
 const Row: React.FC<{
     record: NodeMetadata & { type: 'simple' }
@@ -20,13 +21,8 @@ const Row: React.FC<{
     )
 }
 
-function block(record: NodeMetadata, depth: number) {
-    const dereffedRecord = record.type === 'pointer' ? {
-        type: 'simple' as const,
-        key: '<pointerized>',
-        value: '<pointerized>',
-        children: record.children
-    } : record
+function block(record: NodeMetadata, metadataLookup: (id: string) => NodeMetadata | null, depth: number) {
+    const dereffedRecord = derefRecord(record, metadataLookup)
 
     if(dereffedRecord.children.length) {
         return (
@@ -35,7 +31,7 @@ function block(record: NodeMetadata, depth: number) {
                     <Row record={dereffedRecord} depth={depth} />
                 </summary>
                 <div className="content">
-                    {dereffedRecord.children.map(child => block(child, depth + 1))}
+                    {dereffedRecord.children.map(child => block(child, metadataLookup, depth + 1))}
                 </div>
             </details>
         )
@@ -44,10 +40,13 @@ function block(record: NodeMetadata, depth: number) {
     }
 }
 
-const MetadataFrame: React.FC<{ metadata: NodeMetadata[] }> = ({ metadata }) => {
+const MetadataFrame: React.FC<{
+    metadata: NodeMetadata[]
+    metadataLookup: (id: string) => NodeMetadata | null
+}> = ({ metadata, metadataLookup }) => {
     return (
         <div className="frame-root">
-            {metadata.map(record => block(record, 0))}
+            {metadata.map(record => block(record, metadataLookup, 0))}
         </div>
     )
 }

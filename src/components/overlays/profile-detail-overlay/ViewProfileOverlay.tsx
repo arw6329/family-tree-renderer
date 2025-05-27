@@ -11,6 +11,7 @@ const ViewProfileOverlay: React.FC<{ profile: Profile, onFinished: () => void }>
     return (
         <ViewMetadataOverlay
             metadata={profile.metadata}
+            metadataLookup={id => state.getRootMetadata(id)}
             onFinished={onFinished}
             title={
                 <Flex gap={10}>

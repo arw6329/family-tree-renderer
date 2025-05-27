@@ -81,6 +81,7 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
             {moreDetailsPopupActive && !state.editing && <>
                 <ViewMetadataOverlay
                     metadata={relationship.metadata}
+                    metadataLookup={id => state.getRootMetadata(id)}
                     onFinished={() => setMoreDetailsPopupActive(false)}
                     title={<span>Relationship between {spouse1.name} and {spouse2.name}</span>}
                 />                    

@@ -1,6 +1,6 @@
 import { AbstractFamilyTreeNode } from "@/lib/family-tree/AbstractFamilyTreeNode";
 import { DatabaseBuilder } from "@/lib/family-tree/DatabaseBuilder";
-import { ChildRelationship, FamilyTreeDatabase, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
+import { ChildRelationship, FamilyTreeDatabase, NodeMetadata, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase";
 import { ProfileNode } from "@/lib/family-tree/ProfileNode";
 import { TreeBuilder } from "@/lib/family-tree/TreeBuilder";
 import React, { createContext, JSX, ReactNode, useEffect, useMemo, useRef, useState } from "react";
@@ -29,6 +29,7 @@ interface ContextType {
     getChildrenOf: (relationship: SpousalRelationship) => { child: Profile, relationship: ChildRelationship }[],
     getRelationshipBetween: (profile1: Profile, profile2: Profile) => SpousalRelationship | null,
     getObjectById: <T extends ObjectType>(type: T, id: string) => ObjectTypeToInterface[T] | null,
+    getRootMetadata: (metadataId: string) => NodeMetadata | null,
     hasParents: (profile: Profile) => boolean,
     isEmpty: () => boolean,
     addNewProfile: (profile: Profile) => void,
@@ -232,6 +233,9 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
                         throw new Error(`Unrecognized object type ${type}`)
                     }
                 }
+            },
+            getRootMetadata(metadataId) {
+                return database.root_metadata[metadataId]
             },
             hasParents(profile: Profile) {
                 const childRelationship = Object.values(database.child_relationships)

@@ -1,4 +1,3 @@
-import { remove_elems_by } from "../array-utils/array-utils";
 import { ComplexDate } from "./ComplexDate";
 import { isComplexDate } from "./date-utils";
 import { NodeMetadata } from "./FamilyTreeDatabase";
@@ -17,6 +16,36 @@ export function blankRecord(key: string): NodeMetadata {
         value: null,
         children: []
     }
+}
+
+export function derefRecord(record: NodeMetadata, metadataLookup: (id: string) => NodeMetadata | null): NodeMetadata & { type: 'simple' } {
+    const children = [...record.children]
+    let currentRecord: NodeMetadata = record
+    while(currentRecord.type === 'pointer') {
+        currentRecord = metadataLookup(currentRecord.pointer) ?? {
+            type: 'simple',
+            key: 'ERROR',
+            value: '<reference to missing metadata>',
+            children: []
+        }
+
+        for(const child of currentRecord.children) {
+            children.push(child)
+        }        
+    }
+
+    const dereffedRecord: NodeMetadata = {
+        type: 'simple',
+        key: currentRecord.key,
+        value: currentRecord.value,
+        children: []
+    }
+
+    for(const child of children) {
+        dereffedRecord.children.push(derefRecord(child, metadataLookup))
+    }
+
+    return dereffedRecord
 }
 
 export function getEventDate(eventKey: string, metadata: NodeMetadata[]): ComplexDate | null {
