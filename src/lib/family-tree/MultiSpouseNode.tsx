@@ -125,8 +125,4 @@ export class MultiSpouseNode extends AbstractFamilyTreeNode {
     is_representative_of(profile_id: string) {
         return this.data.profiles.some(profile => profile.profile_id === profile_id)
     }
-
-    key(): string {
-        return `multispouse-${this.data.profiles.map((profile: Profile) => profile.profile_id).join(':')}`
-    }
 }

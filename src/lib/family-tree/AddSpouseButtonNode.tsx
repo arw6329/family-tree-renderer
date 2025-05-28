@@ -20,9 +20,4 @@ export class AddSpouseButtonNode extends AbstractFamilyTreeNode {
     is_representative_of(profile_id: string): boolean {
         return false
     }
-
-    key(): string {
-        const spouseProfile = this.left_spouse?.data.profile ?? this.right_spouse.data.profile
-        return `addspousebutton-with-${spouseProfile.profile_id}`
-    }
 }

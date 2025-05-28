@@ -3,6 +3,7 @@ import { center_of_values, move_element_to_end, move_element_to_start, remove_el
 import { JSX } from "react"
 import { ChildRelationship, SpousalRelationship } from "./FamilyTreeDatabase"
 import { getSpousalRelationshipType } from "./metadata-helpers"
+import { hashCode } from "../util/hashcode"
 
 const MIN_NODE_DELTA_VERT = 225
 const MIN_NODE_DELTA_HORIZ = 150
@@ -141,7 +142,20 @@ export abstract class AbstractFamilyTreeNode {
 
 	abstract is_representative_of(profile_id: string): boolean
 
-    abstract key(): string
+    private _key(): string {
+        return `${this.constructor.name}(${hashCode(JSON.stringify(this.data))})`
+    }
+
+    key(): string {
+        return '[' + this._key()
+            + `:lparent-${this.left_parent?._key() ?? 'none'}`
+            + `:rparent-${this.right_parent?._key() ?? 'none'}`
+            + `:lchildren-${this.left_children.map(c => c._key()).join(',')}`
+            + `:rchildren-${this.right_children.map(c => c._key()).join(',')}`
+            + `:lspouse-${this.left_spouse?._key() ?? 'none'}`
+            + `:rspouse-${this.right_spouse?._key() ?? 'none'}`
+            + ']'
+    }
 
 	// doesn't include this node
 	spouse_chain_left(): AbstractFamilyTreeNode[] {

@@ -107,8 +107,4 @@ export class ProfileNode extends AbstractFamilyTreeNode {
     is_representative_of(profile_id: string): boolean {
         return this.data.profile.profile_id === profile_id
     }
-
-    key(): string {
-        return `profile-${this.data.profile.profile_id}`
-    }
 }
