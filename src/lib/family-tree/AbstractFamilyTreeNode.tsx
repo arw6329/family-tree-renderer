@@ -4,8 +4,10 @@ import { JSX } from "react"
 import { ChildRelationship, SpousalRelationship } from "./FamilyTreeDatabase"
 import { getSpousalRelationshipType } from "./metadata-helpers"
 
-const MIN_NODE_DX = 225
-const GENERATION_DY = 175
+const MIN_NODE_DELTA_VERT = 225
+const MIN_NODE_DELTA_HORIZ = 150
+const GENERATION_DELTA_VERT = 175
+const GENERATION_DELTA_HORIZ = 300
 
 type FamilyTreeNodeSubclassConstructor = {
     new (...args: ConstructorParameters<typeof AbstractFamilyTreeNode>): AbstractFamilyTreeNode
@@ -17,6 +19,7 @@ export abstract class AbstractFamilyTreeNode {
 	}
 
 	private _x: number | undefined
+    private _y: number | undefined
 
 	set x(val: number | undefined) {
 		if(val !== undefined && (typeof val !== 'number' || isNaN(val))) {
@@ -34,8 +37,19 @@ export abstract class AbstractFamilyTreeNode {
 		return this._x
 	}
 
+    set y(val: number) {
+        if(typeof val !== 'number' || isNaN(val)) {
+			throw new Error('family tree node y position was set to a non-number value')
+		}
+        this._y = val
+    }
+
     get y(): number {
-        return 100 + this.generation * GENERATION_DY
+        if(this._y === undefined) {
+            this.log('Bad y value access (access before render)')
+            throw new Error('Attempted to access y position of unrendered node')
+        }
+        return this._y
     }
 
     private temporary_render_data: {
@@ -361,13 +375,13 @@ export abstract class AbstractFamilyTreeNode {
 		new_node.x = this._x
 	}
 
-    abstract draw(): Generator<JSX.Element, undefined, undefined>;
+    abstract draw(horizontal: boolean): Generator<JSX.Element, undefined, undefined>;
 
     /* -------------------
     * RENDERING FUNCTIONS
     * ------------------- */
 
-    render_right_tree() {
+    render_right_tree(min_node_delta: number) {
         this.log('Node has entered render_right_tree')
         this.x = 0
         
@@ -382,7 +396,7 @@ export abstract class AbstractFamilyTreeNode {
         spouse_chain.forEach((spouse, spouse_index) => {
             // space all spouses, spouses of spouses... using minimum possible spacing
             // more spacing might still be needed due to half and step children trees
-            spouse.x = this.x + (spouse_index - index_in_spouse_chain) * MIN_NODE_DX
+            spouse.x = this.x + (spouse_index - index_in_spouse_chain) * min_node_delta
 
             // TODO: move child_tree_index to another piece of data or remove
             spouse.left_children.forEach(child => {
@@ -402,7 +416,7 @@ export abstract class AbstractFamilyTreeNode {
         let all_children_across_spouses = spouse_chain.map(spouse => spouse.left_children).flat().concat(spouse_chain.at(-1).right_children)
 
         this.log('Rendering all children across spouses')
-        all_children_across_spouses.forEach(child => child.render_right_tree())
+        all_children_across_spouses.forEach(child => child.render_right_tree(min_node_delta))
         this.log('Done rendering all children across spouses')
 
         all_children_across_spouses.slice(1).forEach((child, child_i) => {
@@ -412,7 +426,7 @@ export abstract class AbstractFamilyTreeNode {
                 let dist_needed_between_generations = function(gen) {
                     let rightmost_x_on_prev_sibling = Math.max(...previous_sibling.all_decendents_across_spouse_chain().filter(node => node.generation == gen).map(node => node.x))
                     let leftmost_x_on_this_child = Math.min(...child.all_decendents_across_spouse_chain().filter(node => node.generation == gen).map(node => node.x))
-                    return rightmost_x_on_prev_sibling - leftmost_x_on_this_child + MIN_NODE_DX
+                    return rightmost_x_on_prev_sibling - leftmost_x_on_this_child + min_node_delta
                 }
                 
                 let buf_distance = Math.max(...generations_in_common.map(dist_needed_between_generations))
@@ -429,7 +443,7 @@ export abstract class AbstractFamilyTreeNode {
                     let center_of_previous_group = (Math.min(...previous_group.map(node => node.x)) + Math.max(...previous_group.map(node => node.x))) / 2
                     let center_of_current_group = (Math.min(...group.map(node => node.x)) + Math.max(...group.map(node => node.x))) / 2
 
-                    let min_distance_between_center_of_groups = (group[0].child_tree_index - previous_group[0].child_tree_index) * MIN_NODE_DX
+                    let min_distance_between_center_of_groups = (group[0].child_tree_index - previous_group[0].child_tree_index) * min_node_delta
                     let actual_distance_between_center_of_groups = center_of_current_group - center_of_previous_group
 
                     if(actual_distance_between_center_of_groups > min_distance_between_center_of_groups) {
@@ -438,7 +452,7 @@ export abstract class AbstractFamilyTreeNode {
                             spouse.x += actual_distance_between_center_of_groups - min_distance_between_center_of_groups
                         })
                         spouse_chain[group[0].child_tree_index - 1].temporary_render_data.has_non_minimum_inter_spouse_distance = true
-                        spouse_chain[group[0].child_tree_index - 1].dist_to_center_of_children = MIN_NODE_DX + (actual_distance_between_center_of_groups - min_distance_between_center_of_groups) / 2
+                        spouse_chain[group[0].child_tree_index - 1].dist_to_center_of_children = min_node_delta + (actual_distance_between_center_of_groups - min_distance_between_center_of_groups) / 2
                     } else {
                         full_siblings_groups.slice(group_index).forEach(group => {
                             group.forEach(sibling => {
@@ -472,13 +486,13 @@ export abstract class AbstractFamilyTreeNode {
                     if(random_sibling_group[0].left_parent.temporary_render_data.has_non_minimum_inter_spouse_distance) {
                         dx = - ((group_center - random_sibling_group[0].left_parent.x) - random_sibling_group[0].left_parent.dist_to_center_of_children)
                     } else {
-                        dx = - ((group_center - random_sibling_group[0].left_parent.x) - MIN_NODE_DX / 2)
+                        dx = - ((group_center - random_sibling_group[0].left_parent.x) - min_node_delta / 2)
                     }
                 } else {
                     if(random_sibling_group[0].right_parent.temporary_render_data.has_non_minimum_inter_spouse_distance) {
                         dx = ((random_sibling_group[0].right_parent.x - group_center) - random_sibling_group[0].right_parent.dist_to_center_of_children)
                     } else {
-                        dx = ((random_sibling_group[0].right_parent.x - group_center) - MIN_NODE_DX / 2)
+                        dx = ((random_sibling_group[0].right_parent.x - group_center) - min_node_delta / 2)
                     }
                 }
 
@@ -492,11 +506,11 @@ export abstract class AbstractFamilyTreeNode {
         this.log('Done rendering, got x value (local) ' + this.x)
     }
 
-    build_and_render_parent_tree() {
+    build_and_render_parent_tree(min_node_delta: number) {
         this.log('Entering build_and_render_parent_tree')
         let parent_tree_root = AbstractFamilyTreeNode.create_unconnected_node()
         this.convert_parent_tree_to_child_tree(parent_tree_root)
-        parent_tree_root.render_right_tree()
+        parent_tree_root.render_right_tree(min_node_delta)
         parent_tree_root.convert_child_tree_to_parent_tree()
         this.log('Done with build_and_render_parent_tree')
     }
@@ -520,9 +534,12 @@ export abstract class AbstractFamilyTreeNode {
         })
     }
 
-    *full_render(): Generator<JSX.Element, undefined, undefined> {
+    *full_render(horizontal = false): Generator<JSX.Element, undefined, undefined> {
         this.log('** Full render on node')
-            
+        
+        const min_node_delta = horizontal ? MIN_NODE_DELTA_HORIZ : MIN_NODE_DELTA_VERT
+        const generation_delta = horizontal ? GENERATION_DELTA_HORIZ : GENERATION_DELTA_VERT
+
         this.left_parent?.move_to_right_of_siblings()
         this.right_parent?.move_to_left_of_siblings()
     
@@ -531,7 +548,7 @@ export abstract class AbstractFamilyTreeNode {
             grandparents_rendered = true
     
             this.log('Rendering right parent left parent right tree (--> then <-- grandparent)')
-            this.right_parent.left_parent.render_right_tree()
+            this.right_parent.left_parent.render_right_tree(min_node_delta)
     
             let delta_x = -this.x // should be 0 since we are rendering based on this node, but probably won't be after grandparent render
             this.right_parent.left_parent.all_decendents_across_spouse_chain().forEach(node => {
@@ -542,7 +559,7 @@ export abstract class AbstractFamilyTreeNode {
             grandparents_rendered = true
     
             this.log('Rendering left parent left parent right tree (<-- then <-- grandparent)')
-            this.left_parent.left_parent.render_right_tree()
+            this.left_parent.left_parent.render_right_tree(min_node_delta)
     
             let delta_x = -this.x // should be 0 since we are rendering based on this node, but probably won't be after grandparent render
             this.left_parent.left_parent.all_decendents_across_spouse_chain().forEach(node => {
@@ -553,14 +570,14 @@ export abstract class AbstractFamilyTreeNode {
         if(!grandparents_rendered) {
             this.log('Grandparents not rendered!')
             if(this.left_parent) {
-                this.left_parent.render_right_tree()
+                this.left_parent.render_right_tree(min_node_delta)
 
                 const delta_x = -this.x
                 this.left_parent.all_decendents_across_spouse_chain().forEach(node => {
                     node.x += delta_x
                 })
             } else {
-                this.render_right_tree()
+                this.render_right_tree(min_node_delta)
             }
         }
     
@@ -569,7 +586,7 @@ export abstract class AbstractFamilyTreeNode {
             this.left_parent.saved_x = this.left_parent._x ?? 0
             this.right_parent.saved_x = this.right_parent._x ?? 0
     
-            this.build_and_render_parent_tree()
+            this.build_and_render_parent_tree(min_node_delta)
     
             let dist_between_parents = this.right_parent.x - this.left_parent.x
             let left_aunts = this.left_parent.all_siblings_and_self().map(node => node.saved_x ?? node.x)
@@ -652,7 +669,14 @@ export abstract class AbstractFamilyTreeNode {
             ...this.all_parent_nodes() // TODO: necessary?
         ])]
 
+        // TODO: this could be done more efficiently during x calculations above
+        for(const node of nodes) {
+            node.y = 100 + node.generation * generation_delta
+        }
+
         // nodes need to be sorted for logical tab order after render
+        // TODO: sort correctly when horizontal
+        // TODO: also keyboard controls when horizontal
         nodes.sort((a, b) => {
             if(a.y < b.y) {
                 return -1
@@ -679,16 +703,16 @@ export abstract class AbstractFamilyTreeNode {
         })
 
         for(const node of nodes) {
-            yield* node.draw_lines()
+            yield* node.draw_lines(min_node_delta, generation_delta, horizontal)
         }
 
         for(const node of nodes) {
-            yield* node.draw()
+            yield* node.draw(horizontal)
             node.temporary_render_data = {}
         }
     }
 
-    private *draw_lines(): Generator<JSX.Element, undefined, undefined> {
+    private *draw_lines(min_node_delta: number, min_generation_delta: number, horizontal: boolean): Generator<JSX.Element, undefined, undefined> {
         const divorce_line_width = 25
     
         if(this.right_spouse?.is_rendered()) {
@@ -697,6 +721,7 @@ export abstract class AbstractFamilyTreeNode {
                 y1={this.y}
                 x2={this.x + (this.right_spouse.x - this.x) / 2}
                 y2={this.y}
+                xyflip={horizontal}
                 key={this.key() + '--line--rspouse-connector'}
             />
     
@@ -707,6 +732,7 @@ export abstract class AbstractFamilyTreeNode {
                     y1={this.y + divorce_line_width / 2}
                     x2={this.x + (this.right_spouse.x - this.x) / 2 + divorce_line_width / 2}
                     y2={this.y - divorce_line_width / 2}
+                    xyflip={horizontal}
                     key={this.key() + '--line--rspouse-divorce'}
                 />
             }
@@ -718,6 +744,7 @@ export abstract class AbstractFamilyTreeNode {
                 y1={this.y}
                 x2={this.x + (this.left_spouse.x - this.x) / 2}
                 y2={this.y}
+                xyflip={horizontal}
                 key={this.key() + '--line--lspouse-connector'}
             />
     
@@ -728,13 +755,14 @@ export abstract class AbstractFamilyTreeNode {
                     y1={this.y + divorce_line_width / 2}
                     x2={this.x + (this.left_spouse.x - this.x) / 2 + divorce_line_width / 2}
                     y2={this.y - divorce_line_width / 2}
+                    xyflip={horizontal}
                     key={this.key() + '--line--lspouse-divorce'}
                 />
             }
         }
 
         if(this.treebuilder_skipped_spouses) {
-            const line_length = MIN_NODE_DX * 0.75
+            const line_length = min_node_delta * 0.75
 
             if(!this.right_spouse) {
                 yield <SvgLine
@@ -742,6 +770,7 @@ export abstract class AbstractFamilyTreeNode {
                     y1={this.y}
                     x2={this.x}
                     y2={this.y}
+                    xyflip={horizontal}
                     incomplete={true}
                     key={this.key() + '--line--rspouse-skipped-hint'}
                 />
@@ -751,6 +780,7 @@ export abstract class AbstractFamilyTreeNode {
                     y1={this.y}
                     x2={this.x}
                     y2={this.y}
+                    xyflip={horizontal}
                     incomplete={true}
                     key={this.key() + '--line--lspouse-skipped-hint'}
                 />
@@ -760,13 +790,14 @@ export abstract class AbstractFamilyTreeNode {
         }
 
         if(this.treebuilder_skipped_parents || (this.left_parent && !this.left_parent.is_rendered()) || (this.right_parent && !this.right_parent.is_rendered())) {
-            const line_length = GENERATION_DY * 0.4
+            const line_length = min_generation_delta * 0.4
 
             yield <SvgLine
                 x1={this.x}
                 y1={this.y - line_length}
                 x2={this.x}
                 y2={this.y}
+                xyflip={horizontal}
                 incomplete={true}
                 key={this.key() + '--line--parents-skipped-hint'}
             />
@@ -779,16 +810,18 @@ export abstract class AbstractFamilyTreeNode {
                 x1={center_of_values(rendered_left_children.map(child => child.x))} // TODO: replace other manual min/max averages with center_of_values
                 y1={this.y}
                 x2={center_of_values(rendered_left_children.map(child => child.x))}
-                y2={this.y + GENERATION_DY / 2}
+                y2={this.y + min_generation_delta / 2}
+                xyflip={horizontal}
                 key={this.key() + '--line--children-connector'}
             />
     
             if(rendered_left_children.length > 1) {
                 yield <SvgLine
                     x1={Math.min(...rendered_left_children.map(child => child.x))}
-                    y1={this.y + GENERATION_DY / 2}
+                    y1={this.y + min_generation_delta / 2}
                     x2={Math.max(...rendered_left_children.map(child => child.x))}
-                    y2={this.y + GENERATION_DY / 2}
+                    y2={this.y + min_generation_delta / 2}
+                    xyflip={horizontal}
                     key={this.key() + '--line--children-siblings-bar'}
                 />
             }
@@ -799,7 +832,8 @@ export abstract class AbstractFamilyTreeNode {
                 x1={this.x}
                 y1={this.y}
                 x2={this.x}
-                y2={this.y - GENERATION_DY / 2}
+                y2={this.y - min_generation_delta / 2}
+                xyflip={horizontal}
                 key={this.key() + '--line--parents-connector'}
             />
         }

@@ -113,10 +113,10 @@ export class MultiSpouseNode extends AbstractFamilyTreeNode {
         node.relationship_data.right_spousal_relationship = null
     }
 
-	*draw(): Generator<JSX.Element, undefined, never> {        
+	*draw(horizontal: boolean): Generator<JSX.Element, undefined, never> {        
         yield <MultiSpouseBlock
-            x={this.x}
-            y={this.y}
+            x={horizontal ? this.y : this.x}
+            y={horizontal ? this.x : this.y}
             spouseCount={this.data.profiles.length}
             key={this.key()}
         />
