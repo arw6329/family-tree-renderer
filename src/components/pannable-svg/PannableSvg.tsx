@@ -6,7 +6,7 @@ import { focusClosestActiveElementNeighborWithDirection } from "../family-tree/f
 const ZOOM_SCALE_WHEEL = 0.0005
 const ZOOM_SCALE_PINCH = 1
 const ZOOM_SCALE_TRACKPAD_PINCH = 0.0025
-const ZOOM_MIN = 0.5
+const ZOOM_MIN = 0.1
 const ZOOM_MAX = 2
 const PAN_SCALE = 1;
 const PAN_DECELERATION = 5;
