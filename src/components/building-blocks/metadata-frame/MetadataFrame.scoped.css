@@ -12,7 +12,7 @@
 }
 
 .frame-root > .kv-block {
-    background-color: #495054;
+    background-color: rgb(47, 50, 52);
 }
 
 .kv-block summary {
