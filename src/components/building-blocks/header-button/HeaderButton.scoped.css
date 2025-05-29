@@ -1,14 +1,46 @@
+.root {
+    position: relative;
+}
+
 button {
     background-color: #2e2f30;
     transition: background-color 0.2s ease-out;
     border: none;
     border-radius: 4px;
     padding: 5px 12px;
-    color: white;
+    color: #dadee3;
     font-family: monospace;
     cursor: pointer;
 }
 
+button[data-image-button] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 6px;
+}
+
 button:hover {
     background-color: rgb(67, 70, 72);
+}
+
+.tooltip {
+    position: absolute;
+    padding: 3px 7px;
+    border-radius: 2px;
+    background-color: rgb(21, 21, 21);
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    box-shadow: 0px 1px 2px #0000004f;
+    pointer-events: none;
+    bottom: -25px;
+    left: 0;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.root:not(:hover, :has(button:focus-visible)) .tooltip {
+    display: none;
+    visibility: hidden;
 }

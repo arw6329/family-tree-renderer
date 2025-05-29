@@ -4,6 +4,12 @@ import { useContext, useState } from "react"
 import JumpToProfileOverlay from "@/components/overlays/JumpToProfileOverlay"
 import { FamilyTreeStateContext } from "../FamilyTreeState"
 import CreateProfileOverlay from "@/components/overlays/CreateProfileOverlay"
+import { TbFocus2 } from "react-icons/tb"
+import { IconContext } from "react-icons"
+import { FaKeyboard, FaPerson } from "react-icons/fa6"
+import { BiSolidZoomIn, BiSolidZoomOut } from "react-icons/bi"
+import { MdEdit } from "react-icons/md"
+import { FaArrowAltCircleRight } from "react-icons/fa"
 
 interface ControlHeaderProps {
     onRecenter: () => void
@@ -21,28 +27,41 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
     return (<>
         <menu>
             <li>
-                <HeaderButton onClick={() => props.onRecenter()}>
-                    <span>Recenter</span>
+                <HeaderButton imageButton={true} tooltip="Recenter" onClick={() => props.onRecenter()}>
+                    <IconContext.Provider value={{ style: { height: 20, width: 20 } }}>
+                        <TbFocus2 />
+                    </IconContext.Provider>
                 </HeaderButton>
             </li>
             <li>
-                <HeaderButton onClick={() => setSelectingUser(true)}>
-                    <span>Jump to person</span>
+                <HeaderButton imageButton={true} tooltip="Go to person" onClick={() => setSelectingUser(true)}>
+                    <IconContext.Provider value={{ style: { height: 15, width: 15 } }}>
+                        <FaArrowAltCircleRight />
+                    </IconContext.Provider>
+                    <IconContext.Provider value={{ style: { height: 18, width: 18 } }}>
+                        <FaPerson />
+                    </IconContext.Provider>
                 </HeaderButton>
             </li>
             <li>
-                <HeaderButton onClick={() => props.onZoomIn()}>
-                    <span>Zoom in</span>
+                <HeaderButton imageButton={true} tooltip="Zoom in" onClick={() => props.onZoomIn()}>
+                    <IconContext.Provider value={{ style: { height: 20, width: 20 } }}>
+                        <BiSolidZoomIn />
+                    </IconContext.Provider>
                 </HeaderButton>
             </li>
             <li>
-                <HeaderButton onClick={() => props.onZoomOut()}>
-                    <span>Zoom out</span>
+                <HeaderButton imageButton={true} tooltip="Zoom out" onClick={() => props.onZoomOut()}>
+                    <IconContext.Provider value={{ style: { height: 20, width: 20 } }}>
+                        <BiSolidZoomOut />
+                    </IconContext.Provider>
                 </HeaderButton>
             </li>
             <li>
-                <HeaderButton onClick={() => props.onToggleKeyboardControlsMenu()}>
-                    <span>Toggle keyboard menu</span>
+                <HeaderButton imageButton={true} tooltip="Show keyboard controls" onClick={() => props.onToggleKeyboardControlsMenu()}>
+                    <IconContext.Provider value={{ style: { height: 20, width: 20 } }}>
+                        <FaKeyboard />
+                    </IconContext.Provider>
                 </HeaderButton>
             </li>
             {
@@ -53,8 +72,10 @@ const ControlHeader: React.FC<ControlHeaderProps> = (props) => {
                     </HeaderButton>
                 </li>
                 : <li>
-                    <HeaderButton onClick={() => state.setEditing(true)}>
-                        <span>Edit</span>
+                    <HeaderButton imageButton={true} tooltip="Edit" onClick={() => state.setEditing(true)}>
+                        <IconContext.Provider value={{ style: { height: 20, width: 20 } }}>
+                            <MdEdit />
+                        </IconContext.Provider>
                     </HeaderButton>
                 </li>
             }
