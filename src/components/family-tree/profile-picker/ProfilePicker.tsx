@@ -24,8 +24,18 @@ const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, validMo
         setSelected(null)
     }
 
+    const suggestionRegex = new RegExp(
+        input.toLowerCase().trim()
+            .split(/(?:\s+|\b)/)
+            .map(piece => piece.split('')
+                .map(char => `\\u${char.codePointAt(0)!.toString(16).padStart(4, '0')}`)
+                .join('')
+            )
+            .join('.*')
+    )
+
     const suggestedProfiles = profiles
-        .filter(profile => profile.name.toLowerCase().includes(input.toLowerCase()))
+        .filter(profile => profile.name.toLowerCase().match(suggestionRegex))
         .slice(0, 100) // Show max 100 profiles to avoid lag
 
     return (
