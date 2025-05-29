@@ -1,3 +1,7 @@
+svg {
+    user-select: none;
+}
+
 svg:focus-visible {
     outline: 5px double #32a1ce;
     outline-offset: -6px;
