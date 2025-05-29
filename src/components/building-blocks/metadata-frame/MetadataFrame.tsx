@@ -3,7 +3,7 @@ import "./MetadataFrame.scoped.css"
 import { range } from "@/lib/range"
 import { recordValueToString } from "./record-value-to-string"
 import Flex from "../flex/Flex"
-import { startExpanded } from "@/lib/family-tree/metadata-record-helpers"
+import { prettyKey, startExpanded } from "@/lib/family-tree/metadata-record-helpers"
 import { derefRecord } from "@/lib/family-tree/metadata-helpers"
 
 const Row: React.FC<{
@@ -14,7 +14,7 @@ const Row: React.FC<{
         <div className="kv-table-row">
             {range(1, depth).map(() => <div className="depth-marker" />)}
             <Flex gap={5} alignItems="center" wrap={true} style={{ flexGrow: 1, padding: 10 }}>
-                <label>{record.key}</label>
+                <label>{prettyKey(record.key)}</label>
                 {
                     typeof record.value === 'string' && record.value.match(/^https?:\/\//)
                     ? <a target="_blank" href={record.value}>{record.value}</a>

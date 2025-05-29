@@ -5,7 +5,7 @@ import Flex from "../../flex/Flex"
 import { blankRecord } from "@/lib/family-tree/metadata-helpers"
 import { range } from "@/lib/range"
 import ComplexDateInput from "../../complex-date-input/ComplexDateInput"
-import { getTypeOfValue, startExpanded, validChildrenOf } from "@/lib/family-tree/metadata-record-helpers"
+import { getTypeOfValue, prettyKey, startExpanded, validChildrenOf } from "@/lib/family-tree/metadata-record-helpers"
 import { IconContext } from "react-icons"
 import { IoIosTrash } from "react-icons/io"
 import { remove_elem } from "@/lib/array-utils/array-utils"
@@ -25,7 +25,7 @@ const Row: React.FC<{
             {range(1, depth).map(() => <div className="depth-marker" />)}
             <Flex gap={5} alignItems="center" style={{ flexGrow: 1, padding: '10px' }}>
                 <Flex gap={5} alignItems="center" wrap={true} style={{ flexGrow: 1 }}>
-                    <label>{record.key}</label>
+                    <label>{prettyKey(record.key)}</label>
                     {type === 'date' && <ComplexDateInput
                         type="moment"
                         defaultValue={record.value}

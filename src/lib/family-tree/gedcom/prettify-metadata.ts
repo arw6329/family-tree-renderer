@@ -21,7 +21,8 @@ function gedcomIdentToKey(str: string): string|null {
         'PHON': 'PHONE_NUMBER',
         '_MSTAT': 'MARRIAGE_STATUS',
         '_PRIM': 'PRIMARY',
-        '_TYPE': 'TYPE'
+        '_TYPE': 'TYPE',
+        'PLAC': 'LOCATION'
     } as const)[str] ?? null
 }
 

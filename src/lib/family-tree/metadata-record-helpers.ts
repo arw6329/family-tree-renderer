@@ -78,3 +78,7 @@ export function startExpanded(key: string): boolean {
         }
     }
 }
+
+export function prettyKey(key: string): string {
+    return (key[0].toUpperCase() + key.slice(1).toLowerCase()).replaceAll('_', ' ')
+}
