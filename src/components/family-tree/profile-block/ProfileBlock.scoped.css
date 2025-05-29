@@ -18,7 +18,7 @@ button {
     height: 100%;
     background-color: color-mix(in hsl, #111 90%, var(--gender-color));
     font-family: sans-serif;
-    border: 2px solid var(--gender-color);
+    border: 2px solid color-mix(in oklab, black, var(--gender-color) 65%);
     border-radius: 4px;
     box-sizing: border-box;
     padding: 10px;
