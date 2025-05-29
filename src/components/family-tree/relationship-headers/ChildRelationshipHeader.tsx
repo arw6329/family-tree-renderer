@@ -19,7 +19,7 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
     const dateOfFoster = getEventDate('FOSTER', relationship.metadata)
 
     return (
-        <header>
+        <div className="root">
             <DismissableBlock closeButtonTitle="Close relationship details" onDismiss={() => state.setFocusedObjectId('ChildRelationship', null)}>
                 <div className="row" style={{ minHeight: 80 }}>
                     <span className="name">Relationship between {child.name} and parents</span>
@@ -103,7 +103,7 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
                     title={<span>Relationship between {child.name} and parents</span>}
                 />                    
             </>}
-        </header>
+        </div>
     )
 }
 

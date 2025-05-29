@@ -7,7 +7,7 @@ import { TbGenderGenderqueer } from "react-icons/tb"
 const NameAndGender: React.FC<{ profile: Profile }> = ({ profile }) => {
     return (
         <Flex gap={6} alignItems="center">
-            <span style={{ fontSize: '1.6rem', color: 'white' }}>{profile.name}</span>
+            <span style={{ fontSize: '1.4rem', color: 'white' }}>{profile.name}</span>
             {profile.family_tree_gender === 'FEMALE'
                 && <IconContext.Provider value={{ style: { height: 25 } }}>
                     <FaVenus fill="#ffb3c0" aria-label="Female gender symbol" />

@@ -1,23 +1,23 @@
-header {
+.root {
     background-color: rgba(28, 30, 31, 0.94);
     padding: 8px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-}
-
-.row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    width: min(420px, 100%);
+    box-sizing: border-box;
+    float: right;
+    pointer-events: all; /* parent is pointer-events: none */
 }
 
 .name {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: white;
     padding: 0 6px;
-    max-width: 450px;
+    display: block;
     box-sizing: border-box;
+    border-bottom: 1px solid #3a3d3fab;
+    padding-bottom: 10px;
 }
 
 .metadata-row {

@@ -58,7 +58,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                 onToggleKeyboardControlsMenu={() => setKeyShortcutMenuOpen(!keyShortcutMenuOpen)}
             />
             <div style={{ position: 'relative' }}>
-                <div style={{ position: 'absolute', width: '100%' }}>
+                <div style={{ position: 'absolute', width: '100%', pointerEvents: 'none' }}>
                     {state.editing && <div className="under-construction-bar" />}
                     {focusedNode && <ProfileHeader node={focusedNode}/>}
                     {state.focusedSpousalRelationshipId && <SpousalRelationshipHeader />}

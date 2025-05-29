@@ -11,6 +11,7 @@ import { getEventDate, getFirstRecord, getSpousalRelationshipType, isMetadataSim
 import { prettyDate } from "@/lib/family-tree/date-utils"
 import { NodeMetadata, SpousalRelationship } from "@/lib/family-tree/FamilyTreeDatabase"
 import EditMetadataOverlay from "@/components/overlays/EditMetadataOverlay"
+import Flex from "@/components/building-blocks/flex/Flex"
 
 const SimpleMetadataRow: React.FC<{ metadata: NodeMetadata[] }> = ({ metadata }) => {
     const type = getSpousalRelationshipType(metadata)
@@ -38,14 +39,14 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
     const spouse2 = state.getObjectById('Profile', relationship.spouse_2_profile_id)!
 
     return (
-        <header>
+        <div className="root">
             <DismissableBlock closeButtonTitle="Close relationship details" onDismiss={() => state.setFocusedObjectId('SpousalRelationship', null)}>
-                <div className="row" style={{ minHeight: 80 }}>
-                    <span className="name">Relationship between<br />{spouse1.name} and {spouse2.name}</span>
+                <Flex column={true} gap={10} style={{ minHeight: 80 }}>
+                    <span className="name">Relationship between {spouse1.name} and {spouse2.name}</span>
                     <SimpleMetadataRow metadata={relationship.metadata} />
-                </div>
+                </Flex>
             </DismissableBlock>
-            <div className="row">
+            <Flex gap={10}>
                 {(state.editing || !isMetadataSimple(relationship.metadata, {
                     MARRIAGE: {
                         DATE: {},
@@ -69,7 +70,7 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
                         <span>Add child</span>
                     </HeaderButton>
                 </>}
-            </div>
+            </Flex>
 
             {addChildOverlayActive && <>
                 <AddChildOverlay
@@ -108,7 +109,7 @@ const SpousalRelationshipHeader: React.FC<{  }> = ({  }) => {
                     title={<span>Relationship between {spouse1.name} and {spouse2.name}</span>}
                 />                    
             </>}
-        </header>
+        </div>
     )
 }
 

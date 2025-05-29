@@ -14,6 +14,7 @@ import NameAndGender from "./NameAndGender"
 import EditProfileOverlay from "@/components/overlays/profile-detail-overlay/EditProfileOverlay"
 import ViewProfileOverlay from "@/components/overlays/profile-detail-overlay/ViewProfileOverlay"
 import { isMetadataSimple } from "@/lib/family-tree/metadata-helpers"
+import Flex from "@/components/building-blocks/flex/Flex"
 
 const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     const state = useContext(FamilyTreeStateContext)
@@ -30,18 +31,20 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
     const spouses = state.getSpousesOf(profile)
 
     return (
-        <header>
+        <div className="root">
             <DismissableBlock closeButtonTitle="Close profile details" onDismiss={() => state.setFocusedObjectId('Profile', null)}>
-                <div className="row">
-                    <img className="profile-pic" src={state.getProfilePictureURL(profile)} alt={`${profile.name}`} />
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        <NameAndGender profile={profile} />
-                        {relationToRoot && <span className="relationship">{state.rootNode.data.profile.name}&apos;s {relationToRoot.text}</span>}
-                    </div>
+                <Flex column={true} gap={10}>
+                    <Flex gap={10} style={{ borderBottom: '1px solid #3a3d3fab', paddingBottom: 10 }}>
+                        <img className="profile-pic" src={state.getProfilePictureURL(profile)} alt={`${profile.name}`} />
+                        <Flex column={true} gap={6}>
+                            <NameAndGender profile={profile} />
+                            {relationToRoot && <span className="relationship">{state.rootNode.data.profile.name}&apos;s {relationToRoot.text}</span>}
+                        </Flex>
+                    </Flex>
                     <SimpleMetadataRow metadata={profile.metadata} />
-                </div>
+                </Flex>
             </DismissableBlock>
-            <div className="row">
+            <Flex gap={10} wrap={true}>
                 <HeaderButton onClick={() => state.setRootProfileId(profile.profile_id)}>
                     <span>Recenter tree here</span>
                 </HeaderButton>
@@ -80,7 +83,7 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                         </HeaderButton>
                     ))}
                 </>}
-            </div>
+            </Flex>
             
             {addSpousePopupActive && <>
                 <AddSpouseOverlay
@@ -110,7 +113,7 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                 profile={profile}
                 onFinished={() => setMoreDetailsPopupActive(false)}
             />}
-        </header>
+        </div>
     )
 }
 
