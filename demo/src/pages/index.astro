@@ -1,0 +1,18 @@
+---
+import { ThreePanel } from '@reunionpage/eva-framework'
+import { FamilyTree } from '@reunionpage/react-family-tree'
+import Header from '../components/Header.astro'
+---
+
+<ThreePanel title="Family tree demo">
+	<Header slot="header" />
+	<main slot="main">
+		<FamilyTree client:load />
+	</main>
+</ThreePanel>
+
+<style>
+	main {
+		height: 100%;
+	}
+</style>
