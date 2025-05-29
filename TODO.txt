@@ -1,0 +1,8 @@
+- Add GEDCOM import tests for:
+    - Self marriage (invalid)
+    - Siblings/family but no parents
+    - More than one set of parents
+    - Various incestual relationships
+    - Impossible relationships (own ancestor)
+    - Duplicate identifiers
+    - References to nonexistent identifiers
