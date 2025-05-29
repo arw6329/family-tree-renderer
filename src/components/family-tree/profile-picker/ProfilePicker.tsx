@@ -24,7 +24,9 @@ const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, validMo
         setSelected(null)
     }
 
-    const suggestedProfiles = profiles.filter(profile => profile.name.toLowerCase().includes(input.toLowerCase()))
+    const suggestedProfiles = profiles
+        .filter(profile => profile.name.toLowerCase().includes(input.toLowerCase()))
+        .slice(0, 100) // Show max 100 profiles to avoid lag
 
     return (
         <div className="root">
@@ -49,6 +51,7 @@ const ProfilePicker: React.FC<ProfilePickerProps> = ({ action, profiles, validMo
                                         className="profile"
                                         data-selected={selected?.profile_id === profile.profile_id}
                                         onClick={() => setSelected(profile)}
+                                        key={'profile-picker-suggestion--' + profile.profile_id}
                                     >
                                         <img className="profile-pic" loading="lazy" src={state.getProfilePictureURL(profile)} />
                                         <span>{profile.name}</span>
