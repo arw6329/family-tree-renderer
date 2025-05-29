@@ -18,7 +18,7 @@ const Row: React.FC<{
                 {
                     typeof record.value === 'string' && record.value.match(/^https?:\/\//)
                     ? <a target="_blank" href={record.value}>{record.value}</a>
-                    : <span>{recordValueToString(record)}</span>
+                    : <span style={{ whiteSpace: 'pre-wrap' }}>{recordValueToString(record)}</span>
                 }
             </Flex>
         </div>
