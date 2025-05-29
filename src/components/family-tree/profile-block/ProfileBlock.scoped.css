@@ -63,12 +63,13 @@ button {
 }
 
 img {
-    border-radius: 100%;
+    border-radius: 3px;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     color: #eee;
     font-size: 0.8rem;
     line-height: 0.5rem;
+    aspect-ratio: 1;
 }
 
 .column {

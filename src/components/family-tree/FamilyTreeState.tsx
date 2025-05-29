@@ -5,6 +5,7 @@ import { ProfileNode } from "@/lib/family-tree/ProfileNode";
 import { TreeBuilder } from "@/lib/family-tree/TreeBuilder";
 import React, { createContext, JSX, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import defaultProfilePicture from "@/static/reunionpage-logo.png"
+import { getPrimaryPhotoPath } from "@/lib/family-tree/metadata-helpers";
 
 // TODO: bring common db exploration funcs like finding child relationships, spouses, etc.
 // for particular node into functions, import here and other places where these operations
@@ -39,6 +40,7 @@ interface ContextType {
     disconnectChild: (child: Profile) => void,
     disconnectSpouses: (relationship: SpousalRelationship) => void,
     replaceDatabase: (database: FamilyTreeDatabase) => void,
+    setFileURLProvider: (provider: (fileIdentifier: string) => string | null) => void
     getProfilePictureURL: (profile: Profile) => string
 }
 
@@ -52,6 +54,7 @@ const FamilyTreeStateContext = createContext<ContextType>(
 
 const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, onDatabaseChange?: (database: FamilyTreeDatabase) => Promise<unknown>, children: ReactNode }> = ({ initialDatabase, onDatabaseChange, children }) => {
     const [database, setDatabase] = useState(initialDatabase)
+    const [fileURLProvider, setFileURLProvider] = useState<((fileIdentifier: string) => string | null) | null>(null)
     const [rootProfileId, setRootProfileId] = useState(Object.keys(database.profiles)[0])
     const [focusedProfileId, setFocusedProfileId] = useState<string | null>(null)
     const [focusedSpousalRelationshipId, setFocusedSpousalRelationshipId] = useState<string | null>(null)
@@ -305,8 +308,12 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
                 setRootProfileId(Object.keys(database.profiles)[0])
                 cycleDatabaseVersion()
             },
+            setFileURLProvider(provider) {
+                setFileURLProvider(() => provider)
+            },
             getProfilePictureURL(profile: Profile) {
-                return defaultProfilePicture
+                const primaryPhoto = getPrimaryPhotoPath(profile.metadata)
+                return primaryPhoto ? fileURLProvider?.(primaryPhoto) ?? defaultProfilePicture : defaultProfilePicture
             }
         }}>
             {children}

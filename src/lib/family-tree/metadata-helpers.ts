@@ -129,6 +129,44 @@ export function getSpousalRelationshipType(metadata: NodeMetadata[]): SpousalRel
     return null
 }
 
+export function getPrimaryPhotoPath(metadata: NodeMetadata[]): string | null {
+    function extractPath(objectRecord: NodeMetadata | null): string | null {
+        if(!objectRecord) {
+            return null
+        }
+
+        const record = getFirstRecord('FILE', objectRecord.children)
+        // TODO: what if record is a pointer?
+        if(record && record.type === 'simple' && typeof record.value === 'string') {
+            return record.value
+        }
+        return null
+    }
+
+    const primaryPhoto = extractPath(getFirstRecord('PRIMARY_PHOTO', metadata))
+    if(primaryPhoto) {
+        return primaryPhoto
+    }
+
+    let firstObjectRecord = null
+    for(const record of metadata) {
+        // TODO: what if record is a pointer?
+        if(record.type !== 'simple' || record.key !== 'OBJECT' ) {
+            continue
+        }
+
+        if(!firstObjectRecord) {
+            firstObjectRecord = record
+        }
+
+        if(getFirstRecord('PRIMARY', record.children)) {
+            return extractPath(record)
+        }
+    }
+
+    return extractPath(firstObjectRecord)
+}
+
 // Returns true if metadata includes only simple records with keys in legalChildren
 // and has no records with duplicate keys
 export type SimpleMetadataSpec = { [key: string]: SimpleMetadataSpec }

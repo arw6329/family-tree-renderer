@@ -33,7 +33,7 @@ const EditProfileOverlay: React.FC<{ profile: Profile, onFinished: () => void }>
             onFinished={onFinished}
             title={
                 <Flex gap={10} alignItems="center">
-                    <img style={{ width: 50, height: 50, borderRadius: '100%' }} />
+                    <img style={{ width: 50, height: 50, objectFit: 'cover', aspectRatio: 1, borderRadius: 3 }} />
                     <input
                         type="text"
                         placeholder="Name"

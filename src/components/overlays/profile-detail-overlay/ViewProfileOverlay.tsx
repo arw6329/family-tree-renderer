@@ -16,7 +16,7 @@ const ViewProfileOverlay: React.FC<{ profile: Profile, onFinished: () => void }>
             title={
                 <Flex gap={10}>
                     <img
-                        style={{ width: 50, height: 50, objectFit: 'contain' }}
+                        style={{ width: 50, height: 50, objectFit: 'cover', aspectRatio: 1, borderRadius: 3 }}
                         src={state.getProfilePictureURL(profile)}
                         alt={`${profile.name}`}
                     />
