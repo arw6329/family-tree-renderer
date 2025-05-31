@@ -3,7 +3,7 @@ import { GedcomNode } from './GedcomNode'
 import { GedcomError } from './GedcomError'
 import { raise } from '@/lib/util/raise'
 import { ChildRelationship, FamilyTreeDatabase, Profile } from '../FamilyTreeDatabase'
-import { gedcomNodeChildrenToNodeMetadata, gedcomNodeToMetadata } from './gedcom-node-rewriting'
+import { gedcomNodeToMetadata } from './gedcom-node-rewriting'
 
 type GedcomRoot = {
     children: GedcomNode[]
@@ -97,7 +97,7 @@ export function parseGedcom(input: string): FamilyTreeDatabase {
             const profile = {
                 profile_id: gedcom_node.data.xref_id || crypto.randomUUID(),
                 name: full_name || '<missing name>',
-                metadata: gedcomNodeChildrenToNodeMetadata(gedcom_node),
+                metadata: gedcomNodeToMetadata(gedcom_node).children,
                 family_tree_gender:
                     childOf(gedcom_node, 'SEX')?.value === 'M'
                         ? 'MALE' as const
@@ -155,14 +155,14 @@ export function parseGedcom(input: string): FamilyTreeDatabase {
                 relationship_id: gedcom_node.data.xref_id ?? crypto.randomUUID(),
                 spouse_1_profile_id: spouse_1.profile_id,
                 spouse_2_profile_id: spouse_2.profile_id,
-                metadata: gedcomNodeChildrenToNodeMetadata(gedcom_node),
+                metadata: gedcomNodeToMetadata(gedcom_node).children,
             }
 
             if(existing_relationship) {
                 console.log(`Merging spousal relationship ${gedcom_node.data.xref_id} into ${existing_relationship.relationship_id}`)
                 existing_relationship.metadata = [
                     ...existing_relationship.metadata,
-                    ...gedcomNodeChildrenToNodeMetadata(gedcom_node)
+                    ...gedcomNodeToMetadata(gedcom_node).children
                 ]
             } else {
                 db.spousal_relationships[relationship.relationship_id] = relationship
@@ -174,7 +174,7 @@ export function parseGedcom(input: string): FamilyTreeDatabase {
                     relationship_id: crypto.randomUUID(),
                     parent_relationship_id: relationship.relationship_id,
                     child_profile_id: child_node.data.pointer ?? raise(new GedcomError('CHIL node had no pointer')),
-                    metadata: gedcomNodeChildrenToNodeMetadata(child_node),
+                    metadata: gedcomNodeToMetadata(child_node).children,
                 }
 
                 db.child_relationships[child_relationship.relationship_id] = child_relationship
@@ -208,7 +208,7 @@ export function parseGedcom(input: string): FamilyTreeDatabase {
             throw new GedcomError(`FAMC node for INDI ${childProfileId} referenced nonexistent family ${node.data.pointer}`)
         }
 
-        relationship.metadata.push(...gedcomNodeChildrenToNodeMetadata(node))
+        relationship.metadata.push(...gedcomNodeToMetadata(node).children)
     }
 
     return db

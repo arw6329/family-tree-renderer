@@ -83,51 +83,32 @@ function transformNode(node: GedcomNode): GedcomNode {
     return node
 }
 
-function *_gedcomNodeChildrenToNodeMetadata(node: GedcomNode): Generator<NodeMetadata, undefined, undefined> {
-    const nonDereferencedChildren = ['HUSB', 'WIFE', 'CHIL', 'FAMC', 'FAMS']
+export function gedcomNodeToMetadata(node: GedcomNode): NodeMetadata {
+    const skippedChildren = ['HUSB', 'WIFE', 'CHIL', 'FAMC', 'FAMS']
 
-    for(const child of node.children) {
-        if(nonDereferencedChildren.includes(child.type)) {
-            continue
-        }
+    const fixedNode = transformNode(node)
 
-        if(!child.data.pointer) {
-            const fixedChild = transformNode(child)
-
-            const key = gedcomIdentToKey(fixedChild.type)
-                ?? fixedChild.data.formal_name ?? fixedChild.type
-    
-            const obj: NodeMetadata = {
-                type: 'simple',
-                key: key,
-                value: transformValue(fixedChild) ?? null,
-                children: [..._gedcomNodeChildrenToNodeMetadata(fixedChild)]
-            }
-    
-            yield obj
-        } else {
-            yield {
-                type: 'pointer',
-                pointer: child.data.pointer,
-                children: [..._gedcomNodeChildrenToNodeMetadata(child)]
-            }
+    const children: NodeMetadata[] = []
+    for(const child of fixedNode.children) {
+        if(!skippedChildren.includes(child.type)) {
+            children.push(gedcomNodeToMetadata(child))
         }
     }
 
-    return
-}
+    if(fixedNode.data.pointer) {
+        return {
+            type: 'pointer',
+            pointer: fixedNode.data.pointer,
+            children: children
+        }
+    } else {
 
-export function gedcomNodeChildrenToNodeMetadata(node: GedcomNode): NodeMetadata[] {
-    return [..._gedcomNodeChildrenToNodeMetadata(node)]
-}
-
-export function gedcomNodeToMetadata(node: GedcomNode): NodeMetadata {
-    return gedcomNodeChildrenToNodeMetadata({
-        type: '_DUMMY',
-        data: {
-            formal_name: 'DUMMY'
-        },
-        value: undefined,
-        children: [ node ]
-    })[0]
+        return {
+            type: 'simple',
+            key: gedcomIdentToKey(fixedNode.type)
+                ?? fixedNode.data.formal_name ?? fixedNode.type,
+            value: transformValue(fixedNode) ?? null,
+            children: children
+        }
+    }
 }
