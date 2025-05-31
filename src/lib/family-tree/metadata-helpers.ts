@@ -18,15 +18,41 @@ export function blankRecord(key: string): NodeMetadata {
     }
 }
 
-export function derefRecord(record: NodeMetadata, metadataLookup: (id: string) => NodeMetadata | null): NodeMetadata & { type: 'simple' } {
+export function derefRecord(
+    record: NodeMetadata,
+    metadataLookup: (id: string) => NodeMetadata | null,
+    encounteredPointers: string[] = []
+): NodeMetadata & { type: 'simple' } {
+    if(record.type === 'pointer') {
+        if(encounteredPointers.includes(record.pointer)) {
+            console.warn('Found vertical cycle when dereferencing metadata - skipping child')
+            return {
+                type: 'simple',
+                key: 'ERROR',
+                value: '<self-referential record>',
+                children: []
+            }
+        } else {
+            encounteredPointers.push(record.pointer)
+        }
+    }
+
     const children = [...record.children]
     let currentRecord: NodeMetadata = record
+    const localEncounteredRecords: NodeMetadata[] = []
     while(currentRecord.type === 'pointer') {
+        localEncounteredRecords.push(currentRecord)
+
         currentRecord = metadataLookup(currentRecord.pointer) ?? {
             type: 'simple',
             key: 'ERROR',
             value: '<reference to missing metadata>',
             children: []
+        }
+
+        if(localEncounteredRecords.includes(currentRecord)) {
+            console.warn('Found horizontal cycle when dereferencing metadata - breaking')
+            break
         }
 
         for(const child of currentRecord.children) {
@@ -42,7 +68,7 @@ export function derefRecord(record: NodeMetadata, metadataLookup: (id: string) =
     }
 
     for(const child of children) {
-        dereffedRecord.children.push(derefRecord(child, metadataLookup))
+        dereffedRecord.children.push(derefRecord(child, metadataLookup, encounteredPointers))
     }
 
     return dereffedRecord

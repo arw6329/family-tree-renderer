@@ -1,13 +1,11 @@
-import { raise } from "@/lib/util/raise"
 import { NodeMetadata } from "../FamilyTreeDatabase"
-import { PrunedGedcomNode } from "./gedcom"
-import { GedcomError } from "./GedcomError"
 import { parseGedcomDate } from "./date-parser"
+import { GedcomNode } from "./GedcomNode"
 
 // export type GedcomMetadataType = 'DATE' | 'LINK' | 'COORDS' | 'GENERIC'
 //     | { type: 'enum', values: { [k: string]: string } } // values is { PROGRAMMATIC_KEY: 'human readable version' }
 
-function gedcomIdentToKey(str: string): string|null {
+export function gedcomIdentToKey(str: string): string|null {
     return ({
         'SEX': 'GENDER',
         '_MREL': 'MATERNAL_PEDIGREE',
@@ -22,12 +20,13 @@ function gedcomIdentToKey(str: string): string|null {
         '_MSTAT': 'MARRIAGE_STATUS',
         '_PRIM': 'PRIMARY',
         '_TYPE': 'TYPE',
-        'PLAC': 'LOCATION'
+        'PLAC': 'LOCATION',
+        'EMAIL': 'EMAIL'
     } as const)[str] ?? null
 }
 
-function transformValue(node: PrunedGedcomNode) {
-    switch(node.key) {
+function transformValue(node: GedcomNode) {
+    switch(node.type) {
         case 'SEX':
             switch(node.value) {
                 case 'M':
@@ -60,21 +59,21 @@ function transformValue(node: PrunedGedcomNode) {
     }
 }
 
-function transformNode(node: PrunedGedcomNode): PrunedGedcomNode {
-    if(node.key === 'EVEN') {
-        node = Object.assign({}, node)
-        const type = node.children.find(child => child.key === 'TYPE')
-        node.formal_name = type?.value ?? null
+function transformNode(node: GedcomNode): GedcomNode {
+    if(node.type === 'EVEN') {
+        node = structuredClone(node)
+        const type = node.children.find(child => child.type === 'TYPE')
+        node.data.formal_name = type?.value
         node.children = node.children.filter(child => child !== type)
-    } else if(node.key === 'MAP') {
-        const lat = node.children.find(child => child.key === 'LATI')
-        const long = node.children.find(child => child.key === 'LONG')
+    } else if(node.type === 'MAP') {
+        const lat = node.children.find(child => child.type === 'LATI')
+        const long = node.children.find(child => child.type === 'LONG')
         if(node.children.length === 2 && lat?.value && long?.value) {
             node = {
-                formal_name: 'COORDINATES',
-                key: '_COORDS',
-                gedcom_id: null,
-                pointer: null,
+                type: '_COORDS',
+                data: {
+                    formal_name: 'COORDINATES'
+                },
                 value: `${lat.value} ${long.value}`,
                 children: []
             }
@@ -84,35 +83,33 @@ function transformNode(node: PrunedGedcomNode): PrunedGedcomNode {
     return node
 }
 
-function *_prettyChildrenOf(node: PrunedGedcomNode, pointerRewrites: Record<string, string>): Generator<NodeMetadata, undefined, undefined> {
-    const excluded_children = ['HUSB', 'WIFE', 'CHIL']
-    const pointerized_children = ['SOUR', 'REPO']
+function *_gedcomNodeChildrenToNodeMetadata(node: GedcomNode): Generator<NodeMetadata, undefined, undefined> {
+    const nonDereferencedChildren = ['HUSB', 'WIFE', 'CHIL', 'FAMC', 'FAMS']
 
     for(const child of node.children) {
-        if(excluded_children.includes(child.key)) {
+        if(nonDereferencedChildren.includes(child.type)) {
             continue
         }
 
-        if(!child.pointer || !pointerized_children.includes(child.key)) {
+        if(!child.data.pointer) {
             const fixedChild = transformNode(child)
 
-            const key = gedcomIdentToKey(fixedChild.key)
-                ?? fixedChild.formal_name ?? fixedChild.key
+            const key = gedcomIdentToKey(fixedChild.type)
+                ?? fixedChild.data.formal_name ?? fixedChild.type
     
             const obj: NodeMetadata = {
                 type: 'simple',
                 key: key,
                 value: transformValue(fixedChild) ?? null,
-                children: [..._prettyChildrenOf(fixedChild, pointerRewrites)]
+                children: [..._gedcomNodeChildrenToNodeMetadata(fixedChild)]
             }
     
             yield obj
         } else {
             yield {
                 type: 'pointer',
-                pointer: pointerRewrites[child.pointer]
-                    ?? raise(new GedcomError(`Pointer ${child.pointer} was not rewritten (pointed to nonexistant or invalid node)`)),
-                children: [..._prettyChildrenOf(child, pointerRewrites)]
+                pointer: child.data.pointer,
+                children: [..._gedcomNodeChildrenToNodeMetadata(child)]
             }
         }
     }
@@ -120,17 +117,17 @@ function *_prettyChildrenOf(node: PrunedGedcomNode, pointerRewrites: Record<stri
     return
 }
 
-export function prettyChildrenOf(node: PrunedGedcomNode, pointerRewrites: Record<string, string>): NodeMetadata[] {
-    return [..._prettyChildrenOf(node, pointerRewrites)]
+export function gedcomNodeChildrenToNodeMetadata(node: GedcomNode): NodeMetadata[] {
+    return [..._gedcomNodeChildrenToNodeMetadata(node)]
 }
 
-export function prettyNode(node: PrunedGedcomNode, pointerRewrites: Record<string, string>): NodeMetadata {
-    return prettyChildrenOf({
-        key: '_DUMMY',
-        formal_name: 'DUMMY_NODE',
-        gedcom_id: null,
-        pointer: null,
-        value: null,
+export function gedcomNodeToMetadata(node: GedcomNode): NodeMetadata {
+    return gedcomNodeChildrenToNodeMetadata({
+        type: '_DUMMY',
+        data: {
+            formal_name: 'DUMMY'
+        },
+        value: undefined,
         children: [ node ]
-    }, pointerRewrites)[0] ?? raise(new GedcomError('Node could not be prettified'))
+    })[0]
 }
