@@ -1,6 +1,7 @@
 import { NodeMetadata } from "../FamilyTreeDatabase"
 import { parseGedcomDate } from "./date-parser"
 import { GedcomNode } from "./GedcomNode"
+import equal from "deep-equal"
 
 // export type GedcomMetadataType = 'DATE' | 'LINK' | 'COORDS' | 'GENERIC'
 //     | { type: 'enum', values: { [k: string]: string } } // values is { PROGRAMMATIC_KEY: 'human readable version' }
@@ -39,11 +40,11 @@ function transformValue(node: GedcomNode) {
         case '_MREL':
         case '_FREL':
         case 'PEDI':
-            switch(node.value) {
-                case 'Natural':
-                    return 'BIOLOGICAL'
-                case 'Adopted':
-                    return 'ADOPTIVE'
+            switch(node.value?.toLowerCase()) {
+                case 'natural':
+                    return 'biological'
+                case 'adopted':
+                    return 'adoptive'
                 default:
                     return node.value
             }
@@ -76,6 +77,36 @@ function transformNode(node: GedcomNode): GedcomNode {
                 },
                 value: `${lat.value} ${long.value}`,
                 children: []
+            }
+        }
+    } else if(node.type === 'FAMC' || node.type === 'CHIL') {
+        const mrels = node.children.filter(child => child.type === '_MREL')
+        const frels = node.children.filter(child => child.type === '_FREL')
+        if(mrels.length === 1 && frels.length === 1) {
+            const frelCopy = structuredClone(frels[0])
+            frelCopy.type = '_MREL'
+            if(equal(mrels[0], frelCopy)) {
+                const children: GedcomNode[] = [{
+                    type: 'PEDI',
+                    data: {
+                        pointer: frelCopy.data.pointer,
+                        xref_id: frelCopy.data.xref_id,
+                        formal_name: 'PEDIGREE'
+                    },
+                    value: frelCopy.value,
+                    children: frelCopy.children
+                }]
+                for(const child of node.children) {
+                    if(child.type !== '_MREL' && child.type !== '_FREL') {
+                        children.push(child)
+                    }
+                }
+                node = {
+                    type: node.type,
+                    data: node.data,
+                    value: node.value,
+                    children: children
+                }
             }
         }
     }

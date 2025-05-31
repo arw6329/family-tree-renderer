@@ -49,6 +49,7 @@
     "@storybook/react": "^8.5.3",
     "@storybook/react-vite": "^8.5.3",
     "@storybook/test": "^8.5.3",
+    "@types/deep-equal": "^1.0.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
@@ -62,6 +63,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
+    "deep-equal": "^2.2.3",
     "gedcom": "3.0.0",
     "react-autosize-textarea": "^7.1.0",
     "react-icons": "^5.4.0",
