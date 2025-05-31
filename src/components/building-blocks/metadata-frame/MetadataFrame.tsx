@@ -12,7 +12,7 @@ const Row: React.FC<{
 }> = ({ record, depth }) => {
     return (
         <div className="kv-table-row">
-            {range(1, depth).map(() => <div className="depth-marker" />)}
+            {range(1, depth).map((i) => <div key={i} className="depth-marker" />)}
             <Flex gap={5} alignItems="center" wrap={true} style={{ flexGrow: 1, padding: 10 }}>
                 <label>{prettyKey(record.key)}</label>
                 {
@@ -25,22 +25,27 @@ const Row: React.FC<{
     )
 }
 
-function block(record: NodeMetadata, metadataLookup: (id: string) => NodeMetadata | null, depth: number) {
+function block(
+    record: NodeMetadata,
+    metadataLookup: (id: string) => NodeMetadata | null,
+    depth: number,
+    key: string = ''
+) {
     const dereffedRecord = derefRecord(record, metadataLookup)
 
     if(dereffedRecord.children.length) {
         return (
-            <details className="kv-block" open={startExpanded(dereffedRecord.key)}>
+            <details key={key} className="kv-block" open={startExpanded(dereffedRecord.key)}>
                 <summary>
                     <Row record={dereffedRecord} depth={depth} />
                 </summary>
                 <div className="content">
-                    {dereffedRecord.children.map(child => block(child, metadataLookup, depth + 1))}
+                    {dereffedRecord.children.map((child, i) => block(child, metadataLookup, depth + 1, `${key}:${i}`))}
                 </div>
             </details>
         )
     } else {
-        return <Row record={dereffedRecord} depth={depth} />
+        return <Row key={key} record={dereffedRecord} depth={depth} />
     }
 }
 
@@ -50,7 +55,7 @@ const MetadataFrame: React.FC<{
 }> = ({ metadata, metadataLookup }) => {
     return (
         <div className="frame-root">
-            {metadata.map(record => block(record, metadataLookup, 0))}
+            {metadata.map((record, i) => block(record, metadataLookup, 0, i.toString()))}
         </div>
     )
 }
