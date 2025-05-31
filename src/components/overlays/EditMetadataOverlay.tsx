@@ -13,13 +13,13 @@ const EditMetadataOverlay: React.FC<{
     onEditMetadata: MetadataChangeCallback,
     onFinished: () => void,
     title: ReactNode,
-    minWidth?: number
-}> = ({ metadata, legalRootKeys, onEditMetadata, onFinished, title, minWidth }) => {
+}> = ({ metadata, legalRootKeys, onEditMetadata, onFinished, title }) => {
     const [newMetadata, setNewMetadata] = useState(metadata)
     return (
         <SectionedDialog
             onClose={onFinished}
-            minWidth={minWidth}
+            minWidth={850}
+            maxWidth={850}
             header={title}
             main={
                 <EditableMetadataFrame

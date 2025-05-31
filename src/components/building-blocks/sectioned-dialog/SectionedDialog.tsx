@@ -5,18 +5,20 @@ import Flex from "../flex/Flex"
 const SectionedDialog: React.FC<{
     onClose: () => void
     minWidth?: number
+    maxWidth?: number
     header: ReactNode
     main: ReactNode
     footer: ReactNode
 }> = ({
     onClose,
-    minWidth = 600, 
+    minWidth = 600,
+    maxWidth,
     header,
     main,
     footer
 }) => {
     return (
-        <ModalDialog onClose={onClose} minWidth={minWidth}>
+        <ModalDialog onClose={onClose} minWidth={minWidth} maxWidth={maxWidth}>
             <Flex column={true} style={styles.root}>
                 <div style={{ padding: 16 }}>
                     {header}

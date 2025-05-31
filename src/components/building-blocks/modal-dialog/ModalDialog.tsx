@@ -1,7 +1,17 @@
 import { ReactNode, useEffect, useRef } from "react"
 import "./ModalDialog.scoped.css"
 
-const ModalDialog: React.FC<{ onClose: () => void, minWidth?: number, children: ReactNode }> = ({ onClose, minWidth = 600, children }) => {
+const ModalDialog: React.FC<{
+    onClose: () => void
+    minWidth?: number
+    maxWidth?: number
+    children: ReactNode
+}> = ({
+    onClose,
+    minWidth = 600,
+    maxWidth,
+    children
+}) => {
     const dialog = useRef<HTMLDialogElement>(null)
 
     useEffect(() => {
@@ -19,7 +29,8 @@ const ModalDialog: React.FC<{ onClose: () => void, minWidth?: number, children: 
                 }
             }}
             style={{
-                minWidth: `min(${minWidth}px, 95vw)`
+                minWidth: `min(${minWidth}px, 95vw)`,
+                maxWidth: `min(${maxWidth ? maxWidth + 'px' : '100vw'}, 100vw)`
             }}
         >
             <div className="root">

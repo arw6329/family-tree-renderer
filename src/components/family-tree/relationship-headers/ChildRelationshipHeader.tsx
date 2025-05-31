@@ -82,7 +82,6 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
 
             {moreDetailsPopupActive && state.editing && <>
                 <EditMetadataOverlay
-                    minWidth={780}
                     metadata={relationship.metadata}
                     legalRootKeys={[
                         'PEDIGREE',

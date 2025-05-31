@@ -15,6 +15,8 @@ const ViewMetadataOverlay: React.FC<{
         <SectionedDialog
             onClose={onFinished}
             header={title}
+            minWidth={850}
+            maxWidth={850}
             main={
                 <MetadataFrame metadata={metadata} metadataLookup={metadataLookup} />
             }
