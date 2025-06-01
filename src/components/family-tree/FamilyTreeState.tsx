@@ -31,15 +31,15 @@ interface ContextType {
     getRelationshipBetween: (profile1: Profile, profile2: Profile) => SpousalRelationship | null,
     getObjectById: <T extends ObjectType>(type: T, id: string) => ObjectTypeToInterface[T] | null,
     getRootMetadata: (metadataId: string) => NodeMetadata | null,
-    hasParents: (profile: Profile) => boolean,
     isEmpty: () => boolean,
     addNewProfile: (profile: Profile) => void,
     replaceObject: <T extends ObjectType>(type: T, object: ObjectTypeToInterface[T]) => void,
     makeSpouses: (profile1: Profile, profile2: Profile) => SpousalRelationship,
     makeChild: (parentRelationship: SpousalRelationship, profile: Profile) => void,
-    disconnectChild: (child: Profile) => void,
+    disconnectChild: (childRelationship: ChildRelationship) => void,
     disconnectSpouses: (relationship: SpousalRelationship) => void,
     replaceDatabase: (database: FamilyTreeDatabase) => void,
+    setActiveChildRelationshipForProfile: (profileId: string, relationshipId: string) => void,
     setFileURLProvider: (provider: (fileIdentifier: string) => string | null) => void
     getProfilePictureURL: (profile: Profile) => string
 }
@@ -56,6 +56,7 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
     const [database, setDatabase] = useState(initialDatabase)
     const [fileURLProvider, setFileURLProvider] = useState<((fileIdentifier: string) => string | null) | null>(null)
     const [rootProfileId, setRootProfileId] = useState(Object.keys(database.profiles)[0])
+    const [activeChildRelationships, setActiveChildRelationships] = useState<{ [profileId: string]: /* childRelationshipId */ string }>({})
     const [focusedProfileId, setFocusedProfileId] = useState<string | null>(null)
     const [focusedSpousalRelationshipId, setFocusedSpousalRelationshipId] = useState<string | null>(null)
     const [focusedChildRelationshipId, setFocusedChildRelationshipId] = useState<string | null>(null)
@@ -73,25 +74,19 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
         databaseVersionRef.current = version
     }
 
-    const rootNode: ProfileNode | null = useMemo(() => {
-        if(rootProfileId) {
-            return ProfileNode.create_unconnected_node({
-                profile: database.profiles[rootProfileId]
-            })
-        } else {
-            return null
+    const [rootNode, builder] = useMemo(() => {
+        if(!rootProfileId) {
+            return [null, null]
         }
-    }, [rootProfileId, databaseVersion, editing])
-
-    const builder = useMemo(() => {
-        if(!rootNode) {
-            return null
-        }
+        
+        const rootNode: ProfileNode = ProfileNode.create_unconnected_node({
+            profile: database.profiles[rootProfileId]
+        })
 
         // TODO: builder is reran when entering/exiting edit mode, but it should be easy to not do this
         // by just removing all the button nodes instead.
         // Improve efficiency, or does it not matter enough?
-        const builder = new TreeBuilder(database)
+        const builder = new TreeBuilder(database, activeChildRelationships)
         builder.construct_tree(rootNode)
         if(editing) {
             builder.enter_edit_mode()
@@ -100,8 +95,8 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
         // TODO: debug only
         window.treeBuilder = builder
 
-        return builder
-    }, [database, rootNode, editing])
+        return [rootNode, builder]
+    }, [database, databaseVersion, rootProfileId, activeChildRelationships, editing])
 
     if(onDatabaseChange && databaseVersion !== lastNotifiedDatabaseVersion.current && !consumerDatabaseUpdateInProgress.current) {
         consumerDatabaseUpdateInProgress.current = true
@@ -240,12 +235,6 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
             getRootMetadata(metadataId) {
                 return database.root_metadata[metadataId]
             },
-            hasParents(profile: Profile) {
-                const childRelationship = Object.values(database.child_relationships)
-                    .find(relationship => relationship.child_profile_id === profile.profile_id)
-                
-                return !!childRelationship
-            },
             isEmpty() {
                 return Object.keys(database.profiles).length > 0
             },
@@ -255,10 +244,7 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
             },
             replaceObject<T extends ObjectType>(type: T, object: ObjectTypeToInterface[T]) {
                 switch(type) {
-                    case 'Profile': {
-                        DatabaseBuilder.fromExisting(database).replaceObject(type, object)
-                        break
-                    }
+                    case 'Profile':
                     case 'SpousalRelationship':
                     case 'ChildRelationship': {
                         DatabaseBuilder.fromExisting(database).replaceObject(type, object)
@@ -276,19 +262,20 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
                 return relationship
             },
             makeChild(parentRelationship: SpousalRelationship, profile: Profile) {
-                DatabaseBuilder.fromExisting(database).makeChild(parentRelationship, profile)
+                const relationship = DatabaseBuilder.fromExisting(database).makeChild(parentRelationship, profile)
+                setActiveChildRelationships({
+                    ...activeChildRelationships,
+                    [profile.profile_id]: relationship.relationship_id
+                })
                 cycleDatabaseVersion()
             },
-            disconnectChild(child: Profile) {
-                const childRelationship = Object.values(database.child_relationships)
-                    .find(relationship => relationship.child_profile_id === child.profile_id)
-
-                if(!childRelationship) {
-                    throw new Error(`Profile ${child} was not a child of anything`)
-                }
-
+            disconnectChild(childRelationship: ChildRelationship) {
                 delete database.child_relationships[childRelationship.relationship_id]
-
+                if(activeChildRelationships[childRelationship.child_profile_id] === childRelationship.relationship_id) {
+                    const newActiveChildRelationships = structuredClone(activeChildRelationships)
+                    delete newActiveChildRelationships[childRelationship.child_profile_id]
+                    setActiveChildRelationships(newActiveChildRelationships)
+                }
                 cycleDatabaseVersion()
             },
             disconnectSpouses(relationship: SpousalRelationship) {
@@ -307,6 +294,13 @@ const FamilyTreeStateProvider: React.FC<{ initialDatabase: FamilyTreeDatabase, o
                 setDatabase(database)
                 setRootProfileId(Object.keys(database.profiles)[0])
                 cycleDatabaseVersion()
+            },
+            setActiveChildRelationshipForProfile(profileId, relationshipId) {
+                console.log(profileId, relationshipId)
+                setActiveChildRelationships({
+                    ...activeChildRelationships,
+                    [profileId]: relationshipId
+                })
             },
             setFileURLProvider(provider) {
                 setFileURLProvider(() => provider)

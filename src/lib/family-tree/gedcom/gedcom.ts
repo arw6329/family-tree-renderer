@@ -84,9 +84,8 @@ export function parseGedcom(input: string): FamilyTreeDatabase {
     }
 
     // These need processed after all spousal/child relationships are in place
-    // TODO: this assumes one set of parents per profile
     const famcNodes: {
-        [childProfileId: string]: GedcomNode
+        [childProfileId: string]: GedcomNode[]
     } = {}
 
     for(const gedcom_node of gedcom_json.children) {
@@ -108,14 +107,10 @@ export function parseGedcom(input: string): FamilyTreeDatabase {
 
             for(const child of gedcom_node.children) {
                 if(child.type === 'FAMC') {
-                    if(famcNodes[profile.profile_id]) {
-                        throw new GedcomError(
-                            `INDI ${profile.profile_id} has multiple FAMC records `
-                            + `(at least one for family ${famcNodes[profile.profile_id].data.pointer} and one for ${child.data.pointer}). `
-                            + `Multiple sets of parents on the same INDI are not yet supported. We are working on implementing this feature.`
-                        )
+                    if(!famcNodes[profile.profile_id]) {
+                        famcNodes[profile.profile_id] = []
                     }
-                    famcNodes[profile.profile_id] = child
+                    famcNodes[profile.profile_id].push(child)
                 }
             }
 
@@ -187,28 +182,30 @@ export function parseGedcom(input: string): FamilyTreeDatabase {
     }
 
     for(const childProfileId in famcNodes) {
-        const node = famcNodes[childProfileId]
+        const nodes = famcNodes[childProfileId]
 
-        if(!node.data.pointer) {
-            throw new GedcomError(`FAMC node for INDI ${childProfileId} had no pointer`)
-        }
-
-        let relationship: ChildRelationship | null = null
-        for(const relationshipId in db.child_relationships) {
-            const _relationship = db.child_relationships[relationshipId]
-            if(
-                _relationship.child_profile_id === childProfileId
-                && _relationship.parent_relationship_id === node.data.pointer
-            ) {
-                relationship = _relationship
+        for(const node of nodes) {
+            if(!node.data.pointer) {
+                throw new GedcomError(`FAMC node for INDI ${childProfileId} had no pointer`)
             }
-        }
 
-        if(!relationship) {
-            throw new GedcomError(`FAMC node for INDI ${childProfileId} referenced nonexistent family ${node.data.pointer}`)
-        }
+            let relationship: ChildRelationship | null = null
+            for(const relationshipId in db.child_relationships) {
+                const _relationship = db.child_relationships[relationshipId]
+                if(
+                    _relationship.child_profile_id === childProfileId
+                    && _relationship.parent_relationship_id === node.data.pointer
+                ) {
+                    relationship = _relationship
+                }
+            }
 
-        relationship.metadata.push(...gedcomNodeToMetadata(node).children)
+            if(!relationship) {
+                throw new GedcomError(`FAMC node for INDI ${childProfileId} referenced nonexistent family ${node.data.pointer}`)
+            }
+
+            relationship.metadata.push(...gedcomNodeToMetadata(node).children)
+        }
     }
 
     return db

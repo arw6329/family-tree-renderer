@@ -10,12 +10,14 @@ export class TreeBuilder {
     private node_queue: AbstractFamilyTreeNode[]
     private root_node: AbstractFamilyTreeNode | null
     private all_nodes: AbstractFamilyTreeNode[]
+    private preferred_child_relationships: { [profileId: string]: string }
 
-    constructor(database: FamilyTreeDatabase) {
+    constructor(database: FamilyTreeDatabase, preferred_child_relationships: TreeBuilder['preferred_child_relationships'] = {}) {
         this.db = database
         this.node_queue = []
         this.root_node = null
         this.all_nodes = []
+        this.preferred_child_relationships = preferred_child_relationships
     }
 
     construct_tree(root_node: AbstractFamilyTreeNode, _visited_ids = []) {
@@ -35,8 +37,34 @@ export class TreeBuilder {
             && !_visited_ids.includes(root_node.data.profile.profile_id) // can't attach parents for already-visited spouse of incestual relationship - otherwise infinite recursion when we try to attach spouse's parents and build back down
             // TODO: second check above leads to inconsistent rendering of one or both sides of duplicated tree in certain cases    
         ) {
-            let child_relationship = Object.values(this.db.child_relationships).find(relationship => relationship.child_profile_id === root_node.data.profile.profile_id)
+            let child_relationships = Object.values(this.db.child_relationships).filter(relationship => relationship.child_profile_id === root_node.data.profile.profile_id)
     
+            if(child_relationships.length > 1) {
+                root_node.data.alternate_child_relationships = child_relationships
+                // Whether or not the child relationship we are picking is actually affecting the render.
+                // Eg. are the parents already attached or not - can the user actually toggle anything.
+                // Render is affected if this is the root node or an ancestor.
+                // Render is not affected if this node is the result of attaching children to a set of parent that already existed.
+                // This is technically wrong (I believe?) if the node is a spouse that doesn't need its parents attached.
+                // However, the picker is not displayed in that case and these values are therefore irrelevant.
+                root_node.data.chosen_child_relationship_affected_render = !root_node.left_parent && !root_node.right_parent
+            }
+
+            let child_relationship = null
+            const preferred_child_relationship_id = this.preferred_child_relationships[root_node.data.profile.profile_id]
+            if(preferred_child_relationship_id) {
+                child_relationship = this.db.child_relationships[preferred_child_relationship_id]
+                if(!child_relationship) {
+                    throw new Error(`TreeBuilder preferred nonexistent child relationship ${preferred_child_relationship_id} for profile ${root_node.data.profile.profile_id}`)
+                }
+
+                if(!child_relationship.child_profile_id === root_node.data.profile.profile_id) {
+                    throw new Error(`TreeBuilder preferred child relationship ${preferred_child_relationship_id} for profile ${root_node.data.profile.profile_id}, but that relationship does not have this profile as the child. Actual child is: ${child_relationship.child_profile_id}`)
+                }
+            } else {
+                child_relationship = child_relationships[0]
+            }
+
             // attach parents if needed and they exist
             if(child_relationship) {
                 let parent_spousal_relationship = this.db.spousal_relationships[child_relationship.parent_relationship_id]
@@ -54,17 +82,6 @@ export class TreeBuilder {
                 } else if(!root_node.left_parent || !root_node.right_parent) {
                     // TODO: unnecessary check?
                     throw 'Error: only 1 parent registered'
-                } else if(
-                    !(
-                        root_node.left_parent.is_representative_of(parent_spousal_relationship.spouse_1_profile_id)
-                        && root_node.right_parent.is_representative_of(parent_spousal_relationship.spouse_2_profile_id)
-                    ) && !(
-                        root_node.right_parent.is_representative_of(parent_spousal_relationship.spouse_1_profile_id)
-                        && root_node.left_parent.is_representative_of(parent_spousal_relationship.spouse_2_profile_id)
-                    ) 
-                ) {
-                    // TODO: unnecessary check?
-                    throw new Error('Error: node has parents registered, but they do not align with the node\'s parents stored in the database')
                 }
             }
         }

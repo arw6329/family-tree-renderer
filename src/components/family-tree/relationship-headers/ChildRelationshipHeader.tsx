@@ -63,7 +63,7 @@ const ChildRelationshipHeader: React.FC<{  }> = ({  }) => {
                 </>}
                 {state.editing && <>
                     <HeaderButton onClick={() => {
-                        state.disconnectChild(child)
+                        state.disconnectChild(relationship)
                         state.setFocusedObjectId('ChildRelationship', null)
                     }}>
                         <span>Break relationship</span>

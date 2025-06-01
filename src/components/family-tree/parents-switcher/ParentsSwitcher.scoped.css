@@ -1,0 +1,20 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2b2d2e;
+    border: 1px solid rgb(223, 223, 223);
+    font-size: 0.85rem;
+    font-family: monospace;
+    color: white;
+    display: flex;
+    height: 100%;
+    line-height: 15px;
+    box-sizing: border-box;
+    padding: 0 4px;
+    gap: 3px;
+}
+
+select {
+    width: 100%;
+}

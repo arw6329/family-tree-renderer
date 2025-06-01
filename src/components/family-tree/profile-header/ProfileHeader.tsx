@@ -64,14 +64,13 @@ const ProfileHeader: React.FC<{ node: ProfileNode }> = ({ node }) => {
                     <HeaderButton onClick={() => setAddSpousePopupActive(true)}>
                         <span>Add spouse</span>
                     </HeaderButton>
-                    {state.hasParents(profile)
-                        ? <HeaderButton onClick={() => state.disconnectChild(profile)}>
+                    {node.relationship_data.own_child_relationship &&
+                        <HeaderButton onClick={() => state.disconnectChild(node.relationship_data.own_child_relationship!)}>
                             <span>Disconnect from parents</span>
-                        </HeaderButton>
-                        : <HeaderButton onClick={() => setAddParentsPopupActive(true)}>
-                            <span>Add parents</span>
-                        </HeaderButton>
-                    }
+                        </HeaderButton>}
+                    <HeaderButton onClick={() => setAddParentsPopupActive(true)}>
+                        <span>Add parents</span>
+                    </HeaderButton>
                     {spouses.map(spouse => (
                         <HeaderButton onClick={() => setAddingChildWithRelationship(spouse.relationship)}>
                             <span>Add child with {spouse.spouse.name}</span>

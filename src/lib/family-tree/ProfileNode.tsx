@@ -5,6 +5,7 @@ import SpousalRelationshipInfoButton from '@/components/family-tree/relationship
 import ChildRelationshipInfoButton from '@/components/family-tree/relationship-info-button/ChildRelationshipInfoButton'
 import { getPedigree } from './metadata-helpers'
 import ChildRelationshipLabel from '@/components/family-tree/child-relationship-label/ChildRelationshipLabel'
+import ParentsSwitcher from '@/components/family-tree/parents-switcher/ParentsSwitcher'
 
 export class ProfileNode extends AbstractFamilyTreeNode {
 	*draw(horizontal: boolean): Generator<JSX.Element, undefined, never> {
@@ -51,6 +52,27 @@ export class ProfileNode extends AbstractFamilyTreeNode {
                         y={(this.y + this.left_parent.y) / 2 + (this.y - this.left_parent.y) / 5.5}
                         labelText={pedigree.toUpperCase()}
                         key={this.key() + `--crlabel-${childRelationshipId}`}
+                    />
+                }
+            }
+
+            if(this.data.alternate_child_relationships) {
+                if(this.data.chosen_child_relationship_affected_render) {
+                    yield <ParentsSwitcher
+                        x={this.x}
+                        y={(this.y + this.left_parent.y) / 2 - (this.y - this.left_parent.y) / 5.5}
+                        childProfileId={this.data.profile.profile_id}
+                        currentRelationshipId={this.relationship_data.own_child_relationship!.relationship_id}
+                        allRelationships={this.data.alternate_child_relationships}
+                        key={this.key() + `--parents-switcher-${childRelationshipId}`}
+                    />
+                } else {
+                    yield <ChildRelationshipLabel
+                        x={this.x}
+                        y={(this.y + this.left_parent.y) / 2 - (this.y - this.left_parent.y) / 5.5}
+                        width={250}
+                        labelText={'More parents available for child'}
+                        key={this.key() + `--alt-parents-available-label-${childRelationshipId}`}
                     />
                 }
             }
