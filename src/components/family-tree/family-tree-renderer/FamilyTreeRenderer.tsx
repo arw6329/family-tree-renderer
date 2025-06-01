@@ -1,5 +1,4 @@
 import React, { KeyboardEvent, useContext, useEffect, useMemo, useRef, useState } from "react"
-import "./FamilyTreeRenderer.css"
 import "./FamilyTreeRenderer.scoped.css"
 import PannableSvg, { PannableSvgControls } from "../../pannable-svg/PannableSvg"
 import ControlHeader from "../control-header/ControlHeader"

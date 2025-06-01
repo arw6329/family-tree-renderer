@@ -2,8 +2,6 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    font-family: sans-serif;
-    color-scheme: dark;
 }
 
 .under-construction-bar {

@@ -5,6 +5,7 @@ import ActionButton from "../building-blocks/action-button/ActionButton"
 import Flex from "../building-blocks/flex/Flex"
 import { parseGedcom } from "@/lib/family-tree/gedcom/gedcom"
 import { fileListToJsonDirectory, fuzzyFindFileInDirectory } from "@/lib/util/file"
+import { useErrorBoundary } from "react-error-boundary"
 
 function readFile(file: File): Promise<string> {
     return new Promise((resolve) => {
@@ -20,6 +21,7 @@ const ImportGedcomOverlay: React.FC<{ onFinished: () => void }> = ({ onFinished 
     const state = useContext(FamilyTreeStateContext)
     const [gedcomFile, setGedcomFile] = useState<File | null>(null)
     const [mediaFileList, setMediaFileList] = useState<FileList | null>(null)
+    const { showBoundary } = useErrorBoundary()
 
     return (
         <SectionedDialog
@@ -36,23 +38,27 @@ const ImportGedcomOverlay: React.FC<{ onFinished: () => void }> = ({ onFinished 
             footer={
                 <Flex gap={6}>
                     <ActionButton disabled={!gedcomFile} onClick={async () => {
-                        const database = parseGedcom(await readFile(gedcomFile!))
-                        const directory = mediaFileList ? fileListToJsonDirectory(mediaFileList) : null
+                        try {
+                            const database = parseGedcom(await readFile(gedcomFile!))
+                            const directory = mediaFileList ? fileListToJsonDirectory(mediaFileList) : null
 
-                        state.replaceDatabase(database)
-                        state.setFileURLProvider(filePath => {
-                            if(directory) {
-                                const file = fuzzyFindFileInDirectory(filePath, directory)
-                                if(file) {
-                                    // TODO: URL is never revoked. Is this a big deal?
-                                    // Should probably find a way to revoke when all images using it are lost.
-                                    return URL.createObjectURL(file)
+                            state.replaceDatabase(database)
+                            state.setFileURLProvider(filePath => {
+                                if(directory) {
+                                    const file = fuzzyFindFileInDirectory(filePath, directory)
+                                    if(file) {
+                                        // TODO: URL is never revoked. Is this a big deal?
+                                        // Should probably find a way to revoke when all images using it are lost.
+                                        return URL.createObjectURL(file)
+                                    }
                                 }
-                            }
-                            return null
-                        })
+                                return null
+                            })
 
-                        onFinished()
+                            onFinished()
+                        } catch(e) {
+                            showBoundary(e)
+                        }
                     }}>
                         <span>Import</span>
                     </ActionButton>

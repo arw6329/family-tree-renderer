@@ -1,3 +1,9 @@
+:host {
+    font-family: sans-serif;
+    color-scheme: dark;
+    /* line-height: 1.3rem; */
+}
+
 .root > svg {
     background-color: #1f2325;
     width: 100%;

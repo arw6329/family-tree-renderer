@@ -1,0 +1,33 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #902716;
+    background-color: #201918;
+    padding: 16px;
+    gap: 10px;
+    box-sizing: border-box;
+    max-width: min(1000px, 100vw);
+    margin: auto;
+    color: rgb(181, 176, 176);
+    max-height: 100%;
+    overflow: auto;
+}
+
+.title {
+    font-size: 1.4rem;
+    color: white;
+}
+
+.error {
+    color: white;
+}
+
+.stacktrace {
+    font-family: monospace;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+}
+
+.stacktrace-line {
+    text-indent: 1em hanging;
+}

@@ -4,6 +4,9 @@ import React, { useState } from "react"
 import CreateProfileOverlay from "@/components/overlays/CreateProfileOverlay"
 import ImportGedcomOverlay from "@/components/overlays/ImportGedcomOverlay"
 import FamilyTreeInner from "./FamilyTreeInner"
+import { ErrorBoundary } from "react-error-boundary"
+import FamilyTreeError from "../family-tree-error/FamilyTreeError"
+import "./global.css"
 
 const blankDatabase: FamilyTreeDatabase = {
     root_metadata: {},
@@ -20,14 +23,16 @@ const FamilyTree: React.FC<{
     const [importGedcomOverlayActive, setImportGedcomOverlayActive] = useState(false)
 
     return (
-        <FamilyTreeStateProvider initialDatabase={database} onDatabaseChange={onDatabaseChange}>
-            <FamilyTreeInner
-                onAddNewPerson={() => setCreateFirstProfilePopupActive(true)}
-                onImportGedcom={() => setImportGedcomOverlayActive(true)}
-            />
-            {createFirstProfilePopupActive && <CreateProfileOverlay onFinished={() => setCreateFirstProfilePopupActive(false)}/>}
-            {importGedcomOverlayActive && <ImportGedcomOverlay onFinished={() => setImportGedcomOverlayActive(false)}/>}
-        </FamilyTreeStateProvider>
+        <ErrorBoundary FallbackComponent={FamilyTreeError}>
+            <FamilyTreeStateProvider initialDatabase={database} onDatabaseChange={onDatabaseChange}>
+                <FamilyTreeInner
+                    onAddNewPerson={() => setCreateFirstProfilePopupActive(true)}
+                    onImportGedcom={() => setImportGedcomOverlayActive(true)}
+                />
+                {createFirstProfilePopupActive && <CreateProfileOverlay onFinished={() => setCreateFirstProfilePopupActive(false)}/>}
+                {importGedcomOverlayActive && <ImportGedcomOverlay onFinished={() => setImportGedcomOverlayActive(false)}/>}
+            </FamilyTreeStateProvider>
+        </ErrorBoundary>
     )
 }
 
