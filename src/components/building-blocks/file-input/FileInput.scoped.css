@@ -1,0 +1,32 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    min-height: 80px;
+    position: relative;
+}
+
+input {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 2px dashed #b1b3b4;
+    background-color: #242728;
+    border-radius: 0;
+    flex-grow: 1;
+    padding-top: 40px;
+    transition: border-color 0.1s ease-in-out;
+}
+
+input.dragover {
+    border-color: #51beff;
+}
+
+.label {
+    position: absolute;
+    pointer-events: none;
+    padding: 10px;
+    height: 40px;
+    box-sizing: border-box;
+    color: #d3d9da;
+}

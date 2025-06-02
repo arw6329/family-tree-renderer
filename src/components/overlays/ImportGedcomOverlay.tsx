@@ -6,6 +6,7 @@ import Flex from "../building-blocks/flex/Flex"
 import { parseGedcom } from "@/lib/family-tree/gedcom/gedcom"
 import { fileListToJsonDirectory, fuzzyFindFileInDirectory } from "@/lib/util/file"
 import { useErrorBoundary } from "react-error-boundary"
+import FileInput from "../building-blocks/file-input/FileInput"
 
 function readFile(file: File): Promise<string> {
     return new Promise((resolve) => {
@@ -30,10 +31,17 @@ const ImportGedcomOverlay: React.FC<{ onFinished: () => void }> = ({ onFinished 
                 <span>Import a GEDCOM file</span>
             }
             main={
-                <>
-                    <input type="file" onChange={evt => setGedcomFile(evt.target.files?.[0] ?? null)} />
-                    <input type="file" webkitdirectory="true" onChange={evt => setMediaFileList(evt.target.files ?? null)} />
-                </>
+                <Flex column={true} gap={12}>
+                    <Flex column={true} gap={6}>
+                        <label>GEDCOM file</label>
+                        <FileInput onChange={evt => setGedcomFile(evt.target.files?.[0] ?? null)} />
+                    </Flex>
+                    <Flex column={true} gap={6}>
+                        <label>Media folder (optional)</label>
+                        <span style={{ fontSize: '0.9rem' }}>Add a folder containing multimedia files referenced in your GEDCOM.</span>
+                        <input type="file" webkitdirectory="true" onChange={evt => setMediaFileList(evt.target.files ?? null)} />
+                    </Flex>
+                </Flex>
             }
             footer={
                 <Flex gap={6}>
