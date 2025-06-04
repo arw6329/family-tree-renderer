@@ -40,6 +40,11 @@ button:hover {
     white-space: nowrap;
 }
 
+.tooltip[data-side=left] {
+    right: 0;
+    left: auto;
+}
+
 .root:not(:hover, :has(button:focus-visible)) .tooltip {
     display: none;
     visibility: hidden;

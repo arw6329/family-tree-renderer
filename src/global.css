@@ -1,4 +1,4 @@
-:host {
+:is(:host, :root) {
     font-family: sans-serif;
     color-scheme: dark;
     color: white;

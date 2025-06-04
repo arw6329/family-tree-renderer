@@ -20,9 +20,9 @@ const config: StorybookConfig = {
         },
         injectCodeFunction: function(cssCode) {
           if(typeof window !== 'undefined') {
-            customElements.whenDefined('reunionpage-family-tree')
+            customElements.whenDefined('reunionpage-shadow-boundary')
               .then(() => {
-                customElements.get('reunionpage-family-tree').injectStyles(cssCode)
+                customElements.get('reunionpage-shadow-boundary').injectStyles(cssCode)
               })
           }
         }

@@ -6,7 +6,7 @@ import ImportGedcomOverlay from "@/components/overlays/ImportGedcomOverlay"
 import FamilyTreeInner from "./FamilyTreeInner"
 import { ErrorBoundary } from "react-error-boundary"
 import FamilyTreeError from "../family-tree-error/FamilyTreeError"
-import "./global.css"
+import "@/global.css"
 
 const blankDatabase: FamilyTreeDatabase = {
     root_metadata: {},

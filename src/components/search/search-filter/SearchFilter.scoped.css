@@ -1,0 +1,41 @@
+.root {
+    background-color: color-mix(in oklab, var(--color) 10%, #00000030);
+    max-width: 100%;
+}
+
+.header {
+    display: flex;
+    border: 4px solid var(--color);
+    border-bottom: none;
+    align-items: flex-start;
+}
+
+.operation {
+    background-color: var(--color);
+    padding: 2px 5px;
+    font-size: 0.9rem;
+    font-family: monospace;
+    color: #000000bf;
+    font-weight: bold;
+    border-right: 1px solid color-mix(in oklab, var(--color) 75%, black);
+    border-bottom: 1px solid color-mix(in oklab, var(--color) 75%, black);
+}
+
+.control-buttons {
+    display: flex;
+    gap: 2px;
+    background-color: var(--color);
+    padding: 1px 2px;
+    border-left: 1px solid color-mix(in oklab, var(--color) 75%, black);
+    border-bottom: 1px solid color-mix(in oklab, var(--color) 75%, black);
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 4px solid var(--color);
+    border-top: none;
+}
+
+

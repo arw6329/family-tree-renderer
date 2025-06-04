@@ -18,9 +18,9 @@ export default defineConfig({
         cssInjectedByJsPlugin({
             injectCodeFunction: function(cssCode, options) {
                 if(typeof window !== 'undefined') {
-                    customElements.whenDefined('reunionpage-family-tree')
+                    customElements.whenDefined('reunionpage-shadow-boundary')
                     .then(() => {
-                        customElements.get('reunionpage-family-tree').injectStyles(cssCode)
+                        customElements.get('reunionpage-shadow-boundary').injectStyles(cssCode)
                     })
                 }
             }

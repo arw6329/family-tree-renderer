@@ -20,7 +20,7 @@ export function blankRecord(key: string): NodeMetadata {
 
 export function derefRecord(
     record: NodeMetadata,
-    metadataLookup: (id: string) => NodeMetadata | null,
+    metadataLookup: (id: string) => NodeMetadata | null, // TODO: eventually replace me with DatabaseView
     encounteredPointers: string[] = []
 ): NodeMetadata & { type: 'simple' } {
     if(record.type === 'pointer') {

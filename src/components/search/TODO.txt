@@ -1,0 +1,9 @@
+Filters should be powerful enough to express the following:
+
+- Any individual whose last name is longer than 15 characters
+- Any individual with a spouse 5 years older than them
+- Any individual with two birth records that conflict by more than three years
+- Any individual who had any event within 40 miles of Philidelphia between 1920 and 1935
+- Any individual who has 20 or more non-adoptive great-great-grandchildren
+- Any individual who died at 90 years old or older
+- Any individual with 3 or more divorces
