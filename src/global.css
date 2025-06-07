@@ -1,8 +1,9 @@
 :is(:host, :root) {
-    font-family: sans-serif;
+    font-family: 'Spline Sans';
     color-scheme: dark;
     color: white;
-    /* line-height: 1.3rem; */
+    line-height: 1.4rem;
+    word-break: break-word;
 }
 
 .root > svg {
@@ -27,5 +28,9 @@ select {
 label {
     font-size: 0.9rem;
     color: #8f979b;
-    font-family: monospace;
+    font-family: 'Martian Mono';
+    letter-spacing: -0.088em;
+    line-height: 15px;
+    font-size: 0.8rem;
+    font-weight: 543;
 }

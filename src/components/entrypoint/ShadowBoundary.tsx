@@ -50,10 +50,13 @@ export function ensureDefined() {
 }
 
 export const ShadowBoundary: React.FC<{ ref: RefObject<ShadowBoundaryElement | null> }> = ({ ref }) => {
-    return (
+    return <>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Martian+Mono:wght@100..800&family=Spline+Sans:wght@300..700&display=swap" rel="stylesheet" />
         <reunionpage-shadow-boundary
             style={{ display: 'block', height: '100%', backgroundColor: '#1f2325' }}
             ref={ref}
         />
-    )
+    </>
 }

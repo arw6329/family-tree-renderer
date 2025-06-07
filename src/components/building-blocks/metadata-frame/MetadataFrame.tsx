@@ -14,7 +14,7 @@ const Row: React.FC<{
         <div className="kv-table-row">
             {range(1, depth).map((i) => <div key={i} className="depth-marker" />)}
             <Flex gap={5} alignItems="center" wrap={true} style={{ flexGrow: 1, padding: 10 }}>
-                <label>{prettyKey(record.key)}</label>
+                <span className="label">{prettyKey(record.key)}</span>
                 {
                     typeof record.value === 'string' && record.value.match(/^https?:\/\//)
                     ? <a target="_blank" href={record.value}>{record.value}</a>

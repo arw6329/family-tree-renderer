@@ -32,7 +32,7 @@
     align-items: center;
 }
 
-label {
+.label {
     font-weight: bold;
     white-space: nowrap;
     cursor: inherit;
@@ -44,7 +44,7 @@ label {
     font-size: 0.9rem;
 }
 
-label::before {
+.label::before {
     margin-right: 5px;
     font-family: sans-serif;
     width: 19px;
@@ -52,15 +52,15 @@ label::before {
     line-height: 1rem;
 }
 
-.kv-block > summary label::before {
+.kv-block > summary .label::before {
     content: '▼ ';
 }
 
-.kv-block:not([open]) > summary label::before {
+.kv-block:not([open]) > summary .label::before {
     content: '▶ ';
 }
 
-.label-value-wrapper label + * {
+.label-value-wrapper .label + * {
     margin-left: 24px;
 }
 
@@ -143,7 +143,7 @@ select {
         grid-area: value;
     }
 
-    .label-value-wrapper label + * {
+    .label-value-wrapper .label + * {
         grid-area: value;
     }
 }
