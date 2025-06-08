@@ -7,7 +7,7 @@ import Header from '../components/Header.astro'
 <ThreePanel title="Family tree demo">
 	<Header slot="header" />
 	<main slot="main">
-		<FamilyTree client:load />
+		<FamilyTree client:only />
 	</main>
 </ThreePanel>
 
