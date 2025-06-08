@@ -3,7 +3,7 @@ import { useContext } from "react"
 import { FamilyTreeStateContext } from "../../family-tree/FamilyTreeState"
 import Flex from "@/components/building-blocks/flex/Flex"
 import ViewMetadataOverlay from "../ViewMetadataOverlay"
-import NameAndGender from "@/components/family-tree/profile-header/NameAndGender"
+import NameAndGender from "@/components/misc/name-and-gender/NameAndGender"
 
 const ViewProfileOverlay: React.FC<{ profile: Profile, onFinished: () => void }> = ({ profile, onFinished }) => {
     const state = useContext(FamilyTreeStateContext)

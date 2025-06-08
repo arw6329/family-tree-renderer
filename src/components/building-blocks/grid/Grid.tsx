@@ -5,6 +5,8 @@ const Grid: React.FC<{
     columns?: string
     rows?: string
     gap?: number
+    columnGap?: number
+    rowGap?: number
     justifyContent?: React.CSSProperties['justifyContent']
     style?: React.CSSProperties
     children: ReactNode
@@ -12,6 +14,8 @@ const Grid: React.FC<{
     columns,
     rows,
     gap = 0,
+    columnGap = gap ?? 0,
+    rowGap = gap ?? 0,
     justifyContent,
     style = {},
     children
@@ -23,6 +27,8 @@ const Grid: React.FC<{
             gridTemplateColumns: columns,
             gridTemplateRows: rows,
             gap,
+            columnGap,
+            rowGap,
             justifyContent
         }}>{children}</div>
     )

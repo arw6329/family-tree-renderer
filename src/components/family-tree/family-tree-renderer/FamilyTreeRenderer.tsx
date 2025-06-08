@@ -65,7 +65,7 @@ const FamilyTreeRenderer: React.FC<{}> = (props) => {
                     {keyShortcutMenuOpen && <KeyShortcutInfo />}
                 </div>
             </div>
-            <PannableSvg ref={pannableSvg}>
+            <PannableSvg ref={pannableSvg} style={{ backgroundColor: '#1f2325', width: '100%', height: '100%' }}>
                 <g ref={svgElements}>{renderedElements}</g>
             </PannableSvg>
         </div>

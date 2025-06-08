@@ -1,4 +1,5 @@
 import { LinearAnimator } from "@/lib/LinearAnimator"
+import type React from "react"
 import { forwardRef, ReactNode, RefObject, useEffect, useImperativeHandle, useRef, useState } from "react"
 import "./PannableSvg.scoped.css"
 import { focusClosestActiveElementNeighborWithDirection } from "../family-tree/family-tree-renderer/focus-control"
@@ -435,7 +436,10 @@ const PannableSvg = forwardRef<{
     setCenter: (centerX: number, centerY: number) => void
     getCenter: () => [number, number]
     zoom: (pixels: number) => void
-}, { children: ReactNode }>(({ children }, ref) => {
+}, {
+    style?: React.CSSProperties
+    children: ReactNode
+}>(({ style, children }, ref) => {
     console.log('PannableSVG Render')
     const svg: RefObject<SVGSVGElement | null> = useRef(null)
     const initialized = useRef(false)
@@ -522,6 +526,7 @@ const PannableSvg = forwardRef<{
             tabIndex={0}
             aria-keyshortcuts="Alt+ArrowUp"
             aria-label="Interactive family tree graphic"
+            style={style}
         >
             {children}
         </svg>

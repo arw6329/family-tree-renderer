@@ -36,16 +36,14 @@ const SectionedDialog: React.FC<{
 
 const styles = {
     root: {
-        border: '1px solid #495054',
-        backgroundColor: '#1c1e1f',
+        border: '1px solid #2c3032',
+        backgroundColor: '#151718',
         boxSizing: 'border-box' as const
     },
     
     center: {
         padding: '16px',
-        backgroundColor: '#2b2f31',
-        borderTop: '1px solid #495054',
-        borderBottom: '1px solid #495054'
+        backgroundColor: '#1c1e1f'
     }
 }
 

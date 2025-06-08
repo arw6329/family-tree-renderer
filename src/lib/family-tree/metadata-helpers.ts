@@ -141,6 +141,7 @@ export function getPedigree(metadata: NodeMetadata[]): Pedigree | null {
     return null
 }
 
+// TODO: does not work for standard GEDCOM divorce definitions
 export function getSpousalRelationshipType(metadata: NodeMetadata[]): SpousalRelationshipType | null {
     const marriages = metadata.filter(record => record.type === 'simple' && record.key === 'MARRIAGE') as (NodeMetadata & {type: 'simple'})[]
 
