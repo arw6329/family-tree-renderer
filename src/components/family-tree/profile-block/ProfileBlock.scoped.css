@@ -20,7 +20,7 @@ button {
     border: 2px solid color-mix(in oklab, black, var(--gender-color) 65%);
     border-radius: 4px;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 10px 5px;
     display: flex;
     gap: 10px;
     color: var(--gender-color)
