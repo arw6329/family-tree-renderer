@@ -24,7 +24,7 @@ const ChildRecordFilter: React.FC<{
             color="#b66cff"
             filter={thisFilter}
             onChange={onChange}
-            extraControlButtons={
+            extraControlButtons={thisFilter.filter && ('filter' in thisFilter.filter || 'filters' in thisFilter.filter) &&
                 <HeaderButton
                     imageButton={true}
                     tooltip="Replace with child"
