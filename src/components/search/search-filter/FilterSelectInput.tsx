@@ -1,9 +1,10 @@
-import type { FilterDefinition, FilterType } from "./FilterDefinition"
+import type { FilterDefinition, FilterTestSubjectType, FilterType } from "./FilterDefinition"
 import { createEmptyFilter } from "./FilterSelection"
 
 const FilterSelectInput: React.FC<{
+    testSubjectType: FilterTestSubjectType
     onChoose: (filter: FilterDefinition) => void
-}> = ({ onChoose }) => {
+}> = ({ testSubjectType, onChoose }) => {
     return (
         <select onChange={event => {
             onChoose(createEmptyFilter(event.currentTarget.value as FilterType))
@@ -15,14 +16,23 @@ const FilterSelectInput: React.FC<{
                 <option value="OR">OR</option>
                 <option value="NOT">NOT</option>
             </optgroup>
-            <optgroup label="Value tests">
-                <option value="STRING COMPARE">String compare</option>
-                <option value="DATE COMPARE">Date compare</option>
-            </optgroup>
-            <option value="CHILD RECORD">Child record</option>
-            <optgroup label="Relatives">
-                <option value="PARENTS">Parents</option>
-            </optgroup>
+            {testSubjectType === 'NodeMetadata' && <>
+                <optgroup label="Value tests">
+                    <option value="STRING COMPARE">String compare</option>
+                    <option value="DATE COMPARE">Date compare</option>
+                </optgroup>
+                <optgroup label="Metadata">
+                    <option value="CHILD RECORD">Child record</option>
+                </optgroup>
+            </>}
+            {testSubjectType === 'Profile' && <>
+                <optgroup label="Relatives">
+                    <option value="PARENTS">Parents</option>
+                </optgroup>
+                <optgroup label="Metadata">
+                    <option value="CHILD RECORD">Child record</option>
+                </optgroup>
+            </>}
         </select>
     )
 }

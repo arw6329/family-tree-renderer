@@ -17,3 +17,5 @@ export type FilterDefinition =
     | NoopFilterDefinition
 
 export type FilterType = FilterDefinition['type']
+
+export type FilterTestSubjectType = 'Profile' | 'SpousalRelationship' | 'ChildRelationship' | 'NodeMetadata'

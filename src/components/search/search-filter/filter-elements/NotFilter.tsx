@@ -1,6 +1,6 @@
 import Flex from "@/components/building-blocks/flex/Flex"
 import SearchFilter from "../SearchFilter"
-import type { FilterDefinition } from "../FilterDefinition"
+import type { FilterDefinition, FilterTestSubjectType } from "../FilterDefinition"
 import { selectFilter } from "../FilterSelection"
 import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import { IconContext } from "react-icons"
@@ -14,8 +14,9 @@ export type NotFilterDefinition = {
 
 const NotFilter: React.FC<{
     filter: NotFilterDefinition
+    testSubjectType: FilterTestSubjectType
     onChange: (filter: FilterDefinition | null) => void
-}> = ({ filter: thisFilter, onChange }) => {
+}> = ({ filter: thisFilter, testSubjectType, onChange }) => {
     return (
         <SearchFilter
             operation="NOT"
@@ -39,13 +40,13 @@ const NotFilter: React.FC<{
         >
             <Flex>
                 {thisFilter.filter
-                    ? selectFilter(thisFilter.filter, filter => {
+                    ? selectFilter(thisFilter.filter, testSubjectType, filter => {
                         onChange({
                             type: 'NOT',
                             filter: filter
                         })
                     })
-                    : <FilterSelectInput onChoose={filter => {
+                    : <FilterSelectInput testSubjectType={testSubjectType} onChoose={filter => {
                         onChange({
                             type: 'NOT',
                             filter: filter

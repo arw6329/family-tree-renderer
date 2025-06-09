@@ -70,7 +70,7 @@ const ChildRecordFilter: React.FC<{
                     <span>record matching this filter:</span>
                 </Flex>
                 {thisFilter.filter
-                    ? selectFilter(thisFilter.filter, filter => {
+                    ? selectFilter(thisFilter.filter, 'NodeMetadata', filter => {
                         onChange({
                             type: 'CHILD RECORD',
                             cardinality: thisFilter.cardinality,
@@ -78,7 +78,7 @@ const ChildRecordFilter: React.FC<{
                             filter: filter
                         })
                     })
-                    : <FilterSelectInput onChoose={filter => {
+                    : <FilterSelectInput testSubjectType="NodeMetadata" onChoose={filter => {
                         onChange({
                             type: 'CHILD RECORD',
                             cardinality: thisFilter.cardinality,

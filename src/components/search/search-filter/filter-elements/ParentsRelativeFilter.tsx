@@ -25,13 +25,13 @@ const ParentsRelativeFilter: React.FC<{
             <Flex column={true} gap={10} alignItems="baseline">
                 <span>Individual has any set of parents where one parent matches this filter:</span>
                 {thisFilter.parentFilter1
-                    ? selectFilter(thisFilter.parentFilter1, filter => {
+                    ? selectFilter(thisFilter.parentFilter1, 'Profile', filter => {
                         onChange({
                             ...structuredClone(thisFilter),
                             parentFilter1: filter
                         })
                     })
-                    : <FilterSelectInput onChoose={filter => {
+                    : <FilterSelectInput testSubjectType="Profile" onChoose={filter => {
                         onChange({
                             ...structuredClone(thisFilter),
                             parentFilter1: filter
@@ -40,13 +40,13 @@ const ParentsRelativeFilter: React.FC<{
                 }
                 <span>and the other parent matches this filter:</span>
                 {thisFilter.parentFilter2
-                    ? selectFilter(thisFilter.parentFilter2, filter => {
+                    ? selectFilter(thisFilter.parentFilter2, 'Profile', filter => {
                         onChange({
                             ...structuredClone(thisFilter),
                             parentFilter2: filter
                         })
                     })
-                    : <FilterSelectInput onChoose={filter => {
+                    : <FilterSelectInput testSubjectType="Profile" onChoose={filter => {
                         onChange({
                             ...structuredClone(thisFilter),
                             parentFilter2: filter
@@ -55,13 +55,13 @@ const ParentsRelativeFilter: React.FC<{
                 }
                 <span>and the relationship matches this filter:</span>
                 {thisFilter.relationshipFilter
-                    ? selectFilter(thisFilter.relationshipFilter, filter => {
+                    ? selectFilter(thisFilter.relationshipFilter, 'ChildRelationship', filter => {
                         onChange({
                             ...structuredClone(thisFilter),
                             relationshipFilter: filter
                         })
                     })
-                    : <FilterSelectInput onChoose={filter => {
+                    : <FilterSelectInput testSubjectType="ChildRelationship" onChoose={filter => {
                         onChange({
                             ...structuredClone(thisFilter),
                             relationshipFilter: filter

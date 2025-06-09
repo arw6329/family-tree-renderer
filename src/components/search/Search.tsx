@@ -23,7 +23,7 @@ const Search: React.FC<{
     return (
         <div className="root">
             <Flex column={true} gap={10} alignItems="baseline">
-                {filter && selectFilter(filter, filter => setFilter(filter))}
+                {filter && selectFilter(filter, 'Profile', filter => setFilter(filter))}
                 <ActionButton onClick={() => {
                     const results: Profile[] = []
                     for(const profile of database.getAllObjects('Profile')) {

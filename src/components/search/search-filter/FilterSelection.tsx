@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import type { FilterDefinition, FilterType } from "./FilterDefinition"
+import type { FilterDefinition, FilterTestSubjectType, FilterType } from "./FilterDefinition"
 import AndFilter from "./filter-elements/AndFilter"
 import NotFilter from "./filter-elements/NotFilter"
 import ChildRecordFilter from "./filter-elements/ChildRecordFilter"
@@ -9,14 +9,14 @@ import DateCompareFilter from "./filter-elements/DateCompareFilter"
 import ParentsRelativeFilter from "./filter-elements/ParentsRelativeFilter"
 import NoopFilter from "./filter-elements/NoopFilter"
 
-export function selectFilter(filter: FilterDefinition, onChange: (filter: FilterDefinition | null) => void): ReactNode {
+export function selectFilter(filter: FilterDefinition, testSubjectType: FilterTestSubjectType, onChange: (filter: FilterDefinition | null) => void): ReactNode {
     switch(filter.type) {
         case 'AND':
         case 'OR': {
-            return <AndFilter filter={filter} onChange={onChange} />
+            return <AndFilter filter={filter} testSubjectType={testSubjectType} onChange={onChange} />
         }
         case 'NOT': {
-            return <NotFilter filter={filter} onChange={onChange} />
+            return <NotFilter filter={filter} testSubjectType={testSubjectType} onChange={onChange} />
         }
         case 'CHILD RECORD': {
             return <ChildRecordFilter filter={filter} onChange={onChange} />
