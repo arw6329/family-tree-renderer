@@ -2,10 +2,11 @@ import Flex from "@/components/building-blocks/flex/Flex"
 import SearchFilter from "../SearchFilter"
 import type { FilterDefinition } from "../FilterDefinition"
 import ComplexDateInput from "@/components/building-blocks/complex-date-input/ComplexDateInput"
+import type { ComplexDate } from "@/lib/family-tree/ComplexDate"
 
 export type DateCompareFilterDefinition = {
     type: 'DATE COMPARE'
-    test: string
+    date: ComplexDate | null
 }
 
 const DateCompareFilter: React.FC<{
@@ -21,7 +22,15 @@ const DateCompareFilter: React.FC<{
         >
             <Flex gap={8} alignItems="center">
                 <span>Value is</span>
-                <ComplexDateInput type="moment" />
+                <ComplexDateInput
+                    enabledModes={['date', 'range', 'range-after', 'range-before']}
+                    onChange={date => {
+                        onChange({
+                            type: 'DATE COMPARE',
+                            date
+                        })
+                    }}
+                />
             </Flex>
         </SearchFilter>
     )

@@ -1,5 +1,8 @@
-import { ComplexDate } from "./ComplexDate"
-import { ParsedSingleDate } from "./gedcom/date-parser"
+import { choices, maybe, object, union } from "doubletime"
+import type { ComplexDate } from "./ComplexDate"
+import type { ParsedSingleDate } from "./gedcom/date-parser"
+
+// TODO: move this stuff to lib/date
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -73,6 +76,32 @@ export function prettyDateShortYearOnly(date: ComplexDate): string | null {
 }
 
 export function isComplexDate(date: unknown): date is ComplexDate {
-    // TODO: actually implement
-    return true
+    const singleDateValidator = object({
+        year: 'int?',
+        month: 'int?',
+        day: 'int?',
+        bce: 'boolean'
+    })
+
+    const { error } = union(object({
+        type: choices('date', 'approximate', 'calculated', 'estimated'),
+        date: singleDateValidator
+    }), object({
+        type: choices('period', 'range'),
+        date_start: singleDateValidator,
+        date_end: maybe(singleDateValidator)
+    }), object({
+        type: choices('period', 'range'),
+        date_start: maybe(singleDateValidator),
+        date_end: singleDateValidator
+    }), object({
+        type: choices('interpreted'),
+        date: singleDateValidator,
+        text: 'string'
+    }), object({
+        type: choices('plaintext'),
+        text: 'string'
+    })).safeValidate(date)
+    
+    return !error
 }

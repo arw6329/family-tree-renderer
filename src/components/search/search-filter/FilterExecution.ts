@@ -2,6 +2,8 @@ import type { ChildRelationship, NodeMetadata, Profile } from "@/lib/family-tree
 import type { FilterDefinition } from "./FilterDefinition";
 import { derefRecord } from "@/lib/family-tree/metadata-helpers";
 import type { DatabaseView } from "@/lib/family-tree/DatabaseView";
+import { isComplexDate } from "@/lib/family-tree/date-utils";
+import { dateToRange, rangesOverlap } from "@/lib/date/range";
 
 export function executeFilter(
     filter: FilterDefinition | null,
@@ -67,7 +69,23 @@ export function executeFilter(
             }
         }
         case 'DATE COMPARE': {
-            throw new Error(`Filter type ${filter.type} not implemented`)
+            if(!('type' in testSubject)) {
+                return false
+            }
+
+            // We do not have to deref record here. See other comments.
+            if(testSubject.type === 'pointer') {
+                throw new Error(`Did not expect pointer record to appear in filter execution`)
+            }
+            if(!isComplexDate(testSubject.value)) {
+                return false
+            }
+
+            if(!filter.date) {
+                return false
+            }
+
+            return rangesOverlap(dateToRange(filter.date), dateToRange(testSubject.value))
         }
         case 'CHILD RECORD': {
             // We do not have to deref testSubject or its children here if

@@ -64,6 +64,7 @@
   },
   "dependencies": {
     "deep-equal": "^2.2.3",
+    "doubletime": "^1.2.1",
     "gedcom": "3.0.0",
     "react-autosize-textarea": "^7.1.0",
     "react-error-boundary": "^6.0.0",

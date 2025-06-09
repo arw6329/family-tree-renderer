@@ -4,7 +4,9 @@ import { ComplexDate } from "@/lib/family-tree/ComplexDate"
 import { ParsedSingleDate } from "@/lib/family-tree/gedcom/date-parser"
 import SingleDateInput from "./SingleDateInput"
 
-function reportChange(mode: string, date1: ParsedSingleDate | null, date2: ParsedSingleDate | null, onChange?: (date: ComplexDate | null) => void) {
+type ComplexDateInputMode = 'date' | 'approximate' | 'range-after' | 'range-before' | 'range' | 'period' | 'period-after' | 'period-before' | 'plaintext'
+
+function reportChange(mode: ComplexDateInputMode, date1: ParsedSingleDate | null, date2: ParsedSingleDate | null, onChange?: (date: ComplexDate | null) => void) {
     switch(mode) {
         case 'date':
         case 'approximate': {
@@ -87,9 +89,19 @@ function reportChange(mode: string, date1: ParsedSingleDate | null, date2: Parse
 }
 
 // onChange will report null on completely empty date
-const ComplexDateInput: React.FC<{ type: 'moment' | 'timespan', defaultValue?: ComplexDate | null, onChange?: (date: ComplexDate | null) => void }> = ({ type, defaultValue, onChange }) => {
+const ComplexDateInput: React.FC<{
+    enabledModes: 'moment' | 'timespan' | ComplexDateInputMode[]
+    defaultValue?: ComplexDate | null
+    onChange?: (date: ComplexDate | null) => void
+}> = ({ enabledModes: propEnabledModes, defaultValue, onChange }) => {
     const _defaultValue = defaultValue ?? { type: 'date', date: null }
-    let initialMode: string
+    const enabledModes =
+        propEnabledModes === 'timespan'
+            ? [ 'period', 'period-after', 'period-before', 'plaintext' ]
+        : propEnabledModes === 'moment'
+            ? [ 'date', 'approximate', 'range', 'range-after', 'range-before', 'plaintext' ]
+            : propEnabledModes
+    let initialMode: ComplexDateInputMode
     let initialDate1: ParsedSingleDate | null
     let initialDate2: ParsedSingleDate | null
 
@@ -106,11 +118,11 @@ const ComplexDateInput: React.FC<{ type: 'moment' | 'timespan', defaultValue?: C
         case 'range': {
             type PeriodOrRangeDate = ComplexDate & { type: 'period' | 'range' }
             if((_defaultValue as PeriodOrRangeDate).date_start === null) {
-                initialMode = _defaultValue.type + '-before'
+                initialMode = `${_defaultValue.type}-before`
                 initialDate1 = _defaultValue.date_end
                 initialDate2 = null
             } else if((_defaultValue as PeriodOrRangeDate).date_end === null) {
-                initialMode = _defaultValue.type + '-after'
+                initialMode = `${_defaultValue.type}-after`
                 initialDate1 = _defaultValue.date_start
                 initialDate2 = null
             } else {
@@ -131,11 +143,11 @@ const ComplexDateInput: React.FC<{ type: 'moment' | 'timespan', defaultValue?: C
         }
     }
     
-    const [mode, _setMode] = useState(initialMode)
+    const [mode, _setMode] = useState<ComplexDateInputMode>(initialMode)
     const [date1, _setDate1] = useState(initialDate1)
     const [date2, _setDate2] = useState(initialDate2)
 
-    function setMode(mode: string) {
+    function setMode(mode: ComplexDateInputMode) {
         reportChange(mode, date1, date2, onChange)
         _setMode(mode)
     }
@@ -194,26 +206,22 @@ const ComplexDateInput: React.FC<{ type: 'moment' | 'timespan', defaultValue?: C
 
     return (
         <div className="root">
-            <select defaultValue={mode} onChange={(event) => setMode(event.target.value)}>
-                {type === 'moment'
-                    ? <>
-                        <optgroup label="Single dates">
-                            <option value="date">Exactly</option>
-                            <option value="approximate">Approximately</option>
-                        </optgroup>
-                        <optgroup label="Date ranges">
-                            <option value="range">Between</option>
-                            <option value="range-after">After</option>
-                            <option value="range-before">Before</option>
-                        </optgroup>
-                    </> : <>
-                        <optgroup label="Time intervals">
-                            <option value="period">Time span</option>
-                            <option value="period-after">Time span - end unknown</option>
-                            <option value="period-before">Time span - start unknown</option>
-                        </optgroup>
-                    </>}
-                <option value="plaintext">Plain text</option>
+            <select defaultValue={mode} onChange={(event) => setMode(event.target.value as ComplexDateInputMode)}>
+                {['date', 'approximate'].some(mode => enabledModes.includes(mode)) && <optgroup label="Single dates">
+                    {enabledModes.includes('date')        && <option value="date">Exactly</option>}
+                    {enabledModes.includes('approximate') && <option value="approximate">Approximately</option>}
+                </optgroup>}
+                {['range', 'range-after', 'range-before'].some(mode => enabledModes.includes(mode)) && <optgroup label="Date ranges">
+                    {enabledModes.includes('range')        && <option value="range">Between</option>}
+                    {enabledModes.includes('range-after')  && <option value="range-after">After</option>}
+                    {enabledModes.includes('range-before') && <option value="range-before">Before</option>}
+                </optgroup>}
+                {['period', 'period-after', 'period-before'].some(mode => enabledModes.includes(mode)) && <optgroup label="Time intervals">
+                    {enabledModes.includes('period')        && <option value="period">Time span</option>}
+                    {enabledModes.includes('period-after')  && <option value="period-after">Time span - end unknown</option>}
+                    {enabledModes.includes('period-before') && <option value="period-before">Time span - start unknown</option>}
+                </optgroup>}
+                {enabledModes.includes('plaintext') && <option value="plaintext">Plain text</option>}
             </select>
             {input}
         </div>

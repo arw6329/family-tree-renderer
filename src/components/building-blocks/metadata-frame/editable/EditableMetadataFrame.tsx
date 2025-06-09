@@ -27,7 +27,7 @@ const Row: React.FC<{
                 <Flex gap={5} alignItems="center" wrap={true} style={{ flexGrow: 1 }}>
                     <span className="label">{prettyKey(record.key)}</span>
                     {type === 'date' && <ComplexDateInput
-                        type="moment"
+                        enabledModes="moment"
                         defaultValue={record.value}
                         onChange={(date) => {
                             record.value = date
