@@ -1,8 +1,8 @@
-import _Search from "@/components/search/Search"
 import { useEffect, useRef } from "react"
 import { ensureDefined, ShadowBoundary, ShadowBoundaryElement } from "../ShadowBoundary"
 import type { FamilyTreeDatabase } from "@/lib/family-tree/FamilyTreeDatabase"
 import { DatabaseView } from "@/lib/family-tree/DatabaseView"
+import SearchPage from "@/components/search/SearchPage"
 
 const Search: React.FC<{
     database: FamilyTreeDatabase
@@ -11,7 +11,7 @@ const Search: React.FC<{
     
     useEffect(() => {
         ensureDefined()
-        rootElem.current!.render(<_Search database={DatabaseView.fromExisting(database)} />)
+        rootElem.current!.render(<SearchPage database={DatabaseView.fromExisting(database)} />)
     })
 
     return (

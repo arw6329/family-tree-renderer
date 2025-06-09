@@ -1,0 +1,25 @@
+.paginator {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style-type: none;
+
+    & a {
+        display: block;
+        padding: 5px 10px;
+        cursor: pointer;
+        background-color: rgb(46, 47, 48);
+        transition: background-color 0.2s ease-out;
+        user-select: none;
+    }
+
+    & a:hover {
+        background-color: rgb(67, 70, 72);
+    }
+
+    & .selected a {
+        background-color: #8b3dd7;
+    }
+}

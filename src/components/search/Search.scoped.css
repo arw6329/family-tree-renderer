@@ -1,0 +1,21 @@
+.root {
+    padding: 20px;
+    background-color: rgb(28, 30, 31);
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+h1 {
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}

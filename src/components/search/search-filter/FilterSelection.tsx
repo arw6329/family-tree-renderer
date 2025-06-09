@@ -3,7 +3,6 @@ import type { FilterDefinition, FilterTestSubjectType, FilterType } from "./Filt
 import AndFilter from "./filter-elements/AndFilter"
 import NotFilter from "./filter-elements/NotFilter"
 import ChildRecordFilter from "./filter-elements/ChildRecordFilter"
-import RelativeFilter from "./RelativeFilter"
 import StringCompareFilter from "./filter-elements/StringCompareFilter"
 import DateCompareFilter from "./filter-elements/DateCompareFilter"
 import ParentsRelativeFilter from "./filter-elements/ParentsRelativeFilter"

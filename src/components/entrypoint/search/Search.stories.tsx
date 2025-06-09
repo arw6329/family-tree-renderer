@@ -1,5 +1,5 @@
 import { StoryFn, Meta } from "@storybook/react"
-import Search from "./Search";
+import Search from "./Search"
 import gedcom from "@/../test/gedcoms/pres2020.ged?raw"
 import { parseGedcom } from "@/lib/family-tree/gedcom/gedcom"
 
@@ -15,10 +15,7 @@ const Template: StoryFn<typeof Search> = (args) => <div style={{ height: '100vh'
     <Search {...args} />
 </div>;
 
-export const Blank = Template.bind({});
-Blank.args = {};
-
-export const Prepopulated = Template.bind({});
-Prepopulated.args = {
+export const Pres2020 = Template.bind({});
+Pres2020.args = {
     database: parseGedcom(gedcom)
 };
