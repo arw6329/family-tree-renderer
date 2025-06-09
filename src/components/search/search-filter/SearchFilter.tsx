@@ -6,6 +6,7 @@ import HeaderButton from "@/components/building-blocks/header-button/HeaderButto
 import { IconContext } from "react-icons"
 import { RiCloseCircleFill } from "react-icons/ri"
 import { FaNotEqual } from "react-icons/fa6"
+import { TbFilterPlus } from "react-icons/tb"
 import type { FilterDefinition } from "./FilterDefinition"
 
 const SearchFilter: React.FC<{
@@ -24,21 +25,38 @@ const SearchFilter: React.FC<{
                     <span className="operation">{operation}</span>
                     <div style={{ flexGrow: 1 }} />
                     <div className="control-buttons">
-                        {allowWraps && <HeaderButton
-                            imageButton={true}
-                            tooltip="Wrap with NOT"
-                            tooltipSide="left"
-                            onClick={() => {
-                                onChange({
-                                    type: 'NOT',
-                                    filter: structuredClone(filter)
-                                })
-                            }}
-                        >
-                            <IconContext.Provider value={{ style: { height: 20, width: 15 } }}>
-                                <FaNotEqual />
-                            </IconContext.Provider>
-                        </HeaderButton>}
+                        {allowWraps && <>
+                            <HeaderButton
+                                imageButton={true}
+                                tooltip="Wrap with AND/OR"
+                                tooltipSide="left"
+                                onClick={() => {
+                                    onChange({
+                                        type: 'AND',
+                                        filters: [structuredClone(filter)]
+                                    })
+                                }}
+                            >
+                                <IconContext.Provider value={{ style: { height: 20, width: 15 } }}>
+                                    <TbFilterPlus />
+                                </IconContext.Provider>
+                            </HeaderButton>
+                            <HeaderButton
+                                imageButton={true}
+                                tooltip="Wrap with NOT"
+                                tooltipSide="left"
+                                onClick={() => {
+                                    onChange({
+                                        type: 'NOT',
+                                        filter: structuredClone(filter)
+                                    })
+                                }}
+                            >
+                                <IconContext.Provider value={{ style: { height: 20, width: 15 } }}>
+                                    <FaNotEqual />
+                                </IconContext.Provider>
+                            </HeaderButton>
+                        </>}
                         {extraControlButtons}
                         <HeaderButton
                             imageButton={true}
