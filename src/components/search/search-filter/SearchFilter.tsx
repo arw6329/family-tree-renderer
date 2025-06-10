@@ -1,5 +1,5 @@
 import Flex from "@/components/building-blocks/flex/Flex"
-import "./SearchFilter.scoped.css"
+import "./FiltersAndExpressions.scoped.css"
 import type { ReactNode } from "react"
 import type React from "react"
 import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
@@ -22,7 +22,7 @@ const SearchFilter: React.FC<{
         <div className="root" style={{ '--color': color } as React.CSSProperties}>
             <Flex column={true}>
                 <div className="header">
-                    <span className="operation">{operation}</span>
+                    <span className="label">{operation}</span>
                     <div style={{ flexGrow: 1 }} />
                     <div className="control-buttons">
                         {allowWraps && <>

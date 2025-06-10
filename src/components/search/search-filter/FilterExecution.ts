@@ -4,6 +4,7 @@ import { derefRecord } from "@/lib/family-tree/metadata-helpers";
 import type { DatabaseView } from "@/lib/family-tree/DatabaseView";
 import { isComplexDate } from "@/lib/family-tree/date-utils";
 import { dateToRange, rangesOverlap } from "@/lib/date/range";
+import { evaluateExpression } from "./value-expressions/expressions";
 
 export function executeFilter(
     filter: FilterDefinition | null,
@@ -47,21 +48,25 @@ export function executeFilter(
                 return false
             }
 
+            if(!filter.expression) {
+                return false
+            }
+
             switch(filter.operation) {
                 case 'equals': {
-                    return testSubject.value.toLowerCase() === filter.test.toLowerCase()
+                    return testSubject.value.toLowerCase() === evaluateExpression(filter.expression).toLowerCase()
                 }
                 case 'contains': {
-                    return testSubject.value.toLowerCase().includes(filter.test.toLowerCase())
+                    return testSubject.value.toLowerCase().includes(evaluateExpression(filter.expression).toLowerCase())
                 }
                 case 'starts-with': {
-                    return testSubject.value.toLowerCase().startsWith(filter.test.toLowerCase())
+                    return testSubject.value.toLowerCase().startsWith(evaluateExpression(filter.expression).toLowerCase())
                 }
                 case 'ends-with': {
-                    return testSubject.value.toLowerCase().endsWith(filter.test.toLowerCase())
+                    return testSubject.value.toLowerCase().endsWith(evaluateExpression(filter.expression).toLowerCase())
                 }
                 case 'regex': {
-                    return new RegExp(filter.test).test(testSubject.value)
+                    return new RegExp(evaluateExpression(filter.expression)).test(testSubject.value)
                 }
                 default: {
                     throw new Error(`Unrecognized string operation ${filter.operation}`)

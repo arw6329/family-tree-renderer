@@ -10,7 +10,7 @@
     align-items: flex-start;
 }
 
-.operation {
+.label {
     background-color: var(--color);
     padding: 2px 5px;
     font-size: 0.9rem;
