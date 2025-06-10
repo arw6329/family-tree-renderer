@@ -124,10 +124,18 @@ export function executeFilter(
 
             const parents = database.getParentsOf(testSubject)
             for(const { parent1, parent2, childRelationship } of parents) {
+                if(!executeFilter(filter.relationshipFilter, childRelationship, database)) {
+                    continue
+                }
+
                 if(
                     executeFilter(filter.parentFilter1, parent1, database)
                     && executeFilter(filter.parentFilter2, parent2, database)
-                    && executeFilter(filter.relationshipFilter, childRelationship, database)
+                ) {
+                    return true
+                } else if(
+                    executeFilter(filter.parentFilter1, parent2, database)
+                    && executeFilter(filter.parentFilter2, parent1, database)
                 ) {
                     return true
                 }
