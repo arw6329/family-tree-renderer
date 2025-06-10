@@ -6,3 +6,8 @@
     - Impossible relationships (own ancestor)
     - Duplicate identifiers
     - References to nonexistent identifiers
+
+- Add eslint config; require no semicolons, always use type imports if available, no default export,
+  no promise without await or void, etc.
+
+- Rename type-only files to d.ts wherever possible

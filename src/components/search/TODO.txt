@@ -7,3 +7,4 @@ Filters should be powerful enough to express the following:
 - Any individual who has 20 or more non-adoptive great-great-grandchildren
 - Any individual who died at 90 years old or older
 - Any individual with 3 or more divorces
+- Any individual with the same first name as one of their parents or grandparents
