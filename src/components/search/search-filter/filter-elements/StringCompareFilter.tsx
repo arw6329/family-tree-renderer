@@ -19,9 +19,10 @@ export const stringCompareFilterRegistration: FilterRegistration<StringCompareFi
             expression: null
         }
     },
-    execute(filter, testSubject, database): boolean {
+    *execute(filter, testSubject, _, variableStore): Generator<boolean, undefined, undefined> {
         if(!('type' in testSubject)) {
-            return false
+            yield false
+            return
         }
 
         // We do not have to deref record here. See other comments.
@@ -29,28 +30,41 @@ export const stringCompareFilterRegistration: FilterRegistration<StringCompareFi
             throw new Error(`Did not expect pointer record to appear in filter execution`)
         }
         if(typeof testSubject.value !== 'string') {
-            return false
+            yield false
+            return
         }
 
         if(!filter.expression) {
-            return false
+            yield false
+            return
+        }
+
+        const value = evaluateExpression(filter.expression, variableStore)
+        if(typeof value !== 'string') {
+            yield false
+            return
         }
 
         switch(filter.operation) {
             case 'equals': {
-                return testSubject.value.toLowerCase() === evaluateExpression(filter.expression).toLowerCase()
+                yield testSubject.value.toLowerCase() === value.toLowerCase()
+                break
             }
             case 'contains': {
-                return testSubject.value.toLowerCase().includes(evaluateExpression(filter.expression).toLowerCase())
+                yield testSubject.value.toLowerCase().includes(value.toLowerCase())
+                break
             }
             case 'starts-with': {
-                return testSubject.value.toLowerCase().startsWith(evaluateExpression(filter.expression).toLowerCase())
+                yield testSubject.value.toLowerCase().startsWith(value.toLowerCase())
+                break
             }
             case 'ends-with': {
-                return testSubject.value.toLowerCase().endsWith(evaluateExpression(filter.expression).toLowerCase())
+                yield testSubject.value.toLowerCase().endsWith(value.toLowerCase())
+                break
             }
             case 'regex': {
-                return new RegExp(evaluateExpression(filter.expression)).test(testSubject.value)
+                yield new RegExp(value).test(testSubject.value)
+                break
             }
             default: {
                 throw new Error(`Unrecognized string operation ${filter.operation}`)

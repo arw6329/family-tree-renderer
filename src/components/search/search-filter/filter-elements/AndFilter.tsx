@@ -20,13 +20,23 @@ export const andFilterRegistration: FilterRegistration<AndFilterDefinition> = {
             filters: []
         }
     },
-    execute(filter, testSubject, database): boolean {
-        for(const subfilter of filter.filters) {
-            if(!executeFilter(subfilter, testSubject, database)) {
-                return false
+    *execute(filter, testSubject, database, variableStore): Generator<boolean, undefined, undefined> {
+        function *recursive(index: number): Generator<boolean, undefined, undefined> {
+            if(index >= filter.filters.length) {
+                yield true
+                return
+            }
+            const generator = executeFilter(filter.filters[index], testSubject, database, variableStore)
+            for(let next = generator.next(); !next.done; next = generator.next()) {
+                if(next.value) {
+                    yield *recursive(index + 1)
+                } else {
+                    yield false
+                }
             }
         }
-        return true
+        
+        yield *recursive(0)
     },
     element(props) {
         return <AndFilter {...props} />
@@ -41,13 +51,8 @@ export const orFilterRegistration: FilterRegistration<AndFilterDefinition> = {
             filters: []
         }
     },
-    execute(filter, testSubject, database): boolean {
-        for(const subfilter of filter.filters) {
-            if(executeFilter(subfilter, testSubject, database)) {
-                return true
-            }
-        }
-        return false
+    *execute(filter, testSubject, database, variableStore): Generator<boolean, undefined, undefined> {
+        throw new Error(`not implemented`)
     },
     element(props) {
         return <AndFilter {...props} />

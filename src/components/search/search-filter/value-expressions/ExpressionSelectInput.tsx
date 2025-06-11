@@ -12,6 +12,7 @@ const ExpressionSelectInput: React.FC<{
             <option value="">Select an expression type</option>
             {expressionType === 'string' && <>
                 <option value="STRING LITERAL">String literal</option>
+                <option value="STORED STRING">Stored string</option>
             </>}
             {expressionType === 'date' && <>
                 

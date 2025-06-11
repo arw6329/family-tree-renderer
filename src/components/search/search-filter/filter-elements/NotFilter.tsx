@@ -21,8 +21,10 @@ export const notFilterRegistration: FilterRegistration<NotFilterDefinition> = {
             }
         }
     },
-    execute(filter, testSubject, database): boolean {
-        return !executeFilter(filter.filter, testSubject, database)
+    *execute(filter, testSubject, database, variableStore): Generator<boolean, undefined, undefined> {
+        for(const result of executeFilter(filter.filter, testSubject, database, variableStore)) {
+            yield !result
+        }
     },
     element(props) {
         return <NotFilter {...props} />

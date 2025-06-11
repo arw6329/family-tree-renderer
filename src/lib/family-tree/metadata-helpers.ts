@@ -1,6 +1,6 @@
 import { ComplexDate } from "./ComplexDate";
 import { isComplexDate } from "./date-utils";
-import { NodeMetadata } from "./FamilyTreeDatabase";
+import type { FlatNodeMetadata, NodeMetadata } from "./FamilyTreeDatabase";
 
 type Pedigree = 'adoptive' | 'biological' | 'foster'
 export type SpousalRelationshipType = 'married' | 'divorced' | 'never-married'
@@ -22,7 +22,7 @@ export function derefRecord(
     record: NodeMetadata,
     metadataLookup: (id: string) => NodeMetadata | null, // TODO: eventually replace me with DatabaseView
     encounteredPointers: string[] = []
-): NodeMetadata & { type: 'simple' } {
+): FlatNodeMetadata {
     if(record.type === 'pointer') {
         if(encounteredPointers.includes(record.pointer)) {
             console.warn('Found vertical cycle when dereferencing metadata - skipping child')
@@ -60,10 +60,10 @@ export function derefRecord(
         }        
     }
 
-    const dereffedRecord: NodeMetadata = {
+    const dereffedRecord: FlatNodeMetadata = {
         type: 'simple',
-        key: currentRecord.key,
-        value: currentRecord.value,
+        key: (currentRecord as FlatNodeMetadata).key,
+        value: (currentRecord as FlatNodeMetadata).value,
         children: []
     }
 

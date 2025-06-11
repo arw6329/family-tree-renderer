@@ -1,40 +1,34 @@
 import Flex from "@/components/building-blocks/flex/Flex"
 import SearchFilter from "../SearchFilter"
-import { createFilterElement, executeFilter, type FilterDefinition, type FilterRegistration } from "../filters"
+import { createFilterElement, type FilterRegistration, type FilterDefinition, executeFilter } from "../filters"
 import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import { IconContext } from "react-icons"
 import { LuReplace } from "react-icons/lu"
 import FilterSelectInput from "../FilterSelectInput"
-import { derefRecord } from "@/lib/family-tree/metadata-helpers"
 import type { NodeMetadata } from "@/lib/family-tree/FamilyTreeDatabase"
 
-export type ChildRecordFilterDefinition = {
-    type: 'CHILD RECORD'
+export type StoredValueChildRecordFilterDefinition = {
+    type: 'CHILD RECORD STORED'
     cardinality: 'any' | 'first'
     childKey: string
     filter: FilterDefinition | null
+    variable: string
 }
 
-export const childRecordFilterRegistration: FilterRegistration<ChildRecordFilterDefinition> = {
-    type: 'CHILD RECORD',
+export const storedValueChildRecordFilterRegistration: FilterRegistration<StoredValueChildRecordFilterDefinition> = {
+    type: 'CHILD RECORD STORED',
     createEmpty() {
         return {
-            type: 'CHILD RECORD',
+            type: 'CHILD RECORD STORED',
             cardinality: 'any',
             childKey: '',
             filter: {
                 type: 'NO-OP'
-            }
+            },
+            variable: ''
         }
     },
     *execute(filter, testSubject, database, variableStore): Generator<boolean, undefined, undefined> {
-        // We do not have to deref testSubject or its children here if
-        // testSubject is of type NodeMetadata because the only way
-        // for NodeMetadata to be fed to executeFilter is from feeding a
-        // Profile/SpousalRelationship/ChildRelationship as the testSubject to
-        // executeFilter and having a CHILD RECORD filter run on its children, in
-        // which case the children would be dereffed there. This might have to be
-        // changed if searching root metadata directly is ever implemented. 
         const children = ('metadata' in testSubject
             ? database.getDereferencedMetadata(testSubject)
             : testSubject.children) as (NodeMetadata & { type: 'simple' })[]
@@ -45,7 +39,10 @@ export const childRecordFilterRegistration: FilterRegistration<ChildRecordFilter
             }
 
             for(const result of executeFilter(filter.filter, child, database, variableStore)) {
-                yield result
+                if(result) {
+                    variableStore.setVariable(filter.variable, child.value)
+                    yield result
+                }
                 if(filter.cardinality === 'first') {
                     return
                 }
@@ -53,17 +50,17 @@ export const childRecordFilterRegistration: FilterRegistration<ChildRecordFilter
         }
     },
     element(props) {
-        return <ChildRecordFilter {...props} />
+        return <StoredValueChildRecordFilter {...props} />
     }
 }
 
-const ChildRecordFilter: React.FC<{
-    filter: ChildRecordFilterDefinition
+const StoredValueChildRecordFilter: React.FC<{
+    filter: StoredValueChildRecordFilterDefinition
     onChange: (filter: FilterDefinition | null) => void
 }> = ({ filter: thisFilter, onChange }) => {
     return (
         <SearchFilter
-            operation="CHILD RECORD"
+            operation="CHILD RECORD - STORE VALUE"
             color="#b66cff"
             filter={thisFilter}
             onChange={onChange}
@@ -87,10 +84,11 @@ const ChildRecordFilter: React.FC<{
                     <span>Object has</span>
                     <select defaultValue={thisFilter.cardinality} onChange={event => {
                         onChange({
-                            type: 'CHILD RECORD',
-                            cardinality: event.currentTarget.value as ChildRecordFilterDefinition['cardinality'],
+                            type: 'CHILD RECORD STORED',
+                            cardinality: event.currentTarget.value as StoredValueChildRecordFilterDefinition['cardinality'],
                             childKey: thisFilter.childKey,
-                            filter: structuredClone(thisFilter.filter)
+                            filter: structuredClone(thisFilter.filter),
+                            variable: thisFilter.variable
                         })
                     }}>
                         <option value="any">Any</option>
@@ -102,10 +100,11 @@ const ChildRecordFilter: React.FC<{
                         defaultValue={thisFilter.childKey}
                         onChange={event => {
                             onChange({
-                                type: 'CHILD RECORD',
+                                type: 'CHILD RECORD STORED',
                                 cardinality: thisFilter.cardinality,
                                 childKey: event.currentTarget.value,
-                                filter: structuredClone(thisFilter.filter)
+                                filter: structuredClone(thisFilter.filter),
+                                variable: thisFilter.variable
                             })
                         }}
                         style={{ maxWidth: 60 }}
@@ -118,23 +117,46 @@ const ChildRecordFilter: React.FC<{
                         testSubjectType: 'NodeMetadata',
                         onChange(filter) {
                             onChange({
-                                type: 'CHILD RECORD',
+                                type: 'CHILD RECORD STORED',
                                 cardinality: thisFilter.cardinality,
                                 childKey: thisFilter.childKey,
-                                filter: filter
+                                filter: filter,
+                                variable: thisFilter.variable
                             })
                         }
                     })
                     : <FilterSelectInput testSubjectType="NodeMetadata" onChoose={filter => {
                         onChange({
-                            type: 'CHILD RECORD',
+                            type: 'CHILD RECORD STORED',
                             cardinality: thisFilter.cardinality,
                             childKey: thisFilter.childKey,
-                            filter: filter
+                            filter: filter,
+                            variable: thisFilter.variable
                         })
                     }} />
                 }
+                <Flex gap={8} alignItems="center">
+                    <span>Store value as </span>
+                    <input
+                        type="text"
+                        placeholder="variable name"
+                        defaultValue={thisFilter.variable}
+                        onChange={event => {
+                            onChange({
+                                type: 'CHILD RECORD STORED',
+                                cardinality: thisFilter.cardinality,
+                                childKey: thisFilter.childKey,
+                                filter: structuredClone(thisFilter.filter),
+                                variable: event.currentTarget.value
+                            })
+                        }}
+                        style={{ maxWidth: 120 }}
+                    />
+                    <span>for subsequent filters.</span>
+                </Flex>
             </Flex>
         </SearchFilter>
     )
 }
+
+export default StoredValueChildRecordFilter

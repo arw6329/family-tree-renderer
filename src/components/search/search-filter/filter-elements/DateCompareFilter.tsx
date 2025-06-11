@@ -19,9 +19,10 @@ export const dateCompareFilterRegistration: FilterRegistration<DateCompareFilter
             date: null
         }
     },
-    execute(filter, testSubject, database): boolean {
+    *execute(filter, testSubject): Generator<boolean, undefined, undefined> {
         if(!('type' in testSubject)) {
-            return false
+            yield false
+            return
         }
 
         // We do not have to deref record here. See comments in child record filter.
@@ -29,14 +30,16 @@ export const dateCompareFilterRegistration: FilterRegistration<DateCompareFilter
             throw new Error(`Did not expect pointer record to appear in filter execution`)
         }
         if(!isComplexDate(testSubject.value)) {
-            return false
+            yield false
+            return
         }
 
         if(!filter.date) {
-            return false
+            yield false
+            return
         }
 
-        return rangesOverlap(dateToRange(filter.date), dateToRange(testSubject.value))
+        yield rangesOverlap(dateToRange(filter.date), dateToRange(testSubject.value))
     },
     element(props) {
         return <DateCompareFilter {...props} />

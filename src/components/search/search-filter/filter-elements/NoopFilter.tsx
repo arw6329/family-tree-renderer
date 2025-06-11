@@ -12,8 +12,8 @@ export const noopFilterRegistration: FilterRegistration<NoopFilterDefinition> = 
             type: 'NO-OP',
         }
     },
-    execute(): boolean {
-        return true
+    *execute(): Generator<boolean, undefined, undefined> {
+        yield true
     },
     element(props) {
         return <NoopFilter {...props} />

@@ -5,6 +5,8 @@ import type { NotFilterDefinition } from "./filter-elements/NotFilter"
 import type { ParentsRelativeFilterDefinition } from "./filter-elements/ParentsRelativeFilter"
 import type { StringCompareFilterDefinition } from "./filter-elements/StringCompareFilter"
 import type { NoopFilterDefinition } from "./filter-elements/NoopFilter"
+import type { StoredValueChildRecordFilterDefinition } from "./filter-elements/StoredValueChildRecordFilter"
+import type { VariableStore } from "./VariableStore"
 import type { ReactNode } from "react"
 import type { ChildRelationship, NodeMetadata, Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import type { DatabaseView } from "@/lib/family-tree/DatabaseView"
@@ -15,6 +17,7 @@ import { notFilterRegistration } from "./filter-elements/NotFilter"
 import { parentsRelativeFilterRegistration } from "./filter-elements/ParentsRelativeFilter"
 import { stringCompareFilterRegistration } from "./filter-elements/StringCompareFilter"
 import { noopFilterRegistration } from "./filter-elements/NoopFilter"
+import { storedValueChildRecordFilterRegistration } from "./filter-elements/StoredValueChildRecordFilter"
 
 export type FilterDefinition =
     AndFilterDefinition
@@ -24,6 +27,7 @@ export type FilterDefinition =
     | StringCompareFilterDefinition
     | DateCompareFilterDefinition
     | NoopFilterDefinition
+    | StoredValueChildRecordFilterDefinition
 
 export type FilterType = FilterDefinition['type']
 
@@ -41,8 +45,9 @@ export type FilterRegistration<T extends FilterDefinition> = {
     execute(
         filter: T,
         testSubject: Profile | ChildRelationship | NodeMetadata,
-        database: DatabaseView
-    ): boolean
+        database: DatabaseView,
+        variableStore: VariableStore
+    ): Generator<boolean, undefined, undefined>
     element(props: FilterElementCommonProps<T>): ReactNode
 }
 
@@ -54,16 +59,19 @@ const filterRegistrations: FilterRegistration<FilterDefinition>[] = [
     noopFilterRegistration,
     notFilterRegistration,
     parentsRelativeFilterRegistration,
-    stringCompareFilterRegistration
+    stringCompareFilterRegistration,
+    storedValueChildRecordFilterRegistration
 ]
 
-export function executeFilter(
+export function *executeFilter(
     filter: FilterDefinition | null,
     testSubject: Profile | ChildRelationship | NodeMetadata,
-    database: DatabaseView
-): boolean {
+    database: DatabaseView,
+    variableStore: VariableStore
+): Generator<boolean, undefined, undefined> {
     if(!filter) {
-        return false
+        yield false
+        return
     }
 
     const reg = filterRegistrations.find(reg => reg.type === filter.type)
@@ -72,7 +80,7 @@ export function executeFilter(
         throw new Error(`Unknown filter type ${filter.type}`)
     }
 
-    return reg.execute(filter, testSubject, database)
+    yield *reg.execute(filter, testSubject, database, variableStore)
 }
 
 export function createFilterElement(props: FilterElementCommonProps<FilterDefinition>): ReactNode {

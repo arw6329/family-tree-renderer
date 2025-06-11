@@ -26,30 +26,30 @@ export const parentsRelativeFilterRegistration: FilterRegistration<ParentsRelati
             }
         }
     },
-    execute(filter, testSubject, database): boolean {
+    *execute(filter, testSubject, database, variableStore): Generator<boolean, undefined, undefined> {
         if(!('profile_id' in testSubject)) {
-            return false
+            yield false
+            return
         }
 
         const parents = database.getParentsOf(testSubject)
         for(const { parent1, parent2, childRelationship } of parents) {
-            if(!executeFilter(filter.relationshipFilter, childRelationship, database)) {
-                continue
+            for(const resultp1 of executeFilter(filter.parentFilter1, parent1, database, variableStore)) {
+                for(const resultp2 of executeFilter(filter.parentFilter2, parent2, database, variableStore)) {
+                    for(const resultcr of executeFilter(filter.relationshipFilter, childRelationship, database, variableStore)) {
+                        yield resultp1 && resultp2 && resultcr
+                    }
+                }
             }
 
-            if(
-                executeFilter(filter.parentFilter1, parent1, database)
-                && executeFilter(filter.parentFilter2, parent2, database)
-            ) {
-                return true
-            } else if(
-                executeFilter(filter.parentFilter1, parent2, database)
-                && executeFilter(filter.parentFilter2, parent1, database)
-            ) {
-                return true
+            for(const resultp2 of executeFilter(filter.parentFilter1, parent2, database, variableStore)) {
+                for(const resultp1 of executeFilter(filter.parentFilter2, parent1, database, variableStore)) {
+                    for(const resultcr of executeFilter(filter.relationshipFilter, childRelationship, database, variableStore)) {
+                        yield resultp1 && resultp2 && resultcr
+                    }
+                }
             }
         }
-        return false
     },
     element(props) {
         return <ParentsRelativeFilter {...props} />

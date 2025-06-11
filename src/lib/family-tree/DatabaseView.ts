@@ -1,9 +1,34 @@
-import type { ChildRelationship, FamilyTreeDatabase, NodeMetadata, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "./FamilyTreeDatabase";
+import { raise } from "../util/raise"
+import type { ChildRelationship, FamilyTreeDatabase, FlatNodeMetadata, NodeMetadata, ObjectType, ObjectTypeToInterface, Profile, SpousalRelationship } from "./FamilyTreeDatabase"
+import { derefRecord } from "./metadata-helpers"
 
 // TODO: replace all manual accesses of FamilyTreeDatabase with this class.
 // Maybe would even be nice to combine this with DatabaseBuilder.
 export class DatabaseView {
-    private constructor(private database: FamilyTreeDatabase) {}
+    // TODO: remember to invalidate on edits
+    private internalCache: {
+        dereferencedMetadata: {
+            profiles: {
+                [profileId: string]: FlatNodeMetadata[]
+            }
+            spousalRelationships: {
+                [relationshipId: string]: FlatNodeMetadata[]
+            }
+            childRelationships: {
+                [relationshipId: string]: FlatNodeMetadata[]
+            }
+        }
+    }
+
+    private constructor(private database: FamilyTreeDatabase) {
+        this.internalCache = {
+            dereferencedMetadata: {
+                profiles: {},
+                spousalRelationships: {},
+                childRelationships: {}
+            }
+        }
+    }
     
     static fromExisting(database: FamilyTreeDatabase) {
         return new DatabaseView(database)
@@ -106,6 +131,36 @@ export class DatabaseView {
             default: {
                 throw new Error(`Unrecognized object type ${type}`)
             }
+        }
+    }
+
+    getDereferencedMetadata(object: Profile | SpousalRelationship | ChildRelationship): FlatNodeMetadata[] {
+        const type: ObjectType = 'profile_id' in object
+            ? 'Profile'
+            : 'spouse_1_profile_id' in object
+            ? 'SpousalRelationship'
+            : 'parent_relationship_id' in object
+            ? 'ChildRelationship'
+            : raise(`Unrecognized object type: ${JSON.stringify(object)}`)
+        
+        const cache = {
+            'Profile': this.internalCache.dereferencedMetadata.profiles,
+            'SpousalRelationship': this.internalCache.dereferencedMetadata.spousalRelationships,
+            'ChildRelationship': this.internalCache.dereferencedMetadata.childRelationships
+        }[type]
+
+        const objectId = {
+            'Profile': (object as Profile).profile_id,
+            'SpousalRelationship': (object as SpousalRelationship).relationship_id,
+            'ChildRelationship': (object as ChildRelationship).relationship_id
+        }[type]
+
+        if(cache[objectId]) {
+            return cache[objectId]
+        } else {
+            const flatMetadata = object.metadata.map(child => derefRecord(child, metadataId => this.getRootMetadataById(metadataId)))
+            cache[objectId] = flatMetadata
+            return flatMetadata
         }
     }
 }

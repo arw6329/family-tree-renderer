@@ -29,6 +29,13 @@ export type NodeMetadata = {
     children: NodeMetadata[]
 }
 
+export type FlatNodeMetadata = {
+    type: 'simple',
+    key: string,
+    value: JSONValue,
+    children: FlatNodeMetadata[]
+}
+
 export interface Profile {
     profile_id: string,
     name: string,

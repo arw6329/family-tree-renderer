@@ -7,7 +7,7 @@ export type StringLiteralExpressionDefinition = {
     value: string
 }
 
-export const stringLiteralExpressionRegistration: ExpressionRegistration = {
+export const stringLiteralExpressionRegistration: ExpressionRegistration<StringLiteralExpressionDefinition> = {
     type: 'STRING LITERAL',
     createEmpty() {
         return {
@@ -39,6 +39,7 @@ const StringLiteralExpression: React.FC<{
                 <span>Literal value:</span>
                 <input
                     type="text"
+                    defaultValue={thisExpression.value}
                     onChange={event => {
                         onChange({
                             type: 'STRING LITERAL',

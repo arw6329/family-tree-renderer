@@ -31,6 +31,7 @@ const FilterSelectInput: React.FC<{
                 </optgroup>
                 <optgroup label="Metadata">
                     <option value="CHILD RECORD">Child record</option>
+                    <option value="CHILD RECORD STORED">Child record - store value</option>
                 </optgroup>
             </>}
         </select>
