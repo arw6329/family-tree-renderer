@@ -1,7 +1,6 @@
 import Flex from "@/components/building-blocks/flex/Flex"
 import SearchFilter from "../SearchFilter"
-import type { FilterDefinition, FilterTestSubjectType } from "../FilterDefinition"
-import { selectFilter } from "../FilterSelection"
+import { createFilterElement, executeFilter, type FilterDefinition, type FilterRegistration, type FilterTestSubjectType } from "../filters"
 import FilterSelectInput from "../FilterSelectInput"
 import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import { IconContext } from "react-icons"
@@ -11,6 +10,48 @@ import { LuReplace } from "react-icons/lu"
 export type AndFilterDefinition = {
     type: 'AND' | 'OR'
     filters: FilterDefinition[]
+}
+
+export const andFilterRegistration: FilterRegistration<AndFilterDefinition> = {
+    type: 'AND',
+    createEmpty() {
+        return {
+            type: 'AND',
+            filters: []
+        }
+    },
+    execute(filter, testSubject, database): boolean {
+        for(const subfilter of filter.filters) {
+            if(!executeFilter(subfilter, testSubject, database)) {
+                return false
+            }
+        }
+        return true
+    },
+    element(props) {
+        return <AndFilter {...props} />
+    }
+}
+
+export const orFilterRegistration: FilterRegistration<AndFilterDefinition> = {
+    type: 'OR',
+    createEmpty() {
+        return {
+            type: 'OR',
+            filters: []
+        }
+    },
+    execute(filter, testSubject, database): boolean {
+        for(const subfilter of filter.filters) {
+            if(executeFilter(subfilter, testSubject, database)) {
+                return true
+            }
+        }
+        return false
+    },
+    element(props) {
+        return <AndFilter {...props} />
+    }
 }
 
 const AndFilter: React.FC<{
@@ -59,17 +100,21 @@ const AndFilter: React.FC<{
             <Flex column={true} gap={15}>
                 <span>{thisFilter.type === 'AND' ? 'All' : 'Any of'} these filters match:</span>
                 <Flex column={true} gap={10} alignItems="baseline">
-                    {thisFilter.filters.map((filter, i) => selectFilter(filter, testSubjectType, filter => {
-                        const newFilters = structuredClone(thisFilter.filters)
-                        if(filter) {
-                            newFilters[i] = filter
-                        } else {
-                            newFilters.splice(i, 1)
+                    {thisFilter.filters.map((filter, i) => createFilterElement({
+                        filter,
+                        testSubjectType,
+                        onChange(filter) {
+                            const newFilters = structuredClone(thisFilter.filters)
+                            if(filter) {
+                                newFilters[i] = filter
+                            } else {
+                                newFilters.splice(i, 1)
+                            }
+                            onChange({
+                                type: thisFilter.type,
+                                filters: newFilters
+                            })
                         }
-                        onChange({
-                            type: thisFilter.type,
-                            filters: newFilters
-                        })
                     }))}
                     <FilterSelectInput testSubjectType={testSubjectType} onChoose={filter => {
                         const newFilters = structuredClone(thisFilter.filters)
@@ -84,5 +129,3 @@ const AndFilter: React.FC<{
         </SearchFilter>
     )
 }
-
-export default AndFilter

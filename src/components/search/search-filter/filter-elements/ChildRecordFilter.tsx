@@ -1,17 +1,60 @@
 import Flex from "@/components/building-blocks/flex/Flex"
 import SearchFilter from "../SearchFilter"
-import type { FilterDefinition } from "../FilterDefinition"
-import { selectFilter } from "../FilterSelection"
+import { createFilterElement, executeFilter, type FilterDefinition, type FilterRegistration } from "../filters"
 import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import { IconContext } from "react-icons"
 import { LuReplace } from "react-icons/lu"
 import FilterSelectInput from "../FilterSelectInput"
+import { derefRecord } from "@/lib/family-tree/metadata-helpers"
+import type { NodeMetadata } from "@/lib/family-tree/FamilyTreeDatabase"
 
 export type ChildRecordFilterDefinition = {
     type: 'CHILD RECORD'
     cardinality: 'any' | 'first'
     childKey: string
     filter: FilterDefinition | null
+}
+
+export const childRecordFilterRegistration: FilterRegistration<ChildRecordFilterDefinition> = {
+    type: 'CHILD RECORD',
+    createEmpty() {
+        return {
+            type: 'CHILD RECORD',
+            cardinality: 'any',
+            childKey: '',
+            filter: {
+                type: 'NO-OP'
+            }
+        }
+    },
+    execute(filter, testSubject, database): boolean {
+        // We do not have to deref testSubject or its children here if
+        // testSubject is of type NodeMetadata because the only way
+        // for NodeMetadata to be fed to executeFilter is from feeding a
+        // Profile/SpousalRelationship/ChildRelationship as the testSubject to
+        // executeFilter and having a CHILD RECORD filter run on its children, in
+        // which case the children would be dereffed there. This might have to be
+        // changed if searching root metadata directly is ever implemented. 
+        const children = ('metadata' in testSubject
+            ? testSubject.metadata.map(child => derefRecord(child, metadataId => database.getRootMetadataById(metadataId)))
+            : testSubject.children) as (NodeMetadata & { type: 'simple' })[]
+        
+        for(const child of children) {
+            if(child.key !== filter.childKey) {
+                continue
+            }
+
+            if(executeFilter(filter.filter, child, database)) {
+                return true
+            } else if(filter.cardinality === 'first') {
+                return false
+            }
+        }
+        return false
+    },
+    element(props) {
+        return <ChildRecordFilter {...props} />
+    }
 }
 
 const ChildRecordFilter: React.FC<{
@@ -70,13 +113,17 @@ const ChildRecordFilter: React.FC<{
                     <span>record matching this filter:</span>
                 </Flex>
                 {thisFilter.filter
-                    ? selectFilter(thisFilter.filter, 'NodeMetadata', filter => {
-                        onChange({
-                            type: 'CHILD RECORD',
-                            cardinality: thisFilter.cardinality,
-                            childKey: thisFilter.childKey,
-                            filter: filter
-                        })
+                    ? createFilterElement({
+                        filter: thisFilter.filter,
+                        testSubjectType: 'NodeMetadata',
+                        onChange(filter) {
+                            onChange({
+                                type: 'CHILD RECORD',
+                                cardinality: thisFilter.cardinality,
+                                childKey: thisFilter.childKey,
+                                filter: filter
+                            })
+                        }
                     })
                     : <FilterSelectInput testSubjectType="NodeMetadata" onChoose={filter => {
                         onChange({
@@ -91,5 +138,3 @@ const ChildRecordFilter: React.FC<{
         </SearchFilter>
     )
 }
-
-export default ChildRecordFilter

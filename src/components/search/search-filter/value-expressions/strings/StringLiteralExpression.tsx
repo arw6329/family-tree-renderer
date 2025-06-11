@@ -23,7 +23,7 @@ export const stringLiteralExpressionRegistration: ExpressionRegistration = {
     }
 }
 
-export const StringLiteralExpression: React.FC<{
+const StringLiteralExpression: React.FC<{
     expression: StringLiteralExpressionDefinition
     onChange: (expression: ValueExpressionDefinition | null) => void
 }> = ({ expression: thisExpression, onChange }) => {

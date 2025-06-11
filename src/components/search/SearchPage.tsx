@@ -1,6 +1,6 @@
 import "@/global.css"
 import { useState } from "react"
-import type { FilterDefinition } from "./search-filter/FilterDefinition"
+import type { FilterDefinition } from "./search-filter/filters"
 import Search from "./Search"
 import type { DatabaseView } from "@/lib/family-tree/DatabaseView"
 import type { Profile } from "@/lib/family-tree/FamilyTreeDatabase"

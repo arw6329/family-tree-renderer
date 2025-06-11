@@ -1,5 +1,5 @@
-import type { FilterDefinition, FilterTestSubjectType, FilterType } from "./FilterDefinition"
-import { createEmptyFilter } from "./FilterSelection"
+import type { FilterDefinition, FilterTestSubjectType, FilterType } from "./filters"
+import { createEmptyFilter } from "./filters"
 
 const FilterSelectInput: React.FC<{
     testSubjectType: FilterTestSubjectType

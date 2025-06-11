@@ -1,8 +1,23 @@
 import SearchFilter from "../SearchFilter"
-import type { FilterDefinition } from "../FilterDefinition"
+import type { FilterDefinition, FilterRegistration } from "../filters"
 
 export type NoopFilterDefinition = {
     type: 'NO-OP'
+}
+
+export const noopFilterRegistration: FilterRegistration<NoopFilterDefinition> = {
+    type: 'NO-OP',
+    createEmpty() {
+        return {
+            type: 'NO-OP',
+        }
+    },
+    execute(): boolean {
+        return true
+    },
+    element(props) {
+        return <NoopFilter {...props} />
+    }
 }
 
 const NoopFilter: React.FC<{
@@ -21,5 +36,3 @@ const NoopFilter: React.FC<{
         </SearchFilter>
     )
 }
-
-export default NoopFilter

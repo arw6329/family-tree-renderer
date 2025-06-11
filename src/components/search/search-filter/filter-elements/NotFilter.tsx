@@ -1,7 +1,6 @@
 import Flex from "@/components/building-blocks/flex/Flex"
 import SearchFilter from "../SearchFilter"
-import type { FilterDefinition, FilterTestSubjectType } from "../FilterDefinition"
-import { selectFilter } from "../FilterSelection"
+import { createFilterElement, executeFilter, type FilterDefinition, type FilterRegistration, type FilterTestSubjectType } from "../filters"
 import HeaderButton from "@/components/building-blocks/header-button/HeaderButton"
 import { IconContext } from "react-icons"
 import { LuReplace } from "react-icons/lu"
@@ -10,6 +9,24 @@ import FilterSelectInput from "../FilterSelectInput"
 export type NotFilterDefinition = {
     type: 'NOT'
     filter: FilterDefinition | null
+}
+
+export const notFilterRegistration: FilterRegistration<NotFilterDefinition> = {
+    type: 'NOT',
+    createEmpty() {
+        return {
+            type: 'NOT',
+            filter: {
+                type: 'NO-OP'
+            }
+        }
+    },
+    execute(filter, testSubject, database): boolean {
+        return !executeFilter(filter.filter, testSubject, database)
+    },
+    element(props) {
+        return <NotFilter {...props} />
+    }
 }
 
 const NotFilter: React.FC<{
@@ -40,11 +57,15 @@ const NotFilter: React.FC<{
         >
             <Flex>
                 {thisFilter.filter
-                    ? selectFilter(thisFilter.filter, testSubjectType, filter => {
-                        onChange({
-                            type: 'NOT',
-                            filter: filter
-                        })
+                    ? createFilterElement({
+                        filter: thisFilter.filter,
+                        testSubjectType,
+                        onChange(filter) {
+                            onChange({
+                                type: 'NOT',
+                                filter: filter
+                            })
+                        }
                     })
                     : <FilterSelectInput testSubjectType={testSubjectType} onChoose={filter => {
                         onChange({
@@ -57,5 +78,3 @@ const NotFilter: React.FC<{
         </SearchFilter>
     )
 }
-
-export default NotFilter

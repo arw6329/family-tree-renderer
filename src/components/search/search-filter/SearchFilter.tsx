@@ -7,7 +7,7 @@ import { IconContext } from "react-icons"
 import { RiCloseCircleFill } from "react-icons/ri"
 import { FaNotEqual } from "react-icons/fa6"
 import { TbFilterPlus } from "react-icons/tb"
-import type { FilterDefinition } from "./FilterDefinition"
+import type { FilterDefinition } from "./filters"
 
 const SearchFilter: React.FC<{
     operation: string

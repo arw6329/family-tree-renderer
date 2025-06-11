@@ -1,10 +1,8 @@
 import { useState } from "react"
 import "./Search.scoped.css"
-import { selectFilter } from "./search-filter/FilterSelection"
-import type { FilterDefinition } from "./search-filter/FilterDefinition"
+import { createFilterElement, executeFilter, type FilterDefinition } from "./search-filter/filters"
 import ActionButton from "../building-blocks/action-button/ActionButton"
 import Flex from "../building-blocks/flex/Flex"
-import { executeFilter } from "./search-filter/FilterExecution"
 import type { Profile } from "@/lib/family-tree/FamilyTreeDatabase"
 import type { DatabaseView } from "@/lib/family-tree/DatabaseView"
 import FilterSelectInput from "./search-filter/FilterSelectInput"
@@ -24,7 +22,13 @@ const Search: React.FC<{
                 <p>Use the filter builder to search for individuals based on structured conditions.</p>
                 <LabeledElement label="Filter">
                     {filter
-                        ? selectFilter(filter, 'Profile', filter => setFilter(filter))
+                        ? createFilterElement({
+                            filter,
+                            testSubjectType: 'Profile',
+                            onChange(filter) {
+                                setFilter(filter)
+                            }
+                        })
                         : <FilterSelectInput testSubjectType="Profile" onChoose={filter => {
                             setFilter(filter)
                         }} />
