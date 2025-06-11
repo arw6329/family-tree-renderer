@@ -15,8 +15,16 @@ const Template: StoryFn<typeof ProfileView> = (args) => <div style={{ height: '1
     <ProfileView {...args} />
 </div>;
 
+const database = parseGedcom(gedcom)
+
 export const JFK = Template.bind({});
 JFK.args = {
     profileId: '@I1509@',
-    database: parseGedcom(gedcom)
+    database: database
+};
+
+export const AmericaWorkmanMultiName = Template.bind({});
+AmericaWorkmanMultiName.args = {
+    profileId: '@I2281@',
+    database: database
 };
